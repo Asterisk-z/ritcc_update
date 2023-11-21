@@ -18,7 +18,6 @@ class LoginController extends Controller
     //
     public function signIn(Request $request)
     {
-
         $credentials = $request->only('email', 'password');
 
         $user = Profile::where('email', $credentials['email'])->first();
@@ -26,20 +25,9 @@ class LoginController extends Controller
         if (!$user) {
             return redirect()->route('login')->with('error', 'This user does not exist');
         }
-        // super admin
-        else if ((Auth::attempt($credentials)) && ($user->Package === '1')) {
-            dd('iQX');
-            return redirect()->route('inputterDashboard')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
-        }
-        // inputter
-        else if ((Auth::attempt($credentials)) && ($user->Package === '2' || $user->Package === '4')) {
-            dd('Inputter');
-            return redirect()->route('inputterDashboard')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
-        }
-        // authoriser
-        else if ((Auth::attempt($credentials)) && ($user->Package === '3' || $user->Package === '5')) {
-            dd('Authoriser');
-            return redirect()->route('authoriser.profile')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
+
+        if (Auth::attempt($credentials)) {
+            return redirect()->route('inputter.profile')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
         } else {
             return redirect()->route('login')->with('error', 'Invalid credentials.');
         }
@@ -50,6 +38,5 @@ class LoginController extends Controller
     {
         Auth::logout();
         return redirect()->route('login');
-        // return redirect('http://10.10.14.130:8181/');
     }
 }

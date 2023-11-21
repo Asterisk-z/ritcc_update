@@ -13,9 +13,9 @@
         <div id="sidebar-menu" class="sidebar-menu">
 
             <ul>
-                <li class="">
-                    <a href="{{ route('inputterDashboard') }}"><i class="fas fa-home"></i><span> Dashboard</span>
-                </li>
+                {{-- <li class="">
+                    <a href=""><i class="fas fa-home"></i><span> Dashboard</span>
+                </li> --}}
                 <li class="">
                     <a href="{{ route('profilesIndex') }}"><i class="fas fa-users"></i><span> Profile
                             Management</span>
@@ -25,23 +25,28 @@
                             Management</span>
                 </li>
                 <li class="">
-                    <a href="{{ route('certificatesIndex') }}"><i class="fa-solid fa-key"></i> <span> Certificate Management</span>
+                    <a href="{{ route('certificatesIndex') }}"><i class="fa-solid fa-key"></i> <span> Certificate
+                            Management</span>
                 </li>
                 <li class="">
-                    <a href="{{ route('institutionsIndex') }}"><i class="fa-solid fa-key"></i> <span> Auction Management</span>
+                    <a href="{{ route('institutionsIndex') }}"><i class="fa-solid fa-key"></i> <span> Auction
+                            Management</span>
                 </li>
                 <li class="">
-                    <a href="{{ route('institutionsIndex') }}"><i class="fa-solid fa-key"></i> <span> Auction Allocation</span>
+                    <a href="{{ route('institutionsIndex') }}"><i class="fa-solid fa-key"></i> <span> Auction
+                            Allocation</span>
                 </li>
                 <li class="">
-                    <a href="{{ route('institutionsIndex') }}"><i class="fa-solid fa-key"></i> <span> Trade Management</span>
+                    <a href="#"><i class="fa-solid fa-key"></i> <span> Trade
+                            Management</span>
                 </li>
                 <li class="">
                     <a href="{{ route('institutionsIndex') }}"><i class="fa-solid fa-key"></i> <span> Settlement</span>
                 </li>
 
                 <li class="submenu">
-                    <a href="#"><i class="fa-solid fa-gear"></i></i> <span> System Settings</span> <span class="menu-arrow"></span></a>
+                    <a href="#"><i class="fa-solid fa-gear"></i></i> <span> System Settings</span> <span
+                            class="menu-arrow"></span></a>
                     <ul>
                         <li><a href="#">Packages</a></li>
                         <li><a href="#">Public Holidays</a></li>
