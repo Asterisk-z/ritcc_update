@@ -65,6 +65,13 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'user.type' => \App\Http\Middleware\UserType::class,
-        'prevent.back.history' => \App\Http\Middleware\PreventBackHistory::class
+        'prevent.back.history' => \App\Http\Middleware\PreventBackHistory::class,
+        'isSuperUser' => \App\Http\Middleware\SuperUserMiddleware::class,
+        'isInputter' => \App\Http\Middleware\InputterMiddleware::class,
+        'isAuthoriser' => \App\Http\Middleware\AuthoriserMiddleware::class,
+        'isFirs' => \App\Http\Middleware\FirsMiddleware::class,
+        'isAuctioneer' => \App\Http\Middleware\AuctioneerMiddleware::class,
+        'isBidder' => \App\Http\Middleware\BidderMiddleware::class,
+
     ];
 }
