@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class UserType
+class PreventBackHistory
 {
     /**
      * Handle an incoming request.
@@ -15,12 +14,11 @@ class UserType
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next, $type)
+    public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->Package === $type) {
-            return $next($request);
-        }
-
-        return redirect()->route('login');
+        $response = $next($request);
+        return $response->header('Cache-Control', 'nocache,no-store,max-age=0,must-revalidate')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', 'Sun, 01 Jan 1970 00:00:00 GMT');
     }
 }

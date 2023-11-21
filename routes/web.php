@@ -1,12 +1,9 @@
 <?php
 
-use App\Http\Controllers\Authoriser\InstitutionController as AuthoriserInstitutionController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Authoriser\ProfileController as AuthoriserProfileController;
+use App\Http\Controllers\FMDQ\InstitutionController;
 use App\Http\Controllers\FMDQ\IQXController;
-use App\Http\Controllers\inputter\CertificateController;
-use App\Http\Controllers\Inputter\InstitutionController;
-use App\Http\Controllers\Inputter\ProfileController;
+use App\Http\Controllers\FMDQ\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,33 +26,35 @@ Route::get('/', [LoginController::class, 'login'])->name('login');
 Route::post('/sign-in', [LoginController::class, 'signIn'])->name('signIn');
 Route::post('/sign-out', [LoginController::class, 'signOut'])->name('signOut');
 
-// iQX
+// dashboard
 Route::get('/iqx-dashboard', [IQXController::class, 'index'])->name('iqx.dashboard');
-
-// Inputter
-Route::controller(ProfileController::class)->group(function () {
-    // Route::get('/dashboard', 'dashboard')->name('inputterDashboard');
-    Route::get('/profile-management', 'profilesIndex')->name('inputter.profile');
-});
-
-Route::controller(InstitutionController::class)->group(function () {
-    Route::get('/institution-management', 'institutionsIndex')->name('institutionsIndex');
-    Route::post('/create-institution', 'createInstitution')->name('createInstitution');
-    Route::post('/update-institution/{id}', 'updateInstitution')->name('updateInstitution');
-    Route::post('/delete-institution/{id}', 'deleteInstitution')->name('deleteInstitution');
-});
-
-Route::controller(CertificateController::class)->group(function () {
-    Route::get('/certificate-management', 'index')->name('certificatesIndex');
-    Route::post('/create-certificate', 'create')->name('createCertificate');
-    Route::post('/update-certificate/{id}', 'updateCertificate')->name('updateCertificate');
-});
-
-// Authoriser
 // profile
-Route::get('/authoriser-profile', [AuthoriserProfileController::class], 'index')->name('authoriser.profile');
-// institution
-Route::get('/authoriser-institution', [AuthoriserInstitutionController::class, 'index'])->name('authoriser.institution');
+Route::get('/profile-management', [ProfileController::class, 'index'])->name('profile.index');
+// Institution
+Route::get('/institution-management', [InstitutionController::class, 'index'])->name('institution.index');
+Route::get('/institution-management/pending', [InstitutionController::class, 'pending'])->name('institution.pending');
+Route::get('/institution-management/rejected', [InstitutionController::class, 'rejected'])->name('institution.rejected');
+Route::get('/institution-management/approved', [InstitutionController::class, 'approved'])->name('institution.approved');
+Route::post('/institution/create', [InstitutionController::class, 'create'])->name('institution.create');
+Route::post('/institution/update/{id}', [InstitutionController::class, 'update'])->name('institution.update');
+Route::post('/institution/delete/{id}', [InstitutionController::class, 'delete'])->name('institution.delete');
 
-// Auctioneer
-// Bidder
+// // iQX
+// Route::group(['middleware' => ['auth', 'user.type:1']], function () {
+//     // dashboard
+//     Route::get('/iqx-dashboard', [IQXController::class, 'index'])->name('iqx.dashboard');
+// });
+
+// // Inputter
+// Route::group(
+//     ['middleware' => ['auth', 'user.type:1', 'user.type:2', 'user.type:4']],
+//     function () {
+//         // profile
+//         Route::get('/profile-management', [ProfileController::class, 'index'])->name('profile.index');
+//         // Institution
+//         Route::get('/institution-management', [InstitutionController::class, 'index'])->name('institution.index');
+//         Route::post('/institution/create', [InstitutionController::class, 'create'])->name('institution.create');
+//         Route::post('/institution/update/{id}', [InstitutionController::class, 'update'])->name('institution.update');
+//         Route::post('/institution/delete/{id}', [InstitutionController::class, 'delete'])->name('institution.delete');
+//     }
+// );

@@ -7,13 +7,13 @@ use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class IQXController extends Controller
+class ProfileController extends Controller
 {
     //
-    public function __construct()
-    {
-        $this->middleware(['auth', 'user.type:1']);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware(['auth']);
+    // }
 
     //
     public function index()
@@ -24,6 +24,6 @@ class IQXController extends Controller
         $approved = Profile::where('status', '1')->count();
         $pending = Profile::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();
         $rejected = Profile::where('status', '2')->count();
-        return view('fmdq.dashboard', compact('user', 'profiles', 'all', 'pending', 'approved', 'rejected'));
+        return view('fmdq.profile.index', compact('user', 'profiles', 'all', 'pending', 'approved', 'rejected'));
     }
 }

@@ -1,10 +1,10 @@
 <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <div class="sidebar-logo">
-            <a href="{{ route('inputterDashboard') }}">
+            <a href="{{ route('iqx.dashboard') }}">
                 <img src="{{ asset('assets/img/FMDQLogo.png') }}" class="img-fluid logo" alt>
             </a>
-            <a href="{{ route('inputterDashboard') }}">
+            <a href="{{ route('iqx.dashboard') }}">
                 <img src="{{ asset('assets/img/FMDQLogo.png') }}" class="img-fluid logo-small" alt>
             </a>
         </div>
@@ -13,27 +13,27 @@
         <div id="sidebar-menu" class="sidebar-menu">
 
             <ul>
-                {{-- <li class="">
-                    <a href=""><i class="fas fa-home"></i><span> Dashboard</span>
-                </li> --}}
                 <li class="">
-                    <a href="{{ route('profilesIndex') }}"><i class="fas fa-users"></i><span> Profile
+                    <a href="{{ route('iqx.dashboard') }}"><i class="fas fa-home"></i><span> Dashboard</span>
+                </li>
+                <li class="">
+                    <a href="{{ route('profile.index') }}"><i class="fas fa-users"></i><span> Profile
                             Management</span>
                 </li>
                 <li class="">
-                    <a href="{{ route('institutionsIndex') }}"><i class="fas fa-building"></i><span> Institution
+                    <a href="{{ route('institution.index') }}"><i class="fas fa-building"></i><span> Institution
                             Management</span>
                 </li>
                 <li class="">
-                    <a href="{{ route('certificatesIndex') }}"><i class="fa-solid fa-key"></i> <span> Certificate
+                    <a href="#"><i class="fa-solid fa-key"></i> <span> Certificate
                             Management</span>
                 </li>
                 <li class="">
-                    <a href="{{ route('institutionsIndex') }}"><i class="fa-solid fa-key"></i> <span> Auction
+                    <a href="#"><i class="fa-solid fa-key"></i> <span> Auction
                             Management</span>
                 </li>
                 <li class="">
-                    <a href="{{ route('institutionsIndex') }}"><i class="fa-solid fa-key"></i> <span> Auction
+                    <a href="#"><i class="fa-solid fa-key"></i> <span> Auction
                             Allocation</span>
                 </li>
                 <li class="">
@@ -41,7 +41,7 @@
                             Management</span>
                 </li>
                 <li class="">
-                    <a href="{{ route('institutionsIndex') }}"><i class="fa-solid fa-key"></i> <span> Settlement</span>
+                    <a href="#"><i class="fa-solid fa-key"></i> <span> Settlement</span>
                 </li>
 
                 <li class="submenu">

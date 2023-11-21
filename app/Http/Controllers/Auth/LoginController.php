@@ -25,10 +25,20 @@ class LoginController extends Controller
         if (!$user) {
             return redirect()->route('login')->with('error', 'This user does not exist');
         }
-
-        if (Auth::attempt($credentials)) {
-            return redirect()->route('inputter.profile')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
-        } else {
+        // super admin
+        else if ((Auth::attempt($credentials)) && ($user->Package === '1')) {
+            // dd('iQX');
+            return redirect()->route('iqx.dashboard')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
+        }
+        // inputter and authoriser
+        else if ((Auth::attempt($credentials) && ($user->type === 'inputter' || $user->type === 'authoriser'))) {
+            // dump('Inputter');
+            return redirect()->route('profile.index')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
+        }
+        // firs
+        // auctioneer
+        // bidder
+        else {
             return redirect()->route('login')->with('error', 'Invalid credentials.');
         }
     }
