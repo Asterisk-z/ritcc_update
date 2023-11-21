@@ -238,20 +238,26 @@ Version      : 1.0
 
     // Datatable
 
-    if ($('.datatable').length > 0) {
+    // if ($('.datatable').length > 0) {
+    //     $('.datatable').DataTable({
+    //         language: {
+    //             search: '<i class="fas fa-search"></i>',
+    //             searchPlaceholder: "Search"
+    //         }
+    //     });
+    // }
+    if ($('.datatable').length > 1) {
         $('.datatable').DataTable({
-            language: {
-                search: '<i class="fas fa-search"></i>',
-                searchPlaceholder: "Search"
-            }
-        });
-    }
-    if ($('.datatable').length > 0) {
-        $('.datatable').DataTable({
-            "bFilter": false,
+            "bFilter": true,
             "sDom": 'fBtlpi',
             "ordering": true,
-
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": false,
+            "info": true,
+            "autoWidth": true,
+            "responsive": true,
             "language": {
                 search: ' ',
                 sLengthMenu: '_MENU_',

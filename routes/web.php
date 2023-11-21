@@ -20,14 +20,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/testing', function () {
     dd('testing');
 });
+// Auth
+Route::get('/', 'Auth\LoginController@login')->name('login');
+Route::post('/sign-in', 'Auth\LoginController@login')->name('signIn');
+Route::post('/sign-out', 'Auth\LoginController@signOut')->name('signOut');
 
-Route::controller(LoginController::class)->group(function () {
-    Route::get('/', 'login')->name('login');
-    Route::get('/not-authorized', 'notAuthorised')->name('notAuthorised');
-    Route::post('/sign-in', 'signIn')->name('signIn');
-    Route::get('/sign-out', 'signOut')->name('signOut');
-});
-
+// Inputter
 Route::controller(ProfileController::class)->group(function () {
     Route::get('/dashboard', 'dashboard')->name('inputterDashboard');
     Route::get('/profile-management', 'profilesIndex')->name('profilesIndex');
@@ -37,6 +35,7 @@ Route::controller(InstitutionController::class)->group(function () {
     Route::get('/institution-management', 'institutionsIndex')->name('institutionsIndex');
     Route::post('/create-institution', 'createInstitution')->name('createInstitution');
     Route::post('/update-institution/{id}', 'updateInstitution')->name('updateInstitution');
+    Route::post('/delete-institution/{id}', 'deleteInstitution')->name('deleteInstitution');
 });
 
 Route::controller(CertificateController::class)->group(function () {
@@ -44,3 +43,12 @@ Route::controller(CertificateController::class)->group(function () {
     Route::post('/create-certificate', 'create')->name('createCertificate');
     Route::post('/update-certificate/{id}', 'updateCertificate')->name('updateCertificate');
 });
+
+// Authoriser
+// institution
+Route::get('/dashboard', 'Authoriser\InstitutionController@index')->name('authoriser.institution');
+
+
+// Auctioneer
+// Bidder
+// Super Admin

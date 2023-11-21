@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\Authoriser;
+namespace App\Mail\Inputter;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,14 +11,16 @@ class UpdateMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $update;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($update)
     {
         //
+        $this->update = $update;
     }
 
     /**
@@ -28,6 +30,9 @@ class UpdateMail extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->subject('RITCC Auctioning System')
+            ->from('no-reply@fmdqgroup.com', 'FMDQ RITCC Auctioning System')
+            ->view('emails.inputter.update-institution')
+            ->with(['update' => $this->update]);
     }
 }
