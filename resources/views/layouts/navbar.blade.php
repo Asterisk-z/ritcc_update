@@ -35,7 +35,10 @@
                     <div class="subscription-logout">
                         <ul>
                             <li class="pb-0">
-                                <a class="dropdown-item" href="{{ route('signOut') }}">Log Out</a>
+                                <form action="{{ route('signOut') }}" method="POST" id="logout">
+                                    @csrf
+                                </form>
+                                <a class="dropdown-item" href="#" onclick="document.getElementById('logout').submit()" >Log Out</a>
                             </li>
                         </ul>
                     </div>
