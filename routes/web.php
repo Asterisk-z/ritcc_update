@@ -41,6 +41,6 @@ Route::controller(InstitutionController::class)->group(function () {
 
 Route::controller(CertificateController::class)->group(function () {
     Route::get('/certificate-management', 'index')->name('certificatesIndex');
-    Route::post('/create-certificate', 'createCertificate')->name('createCertificate');
+    Route::post('/create-certificate', 'create')->name('createCertificate');
     Route::post('/update-certificate/{id}', 'updateCertificate')->name('updateCertificate');
 });
