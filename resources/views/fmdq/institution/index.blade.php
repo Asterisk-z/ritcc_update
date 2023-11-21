@@ -246,13 +246,15 @@
                                                     aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul>
-                                                        @if (!($institution->status === '3' || $institution->status ===
-                                                        '4'))
                                                         <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal"
                                                                 data-bs-target="#view{{ $institution->ID }}" href=""><i
                                                                     class="far fa-edit me-2"></i>View</a>
                                                         </li>
+                                                        @if (!($institution->status === '0'||$institution->status ===
+                                                        '3' || $institution->status ===
+                                                        '4'))
+
                                                         <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal"
                                                                 data-bs-target="#edit{{ $institution->ID }}" href=""><i
@@ -264,12 +266,7 @@
                                                                 data-bs-target="#delete{{ $institution->ID }}"
                                                                 href=""><i class="far fa-trash-alt me-2"></i>Delete</a>
                                                         </li>
-                                                        @else
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal"
-                                                                data-bs-target="#view{{ $institution->ID }}" href=""><i
-                                                                    class="far fa-edit me-2"></i>View</a>
-                                                        </li>
+
                                                         @endif
 
 
@@ -292,31 +289,59 @@
 
                                                     <div class="modal-body">
                                                         <div class="text-center">
-                                                            <h6>Institution Code: <strong>{{ $institution->code
+                                                            <h6 class="text-uppercase">Institution Code: <strong>{{
+                                                                    $institution->code
                                                                     }}</strong></h6>
                                                             <br><br>
-                                                            <h6>Institution Name: <strong>{{
+                                                            <h6 class="text-uppercase">Institution Name: <strong>{{
                                                                     $institution->institutionName
                                                                     }}</strong></h6>
                                                             <br><br>
-                                                            <h6>Institution Address: <strong>{{ $institution->address
+                                                            <h6 class="text-uppercase">Institution Address: <strong>{{
+                                                                    $institution->address
                                                                     }}</strong></h6>
                                                             <br><br>
-                                                            <h6>Institution Email: <strong>{{
+                                                            <h6 class="text-uppercase">Institution Email: <strong>{{
                                                                     $institution->institutionEmail
                                                                     }}</strong></h6>
                                                             <br><br>
-                                                            <h6>Chief Dealer Email: <strong>{{
+                                                            <h6 class="text-uppercase">Chief Dealer Email: <strong>{{
                                                                     $institution->chiefDealerEmail
                                                                     }}</strong></h6>
                                                             <br><br>
-                                                            <h6>Inputter: <strong>{{
+
+                                                            @if ($institution->status === '1' || $institution->status
+                                                            === '3' || $institution->status === '4')
+                                                            <h6 class="text-uppercase">Approved by: <strong>{{
+                                                                    $institution->approvedBy
+                                                                    }}</strong></h6>
+                                                            <br><br>
+                                                            <h6 class="text-uppercase">Approved Date: <strong>{{
+                                                                    date('F d, Y',
+                                                                    strtotime($institution->approvedDate))
+                                                                    }}</strong></h6>
+                                                            <br><br>
+                                                            @elseif($institution->status === '2')
+                                                            <h6 class="text-uppercase">Reason: <strong>{{
+                                                                    $institution->reason
+                                                                    }}</strong></h6>
+                                                            <br><br>
+                                                            <h6 class="text-uppercase">Rejected By: <strong>{{
+                                                                    $institution->approvedBy
+                                                                    }}</strong></h6>
+                                                            <br><br>
+                                                            <h6 class="text-uppercase">Rejected Date: <strong>{{
+                                                                    date('F d, Y',
+                                                                    strtotime($institution->approvedDate))
+                                                                    }}</strong></h6>
+                                                            <br><br>
+                                                            @endif
+                                                            <h6 class="text-uppercase">Created by: <strong>{{
                                                                     $institution->createdBy
                                                                     }}</strong></h6>
                                                             <br><br>
-                                                            <h6>Created Date: <strong>{{ date('F d,
-                                                                    Y
-                                                                    h:m:s',strtotime($institution->createdDate))}}</strong>
+                                                            <h6 class="text-uppercase">Created Date: <strong>{{ date('F
+                                                                    d,Y',strtotime($institution->createdDate))}}</strong>
                                                             </h6>
                                                         </div>
                                                     </div>

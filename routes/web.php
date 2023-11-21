@@ -38,23 +38,6 @@ Route::get('/institution-management/approved', [InstitutionController::class, 'a
 Route::post('/institution/create', [InstitutionController::class, 'create'])->name('institution.create');
 Route::post('/institution/update/{id}', [InstitutionController::class, 'update'])->name('institution.update');
 Route::post('/institution/delete/{id}', [InstitutionController::class, 'delete'])->name('institution.delete');
-
-// // iQX
-// Route::group(['middleware' => ['auth', 'user.type:1']], function () {
-//     // dashboard
-//     Route::get('/iqx-dashboard', [IQXController::class, 'index'])->name('iqx.dashboard');
-// });
-
-// // Inputter
-// Route::group(
-//     ['middleware' => ['auth', 'user.type:1', 'user.type:2', 'user.type:4']],
-//     function () {
-//         // profile
-//         Route::get('/profile-management', [ProfileController::class, 'index'])->name('profile.index');
-//         // Institution
-//         Route::get('/institution-management', [InstitutionController::class, 'index'])->name('institution.index');
-//         Route::post('/institution/create', [InstitutionController::class, 'create'])->name('institution.create');
-//         Route::post('/institution/update/{id}', [InstitutionController::class, 'update'])->name('institution.update');
-//         Route::post('/institution/delete/{id}', [InstitutionController::class, 'delete'])->name('institution.delete');
-//     }
-// );
+// authoriser
+Route::post('/institution/create/approve/{id}', [InstitutionController::class, 'approveCreate'])->name('institution.approveCreate');
+Route::post('/institution/create/reject/{id}', [InstitutionController::class, 'rejectCreate'])->name('institution.rejectCreate');

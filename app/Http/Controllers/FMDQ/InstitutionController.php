@@ -246,4 +246,66 @@ class InstitutionController extends Controller
             return redirect()->back()->with('success', "Institution delete has been sent for approval.");
         }
     }
+    // approve create
+    public function approveCreate($id)
+    {
+        $user = Auth::user();
+        //
+        $previous = Institution::findOrFail($id);
+        $approveCreate = Institution::where('ID', $id)->update(['status' => 1, 'approvedDate' => now(), 'approvedBy' => $user->email]);
+        if ($approveCreate) {
+            // log activity
+            $activity = new ActivityLog();
+            $activity->date = now();
+            $activity->app = 'RITCC';
+            $activity->type = 'Approve Institution';
+            $activity->activity = $user->email . ' approve institution: ' . $previous->institutionName . '.';
+            $activity->username = $user->email;
+            $log = $activity->save();
+        }
+        if ($log) {
+            // mail
+            // $approver = Profile::where('email', $authoriser)->first();
+            // $update = ([
+            //     'name' => $approver->FirstName,
+            //     'type' => 'institution',
+            //     'previous' => $previous->institutionName,
+
+            // ]);
+            // Mail::to($approver->email)->send(new UpdateMail($update));
+
+            return redirect()->back()->with('success', "Institution has been approved.");
+        }
+    }
+    //
+    public function rejectCreate(Request $request, $id)
+    {
+        $user = Auth::user();
+        //
+        $institution = Institution::findOrFail($id);
+        $rejectCreate = Institution::where('ID', $id)->update(['status' => 2, 'reason' => $request->reason, 'approvedBy' => $user->email, 'approvedDate' => now()]);
+        if ($rejectCreate) {
+            // log activity
+            $activity = new ActivityLog();
+            $activity->date = now();
+            $activity->app = 'RITCC';
+            $activity->type = 'Reject Institution';
+            $activity->activity = $user->email . ' approved institution: ' . $institution->institutionName . '.';
+            $activity->username = $user->email;
+            $log = $activity->save();
+        }
+        if ($log) {
+            // mail
+            // $approver = Profile::where('email', $authoriser)->first();
+            // $update = ([
+            //     'name' => $approver->FirstName,
+            //     'type' => 'institution',
+            //     'previous' => $previous->institutionName,
+
+            // ]);
+            // Mail::to($approver->email)->send(new UpdateMail($update));
+
+            return redirect()->back()->with('success', "Institution has been rejected.");
+        }
+    }
 }

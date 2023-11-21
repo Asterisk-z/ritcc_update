@@ -252,17 +252,48 @@
                                                                     class="far fa-edit me-2"></i>View</a>
                                                         </li>
                                                         @if ($user->type ==='authoriser')
+                                                        @if ($institution->status === '0')
                                                         <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal"
                                                                 data-bs-target="#approve{{ $institution->ID }}"
-                                                                href=""><i class="far fa- me-2"></i>Approve</a>
+                                                                href=""><i class="fa fa-check me-2"></i>Approve </a>
                                                         </li>
                                                         <li>
                                                             <a class="dropdown-item" class="dropdown-item"
                                                                 data-bs-toggle="modal"
-                                                                data-bs-target="#delete{{ $institution->ID }}"
-                                                                href=""><i class="far fa-trash-alt me-2"></i>Reject</a>
+                                                                data-bs-target="#reject{{ $institution->ID }}"
+                                                                href=""><i class="fa fa-times me-2"></i>Reject</a>
                                                         </li>
+                                                        @elseif ($institution->status === '3')
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#approveUpdate{{ $institution->ID }}"
+                                                                href=""><i class="fa fa-check me-2"></i>Approve
+                                                                Update</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" class="dropdown-item"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#rejectUpdate{{ $institution->ID }}"
+                                                                href=""><i class="fa fa-times me-2"></i>Reject
+                                                                Update</a>
+                                                        </li>
+                                                        @elseif ($institution->status === '4')
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#approveDelete{{ $institution->ID }}"
+                                                                href=""><i class="fa fa-check me-2"></i>Approve
+                                                                Delete</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" class="dropdown-item"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#rejectDelete{{ $institution->ID }}"
+                                                                href=""><i class="fa fa-times me-2"></i>Reject
+                                                                Delete</a>
+                                                        </li>
+                                                        @endif
+
                                                         @endif
                                                     </ul>
                                                 </div>
@@ -317,101 +348,28 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {{-- edit --}}
-                                        <div id="edit{{ $institution->ID }}" class="modal fade" tabindex="-1"
+                                        {{-- approve --}}
+                                        <div id="approve{{ $institution->ID }}" class="modal fade" tabindex="-1"
                                             role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="standard-modalLabel">Update
+                                                        <h4 class="modal-title" id="standard-modalLabel">Approve
                                                         </h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('institution.update',$institution->ID) }}"
+                                                    <form
+                                                        action="{{ route('institution.approveCreate',$institution->ID) }}"
                                                         method="POST" class="needs-validation" id="update" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
-                                                            <div class="form-row row">
-                                                                {{-- code --}}
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label for="validationCustom01">Institution
-                                                                        Code</label>
-                                                                    <input type="text" name="code" class="form-control"
-                                                                        id="validationCustom01"
-                                                                        value="{{ $institution->code }}" required>
-                                                                    <div class="invalid-feedback">
-                                                                        This field is required
-                                                                    </div>
-                                                                </div>
-                                                                {{-- --}}
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label for="validationCustom01">Institution
-                                                                        Name</label>
-                                                                    <input type="text" name="name" class="form-control"
-                                                                        id="validationCustom01"
-                                                                        value="{{ $institution->institutionName }}"
-                                                                        required>
-                                                                    <div class="invalid-feedback">
-                                                                        This field is required
-                                                                    </div>
-                                                                </div>
-                                                                {{-- --}}
-                                                                <div class="col-md-12 mb-3">
-                                                                    <label for="validationCustom01">Address</label>
-                                                                    <input type="text" name="address"
-                                                                        class="form-control" id="validationCustom01"
-                                                                        value="{{ $institution->address }}" required>
-                                                                    <div class="invalid-feedback">
-                                                                        This field is required
-                                                                    </div>
-                                                                </div>
-                                                                {{-- code --}}
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label for="validationCustom01">Institution
-                                                                        Email</label>
-                                                                    <input type="email" name="institutionEmail"
-                                                                        class="form-control" id="validationCustom01"
-                                                                        value="{{ $institution->institutionEmail }}"
-                                                                        required>
-                                                                    <div class="invalid-feedback">
-                                                                        This field is required
-                                                                    </div>
-                                                                </div>
-                                                                {{-- --}}
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label for="validationCustom01">Chief Dealer
-                                                                        Email</label>
-                                                                    <input type="email" name="chiefDealerEmail"
-                                                                        class="form-control" id="validationCustom01"
-                                                                        value="{{ $institution->chiefDealerEmail }}"
-                                                                        required>
-                                                                    <div class="invalid-feedback">
-                                                                        This field is required
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-12 mb-3">
-                                                                    <label for="validationCustom01">Authoriser</label>
-                                                                    <select name="authoriser" id="validationCustom01"
-                                                                        class="form-control" required>
-                                                                        <option value="">--Select--</option>
-                                                                        @forelse ($authorisers as $authoriser)
-                                                                        <option value="{{ $authoriser->email }}">{{
-                                                                            $authoriser->FirstName.'
-                                                                            '.$authoriser->LastName }}</option>
-                                                                        @empty
-
-                                                                        @endforelse
-                                                                    </select>
-                                                                    <div class="invalid-feedback">
-                                                                        This field is required
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            <h6>Are you sure you want to approve this
+                                                                institution?</h6>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Update
+                                                                id="updateButton">Approve
                                                                 Institution</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
@@ -421,27 +379,89 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {{-- delete --}}
-                                        <div id="delete{{ $institution->ID }}" class="modal fade" tabindex="-1"
+                                        {{-- reject --}}
+                                        <div id="reject{{ $institution->ID }}" class="modal fade" tabindex="-1"
                                             role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="standard-modalLabel">Delete
+                                                        <h4 class="modal-title" id="standard-modalLabel">Reject
                                                         </h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('institution.delete',$institution->ID) }}"
+                                                    <form
+                                                        action="{{ route('institution.rejectCreate',$institution->ID) }}"
                                                         method="POST" class="needs-validation" id="myForm" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
-                                                            <p>Are you sure you want to delete this institution?</p>
+                                                            <label for="">Reason for Rejection</label>
+                                                            <input type="text" name="reason" class="form-control"
+                                                                required>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Delete
-                                                                Institution</button>
+                                                                id="updateButton">Reject</button>
+                                                            &nbsp;&nbsp;&nbsp;
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- approve --}}
+                                        <div id="approveUpdate{{ $institution->ID }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="standard-modalLabel">Approve
+                                                        </h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <form
+                                                        action="{{ route('institution.approveCreate',$institution->ID) }}"
+                                                        method="POST" class="needs-validation" id="update" novalidate>
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <h6>Are you sure you want to approve this update?</h6>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary"
+                                                                id="updateButton">Approve</button>
+                                                            &nbsp;&nbsp;&nbsp;
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- reject --}}
+                                        <div id="rejectUpdate{{ $institution->ID }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="standard-modalLabel">Reject
+                                                        </h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <form
+                                                        action="{{ route('institution.rejectCreate',$institution->ID) }}"
+                                                        method="POST" class="needs-validation" id="myForm" novalidate>
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <label for="">Reason for Rejection</label>
+                                                            <input type="text" name="reason" class="form-control"
+                                                                required>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary"
+                                                                id="updateButton">Reject</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
