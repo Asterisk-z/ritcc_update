@@ -28,17 +28,17 @@ class LoginController extends Controller
         }
         // super admin
         else if ((Auth::attempt($credentials)) && ($user->Package === '1')) {
-            dd('iQX');
+            dump('iQX');
             return redirect()->route('inputterDashboard')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
         }
         // inputter
         else if ((Auth::attempt($credentials)) && ($user->Package === '2' || $user->Package === '4')) {
-            dd('Inputter');
+            dump('Inputter');
             return redirect()->route('inputterDashboard')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
         }
         // authoriser
         else if ((Auth::attempt($credentials)) && ($user->Package === '3' || $user->Package === '5')) {
-            dd('Authoriser');
+            dump('Authoriser');
             return redirect()->route('authoriser.profile')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
         } else {
             return redirect()->route('login')->with('error', 'Invalid credentials.');

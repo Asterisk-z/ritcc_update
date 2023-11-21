@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Authoriser\InstitutionController as AuthoriserInstitutionController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Authoriser\ProfileController as AuthoriserProfileController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FMDQ\IQXController;
 use App\Http\Controllers\inputter\CertificateController;
 use App\Http\Controllers\Inputter\InstitutionController;
@@ -34,7 +34,7 @@ Route::get('/iqx-dashboard', [IQXController::class, 'index'])->name('iqx.dashboa
 
 // Inputter
 Route::controller(ProfileController::class)->group(function () {
-    // Route::get('/dashboard', 'dashboard')->name('inputterDashboard');
+    Route::get('/dashboard', 'dashboard')->name('inputterDashboard');
     Route::get('/profile-management', 'profilesIndex')->name('inputter.profile');
 });
 
