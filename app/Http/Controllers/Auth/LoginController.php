@@ -12,6 +12,7 @@ class LoginController extends Controller
     //
     public function login()
     {
+        dd('Ok');
         return view('auth.login');
     }
 

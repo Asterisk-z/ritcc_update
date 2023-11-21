@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    {{--
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"> --}}
 </head>
 
 <body>
@@ -36,7 +37,7 @@
                                     <label class="form-control-label">Password</label>
                                     <div class="pass-group">
                                         <input type="password" name="password" class="form-control pass-input">
-                                        <span class="bi bi-eye toggle-password"></span>
+                                        <span class="fas fa-eye toggle-password"></span>
                                         {{-- <i class="bi bi-eye-slash"></i> --}}
                                     </div>
                                 </div>

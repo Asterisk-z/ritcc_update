@@ -52,9 +52,10 @@ return [
     |
      */
 
-    'url' => env('APP_URL', 'http://localhost'),
-
-    'asset_url' => env('ASSET_URL', 'http://localhost/ritcc/public'),
+    // 'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://localhost/fmdq_ritcc/'),
+    'asset_url' => env('ASSET_URL', 'http://localhost/fmdq_ritcc/public'),
+    // 'asset_url' => env('ASSET_URL', 'http://localhost/ritcc/public'),
 
     /*
     |--------------------------------------------------------------------------

@@ -1,28 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Inputter;
+namespace App\Http\Controllers\Authoriser;
 
 use App\Http\Controllers\Controller;
-use App\Mail\Authoriser\CreateInstitutionMail;
-use App\Mail\Inputter\UpdateMail;
 use App\Models\ActivityLog;
 use App\Models\Institution;
 use App\Models\InstitutionTemp;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 
 class InstitutionController extends Controller
 {
     //
-    public function __construct()
-    {
-        $this->middleware(['auth']);
-    }
-
-    //
-    public function institutionsIndex()
+    public function index()
     {
         $user = Auth::user();
         $page = 'All Institutions';
@@ -86,11 +77,11 @@ class InstitutionController extends Controller
             }
             if ($log) {
                 // mail
-                $approver = Profile::where('email', $authoriser)->first();
-                $new = ([
-                    'name' => $approver->FirstName,
-                ]);
-                Mail::to($authoriser)->send(new CreateInstitutionMail($new));
+                // $approver = Profile::where('email', $authoriser)->first();
+                // $new = ([
+                //     'name' => $approver->FirstName,
+                // ]);
+                // Mail::to($authoriser)->send(new CreateInstitutionMail($new));
 
                 return redirect()->back()->with('success', "Institution has been sent for approval.");
             }
