@@ -1,22 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Authoriser;
+namespace App\Http\Controllers\FMDQ;
 
 use App\Http\Controllers\Controller;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ProfileController extends Controller
+class IQXController extends Controller
 {
     //
     public function __construct()
     {
-        // dd('here');
-
-        // $this->middleware(['auth']);
-        // $this->middleware('auth');
+        $this->middleware(['auth']);
     }
+
     //
     public function index()
     {
@@ -26,6 +24,6 @@ class ProfileController extends Controller
         $approved = Profile::where('status', '1')->count();
         $pending = Profile::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();
         $rejected = Profile::where('status', '2')->count();
-        return view('authoriser.profile', compact('user', 'profiles', 'all', 'pending', 'approved', 'rejected'));
+        return view('fmdq.dashboard', compact('user', 'profiles', 'all', 'pending', 'approved', 'rejected'));
     }
 }

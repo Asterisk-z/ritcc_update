@@ -22,13 +22,24 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         $user = Profile::where('email', $credentials['email'])->first();
-        // dd($user);
+
         if (!$user) {
             return redirect()->route('login')->with('error', 'This user does not exist');
         }
-
-        if (Auth::attempt($credentials)) {
+        // super admin
+        else if ((Auth::attempt($credentials)) && ($user->Package === '1')) {
+            dd('iQX');
             return redirect()->route('inputterDashboard')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
+        }
+        // inputter
+        else if ((Auth::attempt($credentials)) && ($user->Package === '2' || $user->Package === '4')) {
+            dd('Inputter');
+            return redirect()->route('inputterDashboard')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
+        }
+        // authoriser
+        else if ((Auth::attempt($credentials)) && ($user->Package === '3' || $user->Package === '5')) {
+            dd('Authoriser');
+            return redirect()->route('authoriser.profile')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
         } else {
             return redirect()->route('login')->with('error', 'Invalid credentials.');
         }

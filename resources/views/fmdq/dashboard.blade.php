@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','RITCC Dashboard')
+@section('title','RITCC iQX Administrator Dashboard')
 
 @section('content')
 <div class="page-wrapper">

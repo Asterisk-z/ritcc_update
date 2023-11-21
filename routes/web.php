@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\Authoriser\InstitutionController as AuthInstitutionController;
+use App\Http\Controllers\Authoriser\InstitutionController as AuthoriserInstitutionController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Authoriser\ProfileController as AuthoriserProfileController;
+use App\Http\Controllers\FMDQ\IQXController;
 use App\Http\Controllers\inputter\CertificateController;
 use App\Http\Controllers\Inputter\InstitutionController;
 use App\Http\Controllers\Inputter\ProfileController;
@@ -21,15 +23,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/testing', function () {
     dd('testing');
 });
+
 // Auth
 Route::get('/', [LoginController::class, 'login'])->name('login');
 Route::post('/sign-in', [LoginController::class, 'signIn'])->name('signIn');
 Route::post('/sign-out', [LoginController::class, 'signOut'])->name('signOut');
 
+// iQX
+Route::get('/iqx-dashboard', [IQXController::class, 'index'])->name('iqx.dashboard');
+
 // Inputter
 Route::controller(ProfileController::class)->group(function () {
-    Route::get('/dashboard', 'dashboard')->name('inputterDashboard');
-    Route::get('/profile-management', 'profilesIndex')->name('profilesIndex');
+    // Route::get('/dashboard', 'dashboard')->name('inputterDashboard');
+    Route::get('/profile-management', 'profilesIndex')->name('inputter.profile');
 });
 
 Route::controller(InstitutionController::class)->group(function () {
@@ -46,9 +52,10 @@ Route::controller(CertificateController::class)->group(function () {
 });
 
 // Authoriser
+// profile
+Route::get('/authoriser-profile', [AuthoriserProfileController::class], 'index')->name('authoriser.profile');
 // institution
-Route::get('/auth_dashboard', [AuthInstitutionController::class, 'index'])->name('authoriser.institution');
+Route::get('/authoriser-institution', [AuthoriserInstitutionController::class, 'index'])->name('authoriser.institution');
 
 // Auctioneer
 // Bidder
-// Super Admin
