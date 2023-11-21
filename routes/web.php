@@ -21,9 +21,9 @@ Route::get('/testing', function () {
     dd('testing');
 });
 // Auth
-Route::get('/', 'Auth\LoginController@login')->name('login');
-Route::post('/sign-in', 'Auth\LoginController@login')->name('signIn');
-Route::post('/sign-out', 'Auth\LoginController@signOut')->name('signOut');
+Route::get('/', [LoginController::class, 'login'])->name('login');
+Route::post('/sign-in', [LoginController::class, 'login'])->name('signIn');
+Route::post('/sign-out', [LoginController::class, 'signOut'])->name('signOut');
 
 // Inputter
 Route::controller(ProfileController::class)->group(function () {
@@ -46,8 +46,7 @@ Route::controller(CertificateController::class)->group(function () {
 
 // Authoriser
 // institution
-Route::get('/dashboard', 'Authoriser\InstitutionController@index')->name('authoriser.institution');
-
+Route::get('/dashboard', [InstitutionController::class, 'index'])->name('authoriser.institution');
 
 // Auctioneer
 // Bidder
