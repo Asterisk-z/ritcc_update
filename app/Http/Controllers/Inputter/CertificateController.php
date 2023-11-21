@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\inputter;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Authoriser\CreateInstitutionMail;
+use App\Models\ActivityLog;
 use App\Models\Profile;
 use App\Models\Security;
 use App\Models\SecurityType;
@@ -38,7 +40,6 @@ class CertificateController extends Controller
         })->get();
 
         return view('inputter.certificate', compact('user', 'securities', 'all', 'pending', 'approved', 'rejected', 'page', 'auctioneers', 'securityTypes'));
-
     }
 
     /**
@@ -112,7 +113,6 @@ class CertificateController extends Controller
             // If there are validation errors, you can return to the form with the errors
             return back()->withErrors($validated);
         }
-
     }
 
     /**

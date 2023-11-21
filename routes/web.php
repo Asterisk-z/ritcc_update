@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\inputter\CertificateController;
 use App\Http\Controllers\Inputter\InstitutionController;
+use App\Http\Controllers\Authoriser\InstitutionController as AuthInstitutionController;
 use App\Http\Controllers\Inputter\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,7 +47,7 @@ Route::controller(CertificateController::class)->group(function () {
 
 // Authoriser
 // institution
-Route::get('/dashboard', [InstitutionController::class, 'index'])->name('authoriser.institution');
+Route::get('/dashboard', [AuthInstitutionController::class, 'index'])->name('authoriser.institution');
 
 // Auctioneer
 // Bidder

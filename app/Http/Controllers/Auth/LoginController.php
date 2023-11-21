@@ -18,10 +18,11 @@ class LoginController extends Controller
     //
     public function signIn(Request $request)
     {
+
         $credentials = $request->only('email', 'password');
 
         $user = Profile::where('email', $credentials['email'])->first();
-
+        // dd($user);
         if (!$user) {
             return redirect()->route('login')->with('error', 'This user does not exist');
         }
