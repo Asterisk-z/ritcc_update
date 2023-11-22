@@ -10,7 +10,6 @@ class IQXController extends Controller
 {
     public function index()
     {
-        dd('entering');
         $user = Auth::user();
         $profiles = Profile::orderBy('InputDate', 'ASC')->with('package')->get();
         $all = Profile::count();

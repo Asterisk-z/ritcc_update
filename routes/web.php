@@ -54,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['isAuctioneer', 'isBidder'])->group(function () {
 
-        Route::get('/auction-management', [IQXController::class, 'index'])->name('iqx.dashboard');
+        Route::get('/auction-management', [IQXController::class, 'index'])->name('auction.dashboard');
 
     });
 

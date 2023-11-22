@@ -22,27 +22,26 @@ class LoginController extends Controller
 
         $user = Profile::where('email', $credentials['email'])->first();
 
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'This user does not exist');
+        $attempt_login = Auth::attempt($credentials);
+
+        if (!$attempt_login) {
+            return redirect()->route('login')->with('error', 'Invalid credentials.');
         }
 
         // super admin
-        else if ((Auth::attempt($credentials)) && ($user->Package === '1')) {
-            // dd('iQX');
-            return redirect()->route('iqx.dashboard')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
+        if (auth()->user()->Package == '1') {
+
+            return redirect()->route('iqx.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
         // inputter and authoriser
-        else if ((Auth::attempt($credentials) && ($user->type === 'inputter' || $user->type === 'authoriser'))) {
+        else if ((auth()->user()->type == 'inputter' || auth()->user()->type == 'authoriser')) {
             // dd('Inputter');
-            return redirect()->route('profile.index')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
+            return redirect()->route('profile.index')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
         // firs
         // auctioneer
         // bidder
-        else {
-            dd('error');
-            return redirect()->route('login')->with('error', 'Invalid credentials.');
-        }
+
     }
 
     //
