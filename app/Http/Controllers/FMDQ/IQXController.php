@@ -4,20 +4,13 @@ namespace App\Http\Controllers\FMDQ;
 
 use App\Http\Controllers\Controller;
 use App\Models\Profile;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class IQXController extends Controller
 {
-    //
-    public function __construct()
-    {
-        $this->middleware(['auth', 'user.type:1']);
-    }
-
-    //
     public function index()
     {
+        dd('entering');
         $user = Auth::user();
         $profiles = Profile::orderBy('InputDate', 'ASC')->with('package')->get();
         $all = Profile::count();

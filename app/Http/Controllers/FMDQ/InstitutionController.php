@@ -12,13 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class InstitutionController extends Controller
 {
-    //
-    // public function __construct()
-    // {
-    //     $this->middleware(['auth', 'user.type:1', 'user.type:2', 'user.type:3', 'user.type:4', 'user.type:5']);
-    // }
-
-    //
     public function index()
     {
         $user = Auth::user();

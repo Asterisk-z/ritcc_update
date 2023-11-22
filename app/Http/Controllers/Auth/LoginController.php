@@ -25,6 +25,7 @@ class LoginController extends Controller
         if (!$user) {
             return redirect()->route('login')->with('error', 'This user does not exist');
         }
+
         // super admin
         else if ((Auth::attempt($credentials)) && ($user->Package === '1')) {
             // dd('iQX');
@@ -32,13 +33,14 @@ class LoginController extends Controller
         }
         // inputter and authoriser
         else if ((Auth::attempt($credentials) && ($user->type === 'inputter' || $user->type === 'authoriser'))) {
-            // dump('Inputter');
+            // dd('Inputter');
             return redirect()->route('profile.index')->with('success', 'Welcome to RITCC, ' . $user->FirstName . '.');
         }
         // firs
         // auctioneer
         // bidder
         else {
+            dd('error');
             return redirect()->route('login')->with('error', 'Invalid credentials.');
         }
     }

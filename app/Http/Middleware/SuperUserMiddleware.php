@@ -16,6 +16,7 @@ class SuperUserMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        dd(auth()->user()->type);
         if (auth()->user()->type == 'super') {
             return $next($request);
         }
