@@ -20,7 +20,7 @@ class AuctionManagementController extends Controller
         $page = 'All Auctions';
         $securities = Security::where('status', '1')->orderBy('CreatedDate', 'ASC')->get();
 
-        $institutions = Auction::orderBy('CreatedDate', 'ASC')->get();
+        $institutions = Auction::orderBy('CreatedAt', 'ASC')->get();
         $all = Auction::count();
         $approved = Auction::where('status', '1')->count();
         $pending = Auction::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();

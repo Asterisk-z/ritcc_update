@@ -30,13 +30,12 @@ Route::post('/sign-out', [LoginController::class, 'signOut'])->name('signOut');
 // dashboard
 
 Route::middleware(['auth'])->group(function () {
-    //
+
     Route::middleware(['isSuperUser'])->group(function () {
 
         Route::get('/iqx-dashboard', [IQXController::class, 'index'])->name('iqx.dashboard');
-    });
 
-    Route::middleware(['isSuperUser', 'isInputter', 'isAuthoriser'])->group(function () {
+        Route::get('/auction-management', [AuctionManagementController::class, 'index'])->name('auction.mgt.dashboard');
 
         Route::get('/profile-management', [ProfileController::class, 'index'])->name('profile.index');
 
@@ -51,10 +50,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/institution/create/approve/{id}', [InstitutionController::class, 'approveCreate'])->name('institution.approveCreate');
         Route::post('/institution/create/reject/{id}', [InstitutionController::class, 'rejectCreate'])->name('institution.rejectCreate');
     });
-    // auctioneer
-    // bidder
+
     Route::middleware(['isAuctioneer', 'isBidder'])->group(function () {
 
-        Route::get('/auction-management', [IQXController::class, 'index'])->name('auction.dashboard');
+        // Route::get('/auction-management', [IQXController::class, 'index'])->name('auction.dashboard');
+
     });
+
 });
