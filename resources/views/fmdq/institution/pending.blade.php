@@ -153,8 +153,8 @@
                                                 required>
                                                 <option value="">--Select--</option>
                                                 @forelse ($authorisers as $authoriser)
-                                                <option value="{{ $authoriser->email }}">{{ $authoriser->FirstName.'
-                                                    '.$authoriser->LastName }}</option>
+                                                <option value="{{ $authoriser->email }}">{{ $authoriser->firstName.'
+                                                    '.$authoriser->lastName }}</option>
                                                 @empty
 
                                                 @endforelse
@@ -251,7 +251,7 @@
                                                                 data-bs-target="#view{{ $institution->ID }}" href=""><i
                                                                     class="far fa-edit me-2"></i>View</a>
                                                         </li>
-                                                        @if ($user->type ==='authoriser')
+                                                        @if ($user->type ==='authoriser' || $user->type ==='super')
                                                         @if ($institution->status === '0')
                                                         <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal"
@@ -266,10 +266,16 @@
                                                         </li>
                                                         @elseif ($institution->status === '3')
                                                         <li>
+                                                            {{--
+                                                        <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal"
-                                                                data-bs-target="#approveUpdate{{ $institution->ID }}"
-                                                                href=""><i class="fa fa-check me-2"></i>Approve
-                                                                Update</a>
+                                                                data-bs-target="#viewUpdate{{ $institution->ID }}"
+                                                                href=""><i class="far fa-edit me-2"></i>View Update</a>
+                                                        </li> --}}
+                                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#approveUpdate{{ $institution->ID }}"
+                                                            href=""><i class="fa fa-check me-2"></i>Approve
+                                                            Update</a>
                                                         </li>
                                                         <li>
                                                             <a class="dropdown-item" class="dropdown-item"
@@ -348,6 +354,55 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        {{-- --}}
+                                        {{-- <div id="viewUpdate{{ $institution->ID }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="standard-modalLabel">View
+                                                        </h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="text-center">
+                                                            <h6>Institution Code : <strong>{{
+                                                                    $institution->code
+                                                                    }}</strong></h6>
+                                                            <br><br>
+                                                            <h6>Institution Name: <strong>{{
+                                                                    $institution->institutionName
+                                                                    }}</strong></h6>
+                                                            <br><br>
+                                                            <h6>Institution Address: <strong>{{ $institution->address
+                                                                    }}</strong></h6>
+                                                            <br><br>
+                                                            <h6>Institution Email: <strong>{{
+                                                                    $institution->institutionEmail
+                                                                    }}</strong></h6>
+                                                            <br><br>
+                                                            <h6>Chief Dealer Email: <strong>{{
+                                                                    $institution->chiefDealerEmail
+                                                                    }}</strong></h6>
+                                                            <br><br>
+                                                            <h6>Inputter: <strong>{{
+                                                                    $institution->createdBy
+                                                                    }}</strong></h6>
+                                                            <br><br>
+                                                            <h6>Created Date: <strong>{{ date('F d,
+                                                                    Y
+                                                                    h:m:s',strtotime($institution->createdDate))}}</strong>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary btn-lg"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> --}}
                                         {{-- approve --}}
                                         <div id="approve{{ $institution->ID }}" class="modal fade" tabindex="-1"
                                             role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
@@ -369,8 +424,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Approve
-                                                                Institution</button>
+                                                                id="updateButton">Approve</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
@@ -410,7 +464,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {{-- approve --}}
+                                        {{-- approve update --}}
                                         <div id="approveUpdate{{ $institution->ID }}" class="modal fade" tabindex="-1"
                                             role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
@@ -422,7 +476,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form
-                                                        action="{{ route('institution.approveCreate',$institution->ID) }}"
+                                                        action="{{ route('institution.approveUpdate',$institution->ID) }}"
                                                         method="POST" class="needs-validation" id="update" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
@@ -439,7 +493,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {{-- reject --}}
+                                        {{-- reject update --}}
                                         <div id="rejectUpdate{{ $institution->ID }}" class="modal fade" tabindex="-1"
                                             role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
@@ -451,7 +505,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form
-                                                        action="{{ route('institution.rejectCreate',$institution->ID) }}"
+                                                        action="{{ route('institution.rejectUpdate',$institution->ID) }}"
                                                         method="POST" class="needs-validation" id="myForm" novalidate>
                                                         @csrf
                                                         <div class="modal-body">

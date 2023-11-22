@@ -17,7 +17,7 @@
         <li class="nav-item dropdown">
             <a href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
                 <span class="user-content">
-                    {{-- <span class="user-details">Admin</span>  --}}
+                    {{-- <span class="user-details">Admin</span> --}}
                     <span class="user-name">{{ auth()->user()->firstName.' '.auth()->user()->lastName }}</span>
                 </span>
             </a>
@@ -36,7 +36,8 @@
                                 <form action="{{ route('signOut') }}" method="POST" id="logout">
                                     @csrf
                                 </form>
-                                <a class="dropdown-item" href="#" onclick="document.getElementById('logout').submit()" >Log Out</a>
+                                <a class="dropdown-item" href="#"
+                                    onclick="document.getElementById('logout').submit()">Log Out</a>
                             </li>
                         </ul>
                     </div>

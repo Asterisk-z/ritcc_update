@@ -153,8 +153,8 @@
                                                 required>
                                                 <option value="">--Select--</option>
                                                 @forelse ($authorisers as $authoriser)
-                                                <option value="{{ $authoriser->email }}">{{ $authoriser->FirstName.'
-                                                    '.$authoriser->LastName }}</option>
+                                                <option value="{{ $authoriser->email }}">{{ $authoriser->firstName.'
+                                                    '.$authoriser->lastName }}</option>
                                                 @empty
 
                                                 @endforelse
@@ -281,52 +281,52 @@
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="standard-modalLabel">View
-                                                        </h4>
+                                                        {{-- <h4 class="modal-title" id="standard-modalLabel">View
+                                                        </h4> --}}
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
 
                                                     <div class="modal-body">
                                                         <div class="text-center">
-                                                            <h6 class="text-uppercase">Institution Code: <strong>{{
+                                                            <h6>Institution Code: <strong class="text-uppercase">{{
                                                                     $institution->code
                                                                     }}</strong></h6>
                                                             <br><br>
-                                                            <h6 class="text-uppercase">Institution Name: <strong>{{
+                                                            <h6>Institution Name: <strong class="text-uppercase">{{
                                                                     $institution->institutionName
                                                                     }}</strong></h6>
                                                             <br><br>
-                                                            <h6 class="text-uppercase">Institution Address: <strong>{{
+                                                            <h6>Institution Address: <strong class="text-uppercase">{{
                                                                     $institution->address
                                                                     }}</strong></h6>
                                                             <br><br>
-                                                            <h6 class="text-uppercase">Institution Email: <strong>{{
+                                                            <h6>Institution Email: <strong class="text-uppercase">{{
                                                                     $institution->institutionEmail
                                                                     }}</strong></h6>
                                                             <br><br>
-                                                            <h6 class="text-uppercase">Chief Dealer Email: <strong>{{
+                                                            <h6>Chief Dealer Email: <strong class="text-uppercase">{{
                                                                     $institution->chiefDealerEmail
                                                                     }}</strong></h6>
                                                             <br><br>
 
                                                             @if ($institution->status === '1' || $institution->status
                                                             === '3' || $institution->status === '4')
-                                                            <h6 class="text-uppercase">Approved by: <strong>{{
+                                                            <h6>Approved by: <strong class="text-uppercase">{{
                                                                     $institution->approvedBy
                                                                     }}</strong></h6>
                                                             <br><br>
-                                                            <h6 class="text-uppercase">Approved Date: <strong>{{
+                                                            <h6>Approved Date: <strong class="text-uppercase">{{
                                                                     date('F d, Y',
                                                                     strtotime($institution->approvedDate))
                                                                     }}</strong></h6>
                                                             <br><br>
                                                             @elseif($institution->status === '2')
-                                                            <h6 class="text-uppercase">Reason: <strong>{{
+                                                            <h6>Reason: <strong class="text-uppercase">{{
                                                                     $institution->reason
                                                                     }}</strong></h6>
                                                             <br><br>
-                                                            <h6 class="text-uppercase">Rejected By: <strong>{{
+                                                            <h6>Rejected By: <strong class="text-uppercase">{{
                                                                     $institution->approvedBy
                                                                     }}</strong></h6>
                                                             <br><br>
@@ -336,11 +336,11 @@
                                                                     }}</strong></h6>
                                                             <br><br>
                                                             @endif
-                                                            <h6 class="text-uppercase">Created by: <strong>{{
+                                                            <h6>Created by: <strong class="text-uppercase">{{
                                                                     $institution->createdBy
                                                                     }}</strong></h6>
                                                             <br><br>
-                                                            <h6 class="text-uppercase">Created Date: <strong>{{ date('F
+                                                            <h6>Created Date: <strong class="text-uppercase">{{ date('F
                                                                     d,Y',strtotime($institution->createdDate))}}</strong>
                                                             </h6>
                                                         </div>
@@ -432,8 +432,8 @@
                                                                         <option value="">--Select--</option>
                                                                         @forelse ($authorisers as $authoriser)
                                                                         <option value="{{ $authoriser->email }}">{{
-                                                                            $authoriser->FirstName.'
-                                                                            '.$authoriser->LastName }}</option>
+                                                                            $authoriser->firstName.'
+                                                                            '.$authoriser->lastName }}</option>
                                                                         @empty
 
                                                                         @endforelse
@@ -446,8 +446,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Update
-                                                                Institution</button>
+                                                                id="updateButton">Update</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>

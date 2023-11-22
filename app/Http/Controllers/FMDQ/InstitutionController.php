@@ -32,8 +32,11 @@ class InstitutionController extends Controller
     public function pending()
     {
         $user = Auth::user();
-        $page = 'All Institutions';
+        $page = 'Pending Institutions';
         $institutions = Institution::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->orderBy('CreatedDate', 'ASC')->get();
+        $institutionIds = $institutions->pluck('ID'); // Extract IDs from $institutions
+        $institutionTempRecords = InstitutionTemp::whereIn('institutionRef', $institutionIds)
+            ->get();
         $all = Institution::count();
         $approved = Institution::where('status', '1')->count();
         $pending = Institution::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();
@@ -42,14 +45,14 @@ class InstitutionController extends Controller
             $query->where('Package', '3')->orWhere('Package', '5');
         })->get();
 
-        return view('fmdq.institution.pending', compact('user', 'institutions', 'all', 'pending', 'approved', 'rejected', 'page', 'authorisers'));
+        return view('fmdq.institution.pending', compact('user', 'institutions', 'all', 'pending', 'approved', 'rejected', 'page', 'authorisers', 'institutionIds', 'institutionTempRecords'));
     }
 
     //
     public function rejected()
     {
         $user = Auth::user();
-        $page = 'All Institutions';
+        $page = 'Rejected Institutions';
         $institutions = Institution::where('status', '2')->orderBy('CreatedDate', 'ASC')->get();
         $all = Institution::count();
         $approved = Institution::where('status', '1')->count();
@@ -65,7 +68,7 @@ class InstitutionController extends Controller
     public function approved()
     {
         $user = Auth::user();
-        $page = 'All Institutions';
+        $page = 'Approved Institutions';
         $institutions = Institution::where('status', '1')->orderBy('CreatedDate', 'ASC')->get();
         $all = Institution::count();
         $approved = Institution::where('status', '1')->count();
@@ -143,7 +146,6 @@ class InstitutionController extends Controller
     {
         $user = Auth::user();
         // dd($request->institutionEmail);
-        //
         $validated = $request->validate([
             'code' => 'bail|unique:tblInstitutionTemp',
             'email' => 'bail|email|unique:tblInstitutionTemp',
@@ -159,8 +161,6 @@ class InstitutionController extends Controller
             $chiefDealerEmail = $request->chiefDealerEmail;
             $authoriser = $request->authoriser;
             $inputter = $user->email;
-            //
-
             // You can now proceed with saving the other form data to your database or perform any other actions
             $institutions = new InstitutionTemp();
             $institutions->institutionRef = $previous->ID;
@@ -169,10 +169,9 @@ class InstitutionController extends Controller
             $institutions->address = $address;
             $institutions->email = $institutionEmail;
             $institutions->chiefDealerEmail = $chiefDealerEmail;
-            $institutions->createdBy = $inputter;
-            // $institutions->approvedBy = $authoriser;
+            $institutions->modifyingBy = $inputter;
+            $institutions->modifyingDate = now();
             $institutions->status = 3;
-            // $institutions->createdDate = now();
             $create = $institutions->save();
             if ($create) {
                 //
@@ -239,6 +238,7 @@ class InstitutionController extends Controller
             return redirect()->back()->with('success', "Institution delete has been sent for approval.");
         }
     }
+
     // approve create
     public function approveCreate($id)
     {
@@ -277,6 +277,75 @@ class InstitutionController extends Controller
         //
         $institution = Institution::findOrFail($id);
         $rejectCreate = Institution::where('ID', $id)->update(['status' => 2, 'reason' => $request->reason, 'approvedBy' => $user->email, 'approvedDate' => now()]);
+        if ($rejectCreate) {
+            // log activity
+            $activity = new ActivityLog();
+            $activity->date = now();
+            $activity->app = 'RITCC';
+            $activity->type = 'Reject Institution';
+            $activity->activity = $user->email . ' approved institution: ' . $institution->institutionName . '.';
+            $activity->username = $user->email;
+            $log = $activity->save();
+        }
+        if ($log) {
+            // mail
+            // $approver = Profile::where('email', $authoriser)->first();
+            // $update = ([
+            //     'name' => $approver->FirstName,
+            //     'type' => 'institution',
+            //     'previous' => $previous->institutionName,
+
+            // ]);
+            // Mail::to($approver->email)->send(new UpdateMail($update));
+
+            return redirect()->back()->with('success', "Institution has been rejected.");
+        }
+    }
+
+    // approve update
+    public function approveUpdate($id)
+    {
+        $user = Auth::user();
+        //
+        $institution = Institution::findOrFail($id);
+        $temp = InstitutionTemp::where('institutionRef', $id)->first();
+        $approveUpdate = Institution::where('ID', $id)->update(['code' => $temp->code, 'institutionName' => $temp->name, 'address' => $temp->address, 'institutionEmail' => $temp->email, 'chiefDealerEmail' => $temp->chiefDealerEmail, 'status' => 1, 'modifiedDate' => now(), 'modifiedBy' => $user->email]);
+
+        if ($approveUpdate) {
+            $deleteTemp = InstitutionTemp::where('institutionRef', $id)->delete();
+        }
+
+        if ($deleteTemp) {
+            // log activity
+            $activity = new ActivityLog();
+            $activity->date = now();
+            $activity->app = 'RITCC';
+            $activity->type = 'Approve Institution Update';
+            $activity->activity = $user->email . ' approved an update for institution: ' . $institution->institutionName . '.';
+            $activity->username = $user->email;
+            $log = $activity->save();
+        }
+        if ($log) {
+            // mail
+            // $approver = Profile::where('email', $authoriser)->first();
+            // $update = ([
+            //     'name' => $approver->FirstName,
+            //     'type' => 'institution',
+            //     'previous' => $previous->institutionName,
+
+            // ]);
+            // Mail::to($approver->email)->send(new UpdateMail($update));
+
+            return redirect()->back()->with('success', "Institution update has been approved.");
+        }
+    }
+    // reject update
+    public function rejectUpdate(Request $request, $id)
+    {
+        $user = Auth::user();
+        //
+        $institution = Institution::findOrFail($id);
+        $rejectCreate = Institution::where('ID', $id)->update(['status' => 1, 'reason' => $request->reason, 'approvedBy' => $user->email, 'approvedDate' => now()]);
         if ($rejectCreate) {
             // log activity
             $activity = new ActivityLog();
