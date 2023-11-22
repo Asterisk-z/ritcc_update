@@ -136,7 +136,7 @@
                                     <tr>
                                         <td>{{ $i++; }}</td>
                                         <td>
-                                            <h2 class="table-avatar">{{ $profile->FirstName.' '.$profile->LastName }}
+                                            <h2 class="table-avatar">{{ $profile->firstName.' '.$profile->lastName }}
                                             </h2>
                                         </td>
                                         <td>{{ $profile->email }}</td>
