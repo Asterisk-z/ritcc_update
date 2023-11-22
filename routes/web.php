@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\FMDQ\AuctionManagementController;
 use App\Http\Controllers\FMDQ\InstitutionController;
 use App\Http\Controllers\FMDQ\IQXController;
 use App\Http\Controllers\FMDQ\ProfileController;
@@ -34,9 +35,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/iqx-dashboard', [IQXController::class, 'index'])->name('iqx.dashboard');
 
-    });
-
-    Route::middleware(['isSuperUser', 'isInputter', 'isAuthoriser'])->group(function () {
+        Route::get('/auction-management', [AuctionManagementController::class, 'index'])->name('auction.mgt.dashboard');
 
         Route::get('/profile-management', [ProfileController::class, 'index'])->name('profile.index');
 
@@ -54,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::middleware(['isAuctioneer', 'isBidder'])->group(function () {
 
-        Route::get('/auction-management', [IQXController::class, 'index'])->name('auction.dashboard');
+        // Route::get('/auction-management', [IQXController::class, 'index'])->name('auction.dashboard');
 
     });
 

@@ -29,7 +29,7 @@
                             Management</span>
                 </li>
                 <li class="">
-                    <a href="#"><i class="fa-solid fa-key"></i> <span> Auction
+                    <a href="{{ route('auction.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span> Auction
                             Management</span>
                 </li>
                 <li class="">
