@@ -46,9 +46,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/institution/create', [InstitutionController::class, 'create'])->name('institution.create');
         Route::post('/institution/update/{id}', [InstitutionController::class, 'update'])->name('institution.update');
         Route::post('/institution/delete/{id}', [InstitutionController::class, 'delete'])->name('institution.delete');
-
+        // authorise create
         Route::post('/institution/create/approve/{id}', [InstitutionController::class, 'approveCreate'])->name('institution.approveCreate');
         Route::post('/institution/create/reject/{id}', [InstitutionController::class, 'rejectCreate'])->name('institution.rejectCreate');
+        // authorise update
+        Route::post('/institution/update/approve/{id}', [InstitutionController::class, 'approveUpdate'])->name('institution.approveUpdate');
+        Route::post('/institution/update/reject/{id}', [InstitutionController::class, 'rejectUpdate'])->name('institution.rejectUpdate');
+        // authorise delete
+        Route::post('/institution/delete/approve/{id}', [InstitutionController::class, 'approveDelete'])->name('institution.approveDelete');
+        Route::post('/institution/delete/reject/{id}', [InstitutionController::class, 'rejectDelete'])->name('institution.rejectDelete');
     });
 
     Route::middleware(['isAuctioneer', 'isBidder'])->group(function () {
@@ -56,5 +62,4 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('/auction-management', [IQXController::class, 'index'])->name('auction.dashboard');
 
     });
-
 });
