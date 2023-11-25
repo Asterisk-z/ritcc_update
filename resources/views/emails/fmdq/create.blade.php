@@ -130,12 +130,27 @@
         <main>
             <div class="body-text">
                 <h1 style="text-align: center;">RITCC Auctioning System</h1>
-                <p>Hi <span>{{ $update['name'] }}</span>,</p>
-                <p>An update has been made to institution: <strong>{{ $update['previous'] }}</strong> Kindly
-                    approve.</p>
+                <p>Hi <span>{{ $create['authoriser'] }}</span>,</p>
+                {{-- Profie --}}
+                @if ($create['type'] == 'profile')
+                <p>A new profile has been created. Please approve</p>
+                @endif
+
+                @if ($create['type']=== 'institution')
+                <p>A new institution has been created. Please approve</p>
+                @endif
+
+                @if ($create['type']=== 'certificate')
+                <p>A new certificate has been created. Please approve</p>
+                @endif
+
+
+
+                {{--
+                <p>Deadline: <strong>{{ date('F d, Y', strtotime($activate['deadline'])) }}</strong></p> --}}
                 <p>
                     <a href="{{ route('login') }}" class="btn btn-primary"
-                        style="background-color: #1D326C; color:#FFF;">Login to RITCC Portal</a>
+                        style="background-color: #1D326C; color:#FFF;">Login to RITCC Portal To Approve</a>
                 </p>
             </div>
         </main>

@@ -30,15 +30,23 @@ Route::post('/sign-out', [LoginController::class, 'signOut'])->name('signOut');
 // dashboard
 
 Route::middleware(['auth'])->group(function () {
-
+    Route::get('/change-password', [LoginController::class, 'changePassword'])->name('changePassword');
+    //
     Route::middleware(['isSuperUser'])->group(function () {
 
         Route::get('/iqx-dashboard', [IQXController::class, 'index'])->name('iqx.dashboard');
+        Route::get('/activity-logs', [IQXController::class, 'activityLog'])->name('iqx.logs');
 
         Route::get('/auction-management', [AuctionManagementController::class, 'index'])->name('auction.mgt.dashboard');
 
         Route::get('/profile-management', [ProfileController::class, 'index'])->name('profile.index');
-
+        Route::get('/profile-management/pending', [ProfileController::class, 'pending'])->name('profile.pending');
+        Route::get('/profile-management/rejected', [ProfileController::class, 'rejected'])->name('profile.rejected');
+        Route::get('/profile-management/approved', [ProfileController::class, 'approved'])->name('profile.approved');
+        Route::post('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
+        Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
+        Route::post('/profile/delete/{id}', [ProfileController::class, 'delete'])->name('profile.delete');
+        // Institution
         Route::get('/institution-management', [InstitutionController::class, 'index'])->name('institution.index');
         Route::get('/institution-management/pending', [InstitutionController::class, 'pending'])->name('institution.pending');
         Route::get('/institution-management/rejected', [InstitutionController::class, 'rejected'])->name('institution.rejected');
