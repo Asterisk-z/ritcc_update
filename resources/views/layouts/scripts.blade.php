@@ -1,4 +1,4 @@
-<script src="{{ asset('assets/js/jquery-3.7.0.min.js') }}"></script>
+{{--  <script src="{{ asset('assets/js/jquery-3.7.0.min.js') }}"></script>  --}}
 <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 {{-- <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script> --}}
 <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
@@ -10,7 +10,7 @@
 <script src="{{ asset('assets/js/feather.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 <script src="{{ asset('assets/js/form-validation.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+{{--  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>  --}}
 <script src="https://cdn.jsdelivr.net/npm/datatables@1.10.18/media/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -25,7 +25,7 @@
 
 
 <script>
-    $(function () {
+    {{--  $(function () {
     // Initialize DataTable for elements with class 'datatable'
     $("#example1").DataTable({
       "responsive": false,
@@ -47,7 +47,7 @@
         "responsive": true
       });
     }
-  });
+  });  --}}
 </script>
 
 <script>

@@ -121,17 +121,15 @@
             <div class="content-page-header">
                 {{-- <h5>Pages list</h5> --}}
                 <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal"
-                    data-bs-target="#standard-modal"><i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add
-                    Institution</button>
+                    data-bs-target="#standard-modal"><i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add Auction</button>
                 {{-- modal --}}
                 <div id="standard-modal" class="modal fade" tabindex="-1" role="dialog"
                     aria-labelledby="standard-modalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4 class="modal-title" id="standard-modalLabel">Add Institution</h4>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+                                <h4 class="modal-title" id="standard-modalLabel">Add Auction</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <form action="{{ route('institution.create') }}" method="POST" id="myForm"
                                 class="needs-validation" novalidate>
@@ -139,62 +137,51 @@
                                 <div class="modal-body">
                                     <div class="form-row row">
                                         {{-- code --}}
-                                        <div class="col-md-6 mb-3">
-                                            <label for="validationCustom01">Institution Code</label>
-                                            <input type="text" name="code" class="form-control" id="validationCustom01"
-                                                required>
-                                            <div class="invalid-feedback">
-                                                This field is required
-                                            </div>
-                                        </div>
-                                        {{-- --}}
-                                        <div class="col-md-6 mb-3">
-                                            <label for="validationCustom01">Institution Name</label>
-                                            <input type="text" name="name" class="form-control" id="validationCustom01"
-                                                required>
-                                            <div class="invalid-feedback">
-                                                This field is required
-                                            </div>
-                                        </div>
-                                        {{-- --}}
                                         <div class="col-md-12 mb-3">
-                                            <label for="validationCustom01">Address</label>
-                                            <input type="text" name="address" class="form-control"
-                                                id="validationCustom01" required>
-                                            <div class="invalid-feedback">
-                                                This field is required
-                                            </div>
-                                        </div>
-                                        {{-- code --}}
-                                        <div class="col-md-6 mb-3">
-                                            <label for="validationCustom01">Institution Email</label>
-                                            <input type="email" name="institutionEmail" class="form-control"
-                                                id="validationCustom01" required>
-                                            <div class="invalid-feedback">
-                                                This field is required
-                                            </div>
-                                        </div>
-                                        {{-- --}}
-                                        <div class="col-md-6 mb-3">
-                                            <label for="validationCustom01">Chief Dealer Email</label>
-                                            <input type="email" name="chiefDealerEmail" class="form-control"
-                                                id="validationCustom01" required>
-                                            <div class="invalid-feedback">
-                                                This field is required
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mb-3">
-                                            <label for="validationCustom01">Authoriser</label>
-                                            <select name="authoriser" id="validationCustom01" class="form-control"
+                                            <label for="validationCustom01">Security</label>
+                                            <select name="securityId" id="validationCustom01" class="form-control"
                                                 required>
                                                 <option value="">--Select--</option>
-                                                @forelse ($authorisers as $authoriser)
-                                                <option value="{{ $authoriser->email }}">{{ $authoriser->firstName.'
-                                                    '.$authoriser->lastName }}</option>
+                                                @forelse ($securities as $security)
+                                                <option value="{{ $security->id }}">{{ $security->securityCode ." | ".$security->auctioneer->email }}</option>
                                                 @empty
 
                                                 @endforelse
                                             </select>
+                                            <div class="invalid-feedback">
+                                                This field is required
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom01">Offer Amount ((₦‘mm)</label>
+                                            <input type="text" name="amount" class="form-control" id="validationCustom01"
+                                                required>
+                                            <div class="invalid-feedback">
+                                                This field is required
+                                            </div>
+                                        </div>
+                                        {{-- --}}
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom01">Offer Date</label>
+                                            <input type="date" name="offerDate" class="form-control" id="validationCustom01"
+                                                required>
+                                            <div class="invalid-feedback">
+                                                This field is required
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom01">Auction Start Time</label>
+                                            <input type="datetime-local" name="auction_start_time" class="form-control" id="validationCustom01"
+                                                required>
+                                            <div class="invalid-feedback">
+                                                This field is required
+                                            </div>
+                                        </div>
+                                        {{-- --}}
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom01">Bids Close Time</label>
+                                            <input type="datetime-local" name="bids_close_time" class="form-control" id="validationCustom01"
+                                                required>
                                             <div class="invalid-feedback">
                                                 This field is required
                                             </div>
@@ -399,7 +386,9 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('institution.update',$institution->ID) }}"
+                                                    {{--  <form action="{{ route('institution.update',$institution->ID) }}"
+                                                        method="POST" class="needs-validation" id="update" novalidate>  --}}
+                                                    <form action="#"
                                                         method="POST" class="needs-validation" id="update" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
@@ -502,8 +491,10 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('institution.delete',$institution->ID) }}"
+                                                    <form action="#"
                                                         method="POST" class="needs-validation" id="myForm" novalidate>
+                                                    {{--  <form action="{{ route('institution.delete',$institution->ID) }}"
+                                                        method="POST" class="needs-validation" id="myForm" novalidate>  --}}
                                                         @csrf
                                                         <div class="modal-body">
                                                             <p>Are you sure you want to delete this institution?</p>
@@ -537,26 +528,68 @@
 @endsection
 
 
-{{-- @section('script')
+@section('style')
+
+@endsection
+
+
+@section('script')
+
 <script>
-    $(function() {
-        $("#example1").DataTable({
-            "responsive": true
-            , "lengthChange": false
-            , "autoWidth": false
-            , "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    //$(function() {
+        //$('.OfferDateX').datetimepicker({
+         //   timepicker: true,
+         //   startDate: moment().format("YYYY/MM/D"),
+        //    minDate: moment().format("YYYY/MM/D"),
+        //    format: 'M d, Y H:i',
+            // onSelectDate: function(dp, tp) {},
+            // onSelectTime: function(dp, tp) {}
+            // startDate: moment().format("YYYY/MM/D")
+        //});
 
-        $('#example2').DataTable({
-            "paging": true
-            , "lengthChange": true
-            , "searching": true
-            , "ordering": false
-            , "info": true
-            , "autoWidth": true
-            , "responsive": true
-        , });
-    });
+        // let offerDate = $('#OfferDate').val();
 
+        //$('#OfferDate').change(function(event) {
+        //    if (!$('#OfferDate').val()) {
+        //        return
+        //    }
+        //     $('#AuctionStartTime').prop('disabled', false)
+        //});
+
+        //$('#AuctionStartTime').change(function(event) {
+
+        //    if (!$('#OfferDate').val()) {
+        //        $('#AuctionStartTime').val('')
+        //        $('#AuctionStartTime').prop('disabled', true)
+        //        return
+        //    }
+
+        //    let offerDate = moment(new Date($('#OfferDate').val())).valueOf();
+        //    let auctionStartTime = moment(new Date($('#AuctionStartTime').val())).valueOf();
+
+        //    console.dir(offerDate)
+        //    console.dir(auctionStartTime)
+        //    console.log(auctionStartTime > offerDate)
+        //    if (offerDate < auctionStartTime) {
+        //        swal("Auction Start Date can not be less than Offer date");
+        //        return
+        //    }
+
+
+        //    $('#BidsCloseTime').prop('disabled', false)
+
+        //});
+
+
+        //$('#BidsCloseTimeX').datetimepicker({
+        //    timepicker: true,
+        //    minDate: moment().format("YYYY/MM/D"),
+        //    startDate: moment().format("YYYY/MM/D"),
+        //    format: 'M d, Y  H:i',
+        //});
+
+
+    //})
 </script>
-@endsection--}}
+
+@endsection

@@ -13,4 +13,9 @@ class Security extends Model
     public $guarded = [];
     public $timestamps = false;
 
+    public function auctioneer()
+    {
+        return $this->hasOne(Profile::class, 'id', 'auctioneerRef');
+    }
+
 }
