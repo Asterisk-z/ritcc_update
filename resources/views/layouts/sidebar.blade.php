@@ -43,7 +43,9 @@
                 <li class="">
                     <a href="#"><i class="fa-solid fa-key"></i> <span> Settlement</span>
                 </li>
-
+                <li class="">
+                    <a href="{{ route('iqx.logs') }}"><i class="fa fa-bullseye"></i> <span> Activity Logs</span>
+                </li>
                 <li class="submenu">
                     <a href="#"><i class="fa-solid fa-gear"></i></i> <span> System Settings</span> <span
                             class="menu-arrow"></span></a>

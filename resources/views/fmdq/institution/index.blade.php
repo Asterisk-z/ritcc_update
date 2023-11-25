@@ -470,12 +470,28 @@
                                                         method="POST" class="needs-validation" id="myForm" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
-                                                            <p>Are you sure you want to delete this institution?</p>
+                                                            <label for="">Reason</label>
+                                                            <input type="text" name="reason" class="form-control"
+                                                                required>
+                                                            {{-- --}}
+                                                            <label for="">Authoriser</label>
+                                                            <select name="authoriser" id="validationCustom01"
+                                                                class="form-control" required>
+                                                                <option value="">--Select--</option>
+                                                                @forelse ($authorisers as $authoriser)
+                                                                <option value="{{ $authoriser->email }}">{{
+                                                                    $authoriser->firstName.'
+                                                                    '.$authoriser->lastName }}</option>
+                                                                @empty
+                                                                <option value="">{{ 'No options available yet' }}
+                                                                </option>
+                                                                @endforelse
+                                                            </select>
                                                         </div>
+
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Delete
-                                                                Institution</button>
+                                                                id="updateButton">Delete</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>

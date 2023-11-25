@@ -153,10 +153,12 @@
                                                 required>
                                                 <option value="">--Select--</option>
                                                 @forelse ($authorisers as $authoriser)
-                                                <option value="{{ $authoriser->email }}">{{ $authoriser->FirstName.'
-                                                    '.$authoriser->LastName }}</option>
+                                                <option value="{{ $authoriser->email }}">{{
+                                                    $authoriser->firstName.'
+                                                    '.$authoriser->lastName }}</option>
                                                 @empty
-
+                                                <option value="">{{ 'No options available yet' }}
+                                                </option>
                                                 @endforelse
                                             </select>
                                             <div class="invalid-feedback">

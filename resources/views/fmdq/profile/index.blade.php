@@ -84,8 +84,109 @@
         <div class="page-header">
             <div class="content-page-header">
                 {{-- <h5>Pages list</h5> --}}
-                <a class="btn btn-primary" href="add-pages.html"><i class="fa fa-plus-circle me-2"
-                        aria-hidden="true"></i>Add Profiles</a>
+                <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal"
+                    data-bs-target="#standard-modal"><i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add
+                    Profile</button>
+                {{-- modal --}}
+                <div id="standard-modal" class="modal fade" tabindex="-1" role="dialog"
+                    aria-labelledby="standard-modalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="standard-modalLabel">Create Profile</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form action="{{ route('profile.create') }}" method="POST" id="myForm"
+                                class="needs-validation" novalidate>
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="form-row row">
+                                        {{-- code --}}
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom01">First Name</label>
+                                            <input type="text" name="firstName" class="form-control"
+                                                id="validationCustom01" required>
+                                            <div class="invalid-feedback">
+                                                This field is required
+                                            </div>
+                                        </div>
+                                        {{-- --}}
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom01">Last Name</label>
+                                            <input type="text" name="lastName" class="form-control"
+                                                id="validationCustom01" required>
+                                            <div class="invalid-feedback">
+                                                This field is required
+                                            </div>
+                                        </div>
+                                        {{-- --}}
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom01">Email Address</label>
+                                            <input type="email" name="email" class="form-control"
+                                                id="validationCustom01" required>
+                                            <div class="invalid-feedback">
+                                                This field is required
+                                            </div>
+                                        </div>
+                                        {{-- --}}
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom01">Package</label>
+                                            <select name="package" id="validationCustom01" class="form-control"
+                                                required>
+                                                <option value="">--Select--</option>
+                                                @foreach ($packages as $package)
+                                                <option value="{{ $package->ID }}">{{ $package->Name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                This field is required
+                                            </div>
+                                        </div>
+                                        {{-- --}}
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom01">Institution</label>
+                                            <select name="institution" id="validationCustom01" class="form-control"
+                                                required>
+                                                <option value="">--Select--</option>
+                                                @foreach ($institutions as $institution)
+                                                <option value="{{ $institution->ID }}">{{ $institution->institutionName
+                                                    }}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                This field is required
+                                            </div>
+                                        </div>
+                                        {{-- --}}
+                                        <div class="col-md-6 mb-3">
+                                            <label for="validationCustom01">Authoriser</label>
+                                            <select name="authoriser" id="validationCustom01" class="form-control"
+                                                required>
+                                                <option value="">--Select--</option>
+                                                @forelse ($authorisers as $authoriser)
+                                                <option value="{{ $authoriser->email }}">{{ $authoriser->firstName.'
+                                                    '.$authoriser->lastName }}</option>
+                                                @empty
+                                                @endforelse
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                This field is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" id="loadingButton">Create
+                                        Profile</button>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <div class="list-btn">
                     <ul class="filter-list">
                         <li>
@@ -121,9 +222,10 @@
                                         <th>Name</th>
                                         <th>Contact</th>
                                         <th>Package</th>
+                                        <th>Institution</th>
                                         {{-- <th>Inputter</th> --}}
                                         {{-- <th>Authoriser</th> --}}
-                                        <th>Date Created</th>
+                                        {{-- <th>Date Created</th> --}}
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -141,17 +243,18 @@
                                         </td>
                                         <td>{{ $profile->email }}</td>
                                         <td>{{ $profile->package->Name }}</td>
-                                        <td>{{ date('F d, Y',strtotime($profile->InputDate))}}</td>
+                                        <td>{{ $profile->institution->institutionName }}</td>
+                                        {{-- <td>{{ date('F d, Y',strtotime($profile->inputDate))}}</td> --}}
                                         @if ($profile->status ==='0')
-                                        <td><span class="badge bg-2">Pending Approval</span></td>
+                                        <td><span class="badge bg-3">Pending Approval</span></td>
                                         @elseif($profile->status ==='1')
                                         <td><span class="badge bg-1">Approved</span></td>
                                         @elseif($profile->status ==='2')
                                         <td><span class="badge bg-2">Rejected</span></td>
                                         @elseif ($profile->status ==='3')
-                                        <td><span class="badge bg-1">Pending Update</span></td>
+                                        <td><span class="badge bg-3">Pending Update</span></td>
                                         @elseif($profile->status ==='4')
-                                        <td><span class="badge bg-1">Pending Delete</span></td>
+                                        <td><span class="badge bg-3">Pending Delete</span></td>
                                         @endif
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">

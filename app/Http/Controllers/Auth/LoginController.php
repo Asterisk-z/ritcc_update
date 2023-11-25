@@ -16,6 +16,12 @@ class LoginController extends Controller
     }
 
     //
+    public function changePassword()
+    {
+        return view('auth.update-password');
+    }
+
+    //
     public function signIn(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -27,10 +33,12 @@ class LoginController extends Controller
         if (!$attempt_login) {
             return redirect()->route('login')->with('error', 'Invalid credentials.');
         }
-
+        // if user has not changed their password
+        if (auth()->user()->passwordStatus == '0') {
+            return redirect()->route('changePassword')->with('info', 'Kindly update your password to begin.');
+        }
         // super admin
-        if (auth()->user()->Package == '1') {
-
+        if (auth()->user()->type == 'super') {
             return redirect()->route('iqx.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
         // inputter and authoriser
@@ -41,7 +49,6 @@ class LoginController extends Controller
         // firs
         // auctioneer
         // bidder
-
     }
 
     //
