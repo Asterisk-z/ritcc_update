@@ -29,8 +29,7 @@
                             Management</span>
                 </li>
                 <li class="">
-                    <a href="{{ route('auction.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span> Auction
-                            Management</span>
+                    <a href="{{ route('auction.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span> Auction Management</span>
                 </li>
                 <li class="">
                     <a href="#"><i class="fa-solid fa-key"></i> <span> Auction
@@ -47,8 +46,7 @@
                     <a href="{{ route('iqx.logs') }}"><i class="fa fa-bullseye"></i> <span> Activity Logs</span>
                 </li>
                 <li class="submenu">
-                    <a href="#"><i class="fa-solid fa-gear"></i></i> <span> System Settings</span> <span
-                            class="menu-arrow"></span></a>
+                    <a href="#"><i class="fa-solid fa-gear"></i></i> <span> System Settings</span> <span class="menu-arrow"></span></a>
                     <ul>
                         <li><a href="#">Packages</a></li>
                         <li><a href="#">Public Holidays</a></li>

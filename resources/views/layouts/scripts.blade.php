@@ -101,7 +101,7 @@ confirmButtonColor: "#23346A",
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // If user confirms, disable the activate button
-                        loadingButton.disabled = true;
+                        //loadingButton.disabled = true;
 
                         // Show message indicating activation in progress
                         Swal.fire({
