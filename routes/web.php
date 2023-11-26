@@ -36,8 +36,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/iqx-dashboard', [IQXController::class, 'index'])->name('iqx.dashboard');
         Route::get('/activity-logs', [IQXController::class, 'activityLog'])->name('iqx.logs');
-
-        Route::get('/auction-management', [AuctionManagementController::class, 'index'])->name('auction.mgt.dashboard');
         // profile
         Route::get('/profile-management', [ProfileController::class, 'index'])->name('profile.index');
         Route::get('/profile-management/pending', [ProfileController::class, 'pending'])->name('profile.pending');
@@ -69,6 +67,21 @@ Route::middleware(['auth'])->group(function () {
         // authorise delete
         Route::post('/institution/delete/approve/{id}', [InstitutionController::class, 'approveDelete'])->name('institution.approveDelete');
         Route::post('/institution/delete/reject/{id}', [InstitutionController::class, 'rejectDelete'])->name('institution.rejectDelete');
+
+        // Auctions
+        Route::get('/auction-management', [AuctionManagementController::class, 'index'])->name('auction.mgt.dashboard');
+        Route::get('/auction-management/pending', [AuctionManagementController::class, 'pendingIndex'])->name('auction.mgt.pending');
+        Route::get('/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('auction.mgt.rejected');
+        Route::get('/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('auction.mgt.approved');
+        Route::post('/auction-management/create', [AuctionManagementController::class, 'create'])->name('auction.mgt.create');
+        Route::post('/auction-management/approve/create', [AuctionManagementController::class, 'approveCreate'])->name('auction.mgt.approve.create');
+        Route::post('/auction-management/reject/create', [AuctionManagementController::class, 'rejectCreate'])->name('auction.mgt.reject.create');
+        Route::post('/auction-management/update', [AuctionManagementController::class, 'update'])->name('auction.mgt.update');
+        Route::post('/auction-management/approve/update', [AuctionManagementController::class, 'approveUpdate'])->name('auction.mgt.approve.update');
+        Route::post('/auction-management/reject/update', [AuctionManagementController::class, 'rejectUpdate'])->name('auction.mgt.reject.update');
+        Route::post('/auction-management/delete', [AuctionManagementController::class, 'delete'])->name('auction.mgt.delete');
+        Route::post('/auction-management/approve/delete', [AuctionManagementController::class, 'approveDelete'])->name('auction.mgt.approve.delete');
+        Route::post('/auction-management/reject/delete', [AuctionManagementController::class, 'rejectDelete'])->name('auction.mgt.reject.delete');
     });
 
     Route::middleware(['isAuctioneer', 'isBidder'])->group(function () {

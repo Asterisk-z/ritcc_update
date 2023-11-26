@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\FMDQ;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Auction;
 use App\Models\Profile;
 use App\Models\Security;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AuctionManagementController extends Controller
@@ -18,18 +20,14 @@ class AuctionManagementController extends Controller
     public function index()
     {
         $page = 'All Auctions';
-        $securities = Security::where('status', '1')->orderBy('CreatedDate', 'ASC')->get();
-
-        $institutions = Auction::orderBy('CreatedAt', 'ASC')->get();
+        $securities = Security::where('status', '1')->orderBy('CreatedDate', 'DESC')->get();
+        $auctions = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
         $all = Auction::count();
         $approved = Auction::where('status', '1')->count();
         $pending = Auction::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();
         $rejected = Auction::where('status', '2')->count();
-        $authorisers = Profile::where('status', '1')->where(function ($query) {
-            $query->where('Package', '3')->orWhere('Package', '5');
-        })->get();
 
-        return view('fmdq.auction.index', compact('securities', 'institutions', 'all', 'pending', 'approved', 'rejected', 'page', 'authorisers'));
+        return view('fmdq.auction.index', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
     }
 
     /**
@@ -37,9 +35,515 @@ class AuctionManagementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function pendingIndex()
     {
-        //
+        $page = 'Pending Auctions';
+        $auctions = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->orderBy('createdDate', 'DESC')->get();
+        $all = Auction::count();
+        $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+        $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+        $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
+
+        return view('fmdq.auction.pending', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
+
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function rejectedIndex()
+    {
+        $page = 'Rejected Auctions';
+        $securities = Security::where('status', '1')->orderBy('CreatedDate', 'DESC')->get();
+        $auctions = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->orderBy('createdDate', 'DESC')->get();
+        $all = Auction::count();
+        $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+        $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+        $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
+
+        return view('fmdq.auction.rejected', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function approvedIndex()
+    {
+        $page = 'Approved Auctions';
+        $securities = Security::where('status', '1')->orderBy('CreatedDate', 'DESC')->get();
+        $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->orderBy('createdDate', 'DESC')->get();
+        $all = Auction::count();
+        $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+        $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+        $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
+
+        return view('fmdq.auction.approved', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
+    {
+        $validated = $request->validate([
+            'securityId' => 'bail|required|unique:tblAuction,securityRef',
+            'amount' => 'bail|required',
+            'offerDate' => 'bail|required',
+            'auction_start_time' => 'bail|required',
+            'bids_close_time' => 'bail|required',
+            'bids_result_time' => 'bail|required',
+            'minimum_rate' => 'bail|required',
+            'maximum_rate' => 'bail|required',
+        ], []);
+
+        if (!$validated) {
+            return back()->withErrors($validated);
+        }
+
+        $securityId = $request->input('securityId');
+        $amount = $request->input('amount');
+        $offerDate = Carbon::create($request->input('offerDate'));
+        $auction_start_time = Carbon::create($request->input('auction_start_time'));
+        $bids_close_time = Carbon::create($request->input('bids_close_time'));
+        $bids_result_time = Carbon::create($request->input('bids_result_time'));
+        $minimum_rate = $request->input('minimum_rate');
+        $maximum_rate = $request->input('maximum_rate');
+
+        $security = Security::where('id', $securityId)->where('status', '1')->first();
+
+        if (!$security) {
+            return redirect()->back()->with('error', "Fail to create Auction.");
+        }
+
+        // You can now proceed with saving the other form data to your database or perform any other actions
+        $auctions = new Auction();
+        $auctions->securityRef = $securityId;
+        $auctions->securityCode = $security->securityCode;
+        $auctions->auctioneerRef = $security->auctioneerRef;
+        $auctions->auctioneerEmail = $security->auctioneer->email;
+        $auctions->offerAmount = $amount;
+        $auctions->isinNumber = $security->isinNumber;
+        $auctions->offerDate = $offerDate;
+        $auctions->auctionStartTime = $auction_start_time;
+        $auctions->bidCloseTime = $bids_close_time;
+        $auctions->bidResultTime = $bids_result_time;
+        $auctions->minimumRate = $minimum_rate;
+        $auctions->maximumRate = $maximum_rate;
+        $auctions->status = 0;
+        $auctions->createdBy = auth()->user()->email;
+        $auctions->createdDate = now();
+        $create_action = $auctions->save();
+
+        if (!$create_action) {
+            return redirect()->back()->with('error', "Fail to create Auction.");
+        }
+
+        $activity = new ActivityLog();
+        $activity->date = now();
+        $activity->app = 'RITCC';
+        $activity->type = 'Create Auction';
+        $activity->activity = auth()->user()->email . ' created Auction for Security';
+        $activity->username = auth()->user()->email;
+        $activity->save();
+        // mail
+        // $approver = Profile::where('email', $authoriser)->first();
+        // $new = ([
+        //     'name' => $approver->FirstName,
+        // ]);
+        // Mail::to($authoriser)->send(new CreateInstitutionMail($new));
+
+        return redirect()->back()->with('success', "Auction has been sent for approval.");
+
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function approveCreate(Request $request)
+    {
+
+        $validated = $request->validate([
+            'auction_ref' => 'bail|required|exists:tblAuction,id',
+        ], []);
+
+        if (!$validated) {
+            return back()->withErrors($validated);
+        }
+
+        $auction_ref = $request->input('auction_ref');
+
+        $auction = Auction::where('id', $auction_ref)->where('rejectionFlag', 0)->where('approveFlag', 0)->first();
+
+        if (!$auction) {
+            return redirect()->back()->with('error', "Fail to Approve Auction.");
+        }
+
+        $auction->approveFlag = 1;
+        $auction->approvedBy = auth()->user()->email;
+        $auction->approvedDate = now();
+        $auction->rejectedBy = null;
+        $auction->rejectionFlag = 0;
+        $auction->rejectionNote = null;
+        $auction->rejectionDate = null;
+
+        $approve_action = $auction->save();
+
+        if (!$approve_action) {
+            return redirect()->back()->with('error', "Fail to approve Auction.");
+        }
+
+        $activity = new ActivityLog();
+        $activity->date = now();
+        $activity->app = 'RITCC';
+        $activity->type = 'Approve Auction';
+        $activity->activity = auth()->user()->email . ' approve Auction for Security';
+        $activity->username = auth()->user()->email;
+        $activity->save();
+
+        return redirect()->back()->with('success', "Auction Approved Successfully.");
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function rejectCreate(Request $request)
+    {
+        $validated = $request->validate([
+            'auction_ref' => 'bail|required|exists:tblAuction,id',
+            'reason' => 'bail|required',
+        ], []);
+
+        if (!$validated) {
+            return back()->withErrors($validated);
+        }
+
+        $auction_ref = $request->input('auction_ref');
+        $reason = $request->input('reason');
+
+        $auction = Auction::where('id', $auction_ref)->where('rejectionFlag', 0)->where('approveFlag', 0)->first();
+
+        if (!$auction) {
+            return redirect()->back()->with('error', "Fail to Reject Auction.");
+        }
+
+        $auction->approveFlag = 0;
+        $auction->approvedBy = null;
+        $auction->approvedDate = null;
+
+        $auction->rejectedBy = auth()->user()->email;
+        $auction->rejectionFlag = 1;
+        $auction->rejectionNote = $reason;
+        $auction->rejectionDate = now();
+
+        $reject_action = $auction->save();
+
+        if (!$reject_action) {
+            return redirect()->back()->with('error', "Fail to reject Auction.");
+        }
+
+        $activity = new ActivityLog();
+        $activity->date = now();
+        $activity->app = 'RITCC';
+        $activity->type = 'Reject Auction';
+        $activity->activity = auth()->user()->email . ' rejected Auction for Security';
+        $activity->username = auth()->user()->email;
+        $activity->save();
+
+        return redirect()->back()->with('success', "Auction Approved Successfully.");
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+        $validated = $request->validate([
+            'auction_ref' => 'bail|required|exists:tblAuction,id',
+            'securityId' => 'bail|required|exists:tblAuction,securityRef',
+            'amount' => 'bail|required',
+            'offerDate' => 'bail|required',
+            'auction_start_time' => 'bail|required',
+            'bids_close_time' => 'bail|required',
+            'bids_result_time' => 'bail|required',
+            'minimum_rate' => 'bail|required',
+            'maximum_rate' => 'bail|required',
+        ], []);
+
+        if (!$validated) {
+            return back()->withErrors($validated);
+        }
+
+        $securityId = $request->input('securityId');
+        $amount = $request->input('amount');
+        $offerDate = Carbon::create($request->input('offerDate'));
+        $auction_start_time = Carbon::create($request->input('auction_start_time'));
+        $bids_close_time = Carbon::create($request->input('bids_close_time'));
+        $bids_result_time = Carbon::create($request->input('bids_result_time'));
+        $minimum_rate = $request->input('minimum_rate');
+        $maximum_rate = $request->input('maximum_rate');
+        $auction_ref = $request->input('auction_ref');
+
+        $security = Security::where('id', $securityId)->where('status', '1')->first();
+
+        if (!$security) {
+            return redirect()->back()->with('error', "Fail to create Auction.");
+        }
+
+        $auction = Auction::where('id', $auction_ref)->where('rejectionFlag', 0)->where('approveFlag', 0)->where('deleteFlag', 0)->first();
+
+        // You can now proceed with saving the other form data to your database or perform any other actions
+        $auctions = [];
+        $auctions['securityRef'] = $securityId;
+        $auctions['securityCode'] = $security->securityCode;
+        $auctions['auctioneerRef'] = $security->auctioneerRef;
+        $auctions['auctioneerEmail'] = $security->auctioneer->email;
+        $auctions['offerAmount'] = $amount;
+        $auctions['isinNumber'] = $security->isinNumber;
+        $auctions['offerDate'] = $offerDate;
+        $auctions['auctionStartTime'] = $auction_start_time;
+        $auctions['bidCloseTime'] = $bids_close_time;
+        $auctions['bidResultTime'] = $bids_result_time;
+        $auctions['minimumRate'] = $minimum_rate;
+        $auctions['maximumRate'] = $maximum_rate;
+        $auctions['createdBy'] = auth()->user()->email;
+        $auctions['createdDate'] = now();
+
+        $modifyingData = json_encode($auctions);
+
+        $auction->modifyingBy = auth()->user()->email;
+        $auction->modifyingFlag = 1;
+        $auction->modifyingDate = now();
+        $auction->modifyingData = $modifyingData;
+
+        $update_action = $auction->save();
+
+        if (!$update_action) {
+            return redirect()->back()->with('error', "Fail to update Auction.");
+        }
+
+        $activity = new ActivityLog();
+        $activity->date = now();
+        $activity->app = 'RITCC';
+        $activity->type = 'Updaing Auction';
+        $activity->activity = auth()->user()->email . ' Send Auction Update for approval';
+        $activity->username = auth()->user()->email;
+        $activity->save();
+
+        return redirect()->back()->with('success', "Auction has been sent for approval.");
+
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function approveUpdate(Request $request)
+    {
+        $validated = $request->validate([
+            'auction_ref' => 'bail|required|exists:tblAuction,id',
+        ], []);
+
+        if (!$validated) {
+            return back()->withErrors($validated);
+        }
+
+        $auction_ref = $request->input('auction_ref');
+
+        $auction = Auction::where('id', $auction_ref)->where('rejectionFlag', 0)->where('approveFlag', 0)->first();
+
+        if (!$auction) {
+            return redirect()->back()->with('error', "Fail to Approve update Auction.");
+        }
+
+        $modifyData = json_decode($auction->modifyingData);
+
+        $auction->approveFlag = 0;
+        $auction->approvedBy = null;
+        $auction->approvedDate = null;
+        $auction->rejectedBy = null;
+        $auction->rejectionFlag = 0;
+        $auction->rejectionNote = null;
+        $auction->rejectionDate = null;
+        $auction->modifyingBy = null;
+        $auction->modifyingFlag = 0;
+        $auction->modifyingDate = null;
+        $auction->modifyingData = null;
+        $auction->modifiedFlag = 1;
+        $auction->modifiedBy = auth()->user()->email;
+        $auction->modifiedDate = now();
+
+        $auction->securityRef = $modifyData->securityRef;
+        $auction->securityCode = $modifyData->securityCode;
+        $auction->auctioneerRef = $modifyData->auctioneerRef;
+        $auction->auctioneerEmail = $modifyData->auctioneerEmail;
+        $auction->offerAmount = $modifyData->offerAmount;
+        $auction->isinNumber = $modifyData->isinNumber;
+        $auction->offerDate = $modifyData->offerDate;
+        $auction->auctionStartTime = Carbon::create($modifyData->auctionStartTime);
+        $auction->bidCloseTime = Carbon::create($modifyData->bidCloseTime);
+        $auction->bidResultTime = Carbon::create($modifyData->bidResultTime);
+        $auction->minimumRate = $modifyData->minimumRate;
+        $auction->maximumRate = $modifyData->maximumRate;
+        $auction->createdBy = $modifyData->createdBy;
+        $auction->createdDate = Carbon::create($modifyData->createdDate);
+
+        $approve_action = $auction->save();
+
+        if (!$approve_action) {
+            return redirect()->back()->with('error', "Fail to approve Auction.");
+        }
+
+        $activity = new ActivityLog();
+        $activity->date = now();
+        $activity->app = 'RITCC';
+        $activity->type = 'Approve Auction';
+        $activity->activity = auth()->user()->email . ' approve Auction for Security';
+        $activity->username = auth()->user()->email;
+        $activity->save();
+
+        return redirect()->back()->with('success', "Auction Approved Successfully.");
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function rejectUpdate(Request $request)
+    {
+        $validated = $request->validate([
+            'auction_ref' => 'bail|required|exists:tblAuction,id',
+            'reason' => 'bail|required',
+        ], []);
+
+        if (!$validated) {
+            return back()->withErrors($validated);
+        }
+
+        $auction_ref = $request->input('auction_ref');
+        $reason = $request->input('reason');
+
+        $auction = Auction::where('id', $auction_ref)->where('rejectionFlag', 0)->where('approveFlag', 0)->first();
+
+        if (!$auction) {
+            return redirect()->back()->with('error', "Fail to Approve update Auction.");
+        }
+
+        $auction->modifyingBy = null;
+        $auction->modifyingFlag = 0;
+        $auction->modifyingDate = null;
+        $auction->modifyingData = null;
+        $auction->modifiedFlag = 0;
+        $auction->modifiedBy = null;
+        $auction->modifiedDate = null;
+        $auction->modifyingRejectionNote = $reason;
+
+        $approve_action = $auction->save();
+
+        if (!$approve_action) {
+            return redirect()->back()->with('error', "Fail to approve Auction.");
+        }
+
+        $activity = new ActivityLog();
+        $activity->date = now();
+        $activity->app = 'RITCC';
+        $activity->type = 'Reject Auction';
+        $activity->activity = auth()->user()->email . ' rejected Auction for Security';
+        $activity->username = auth()->user()->email;
+        $activity->save();
+
+        return redirect()->back()->with('success', "Auction Rejected Successfully.");
+
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        $validated = $request->validate([
+            'auction_ref' => 'bail|required|exists:tblAuction,id',
+        ], []);
+
+        if (!$validated) {
+            return back()->withErrors($validated);
+        }
+
+        $auction_ref = $request->input('auction_ref');
+
+        $auction = Auction::where('id', $auction_ref)->where('rejectionFlag', 0)->where('approveFlag', 0)->where('deleteFlag', 0)->first();
+
+        if (!$auction) {
+            return redirect()->back()->with('error', "Fail to Delete Auction.");
+        }
+
+        $auction->deletingBy = auth()->user()->email;
+        $auction->deletingFlag = 1;
+
+        $approve_action = $auction->save();
+
+        if (!$approve_action) {
+            return redirect()->back()->with('error', "Fail to delete Auction.");
+        }
+
+        $activity = new ActivityLog();
+        $activity->date = now();
+        $activity->app = 'RITCC';
+        $activity->type = 'Delete Auction';
+        $activity->activity = auth()->user()->email . ' deleted Auction for Security';
+        $activity->username = auth()->user()->email;
+        $activity->save();
+
+        return redirect()->back()->with('success', "Auction Rejected Successfully.");
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function approveDelete(Request $request)
+    {
+        $validated = $request->validate([
+            'auction_ref' => 'bail|required|exists:tblAuction,id',
+        ], []);
+
+        if (!$validated) {
+            return back()->withErrors($validated);
+        }
+
+        $auction_ref = $request->input('auction_ref');
+
+        $auction = Auction::where('id', $auction_ref)->where('rejectionFlag', 0)->where('approveFlag', 0)->where('deleteFlag', 0)->first();
+
+        if (!$auction) {
+            return redirect()->back()->with('error', "Fail to Delete Auction.");
+        }
+
+        $auction->deletedBy = auth()->user()->email;
+        $auction->deleteFlag = 1;
+        $auction->deletedDate = now();
+
+        $approve_action = $auction->save();
+
+        if (!$approve_action) {
+            return redirect()->back()->with('error', "Fail to delete Auction.");
+        }
+
+        $activity = new ActivityLog();
+        $activity->date = now();
+        $activity->app = 'RITCC';
+        $activity->type = 'Delete Auction';
+        $activity->activity = auth()->user()->email . ' deleted Auction for Security';
+        $activity->username = auth()->user()->email;
+        $activity->save();
+
+        return redirect()->back()->with('success', "Auction Rejected Successfully.");
     }
 
     /**
@@ -48,9 +552,52 @@ class AuctionManagementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function rejectDelete(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'auction_ref' => 'bail|required|exists:tblAuction,id',
+            'reason' => 'bail|required',
+        ], []);
+
+        if (!$validated) {
+            return back()->withErrors($validated);
+        }
+
+        $auction_ref = $request->input('auction_ref');
+        $reason = $request->input('reason');
+
+        $auction = Auction::where('id', $auction_ref)->where('rejectionFlag', 0)->where('approveFlag', 0)->where('deleteFlag', 0)->first();
+
+        if (!$auction) {
+            return redirect()->back()->with('error', "Fail to Reject Delete Auction.");
+        }
+
+        $auction->modifyingBy = null;
+        $auction->modifyingFlag = 0;
+        $auction->modifyingDate = null;
+        $auction->modifyingData = null;
+        $auction->modifiedFlag = 0;
+        $auction->modifiedBy = null;
+        $auction->modifiedDate = null;
+        $auction->modifyingRejectionNote = $reason;
+        $auction->deletingBy = null;
+        $auction->deletingFlag = 0;
+
+        $approve_action = $auction->save();
+
+        if (!$approve_action) {
+            return redirect()->back()->with('error', "Fail to delete Auction.");
+        }
+
+        $activity = new ActivityLog();
+        $activity->date = now();
+        $activity->app = 'RITCC';
+        $activity->type = 'Delete Auction';
+        $activity->activity = auth()->user()->email . ' deleted Auction for Security';
+        $activity->username = auth()->user()->email;
+        $activity->save();
+
+        return redirect()->back()->with('success', "Auction Delete Rejected Successfully.");
     }
 
     /**
@@ -71,18 +618,6 @@ class AuctionManagementController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
     {
         //
     }

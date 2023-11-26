@@ -1,13 +1,13 @@
-{{-- <script src="{{ asset('assets/js/jquery-3.7.0.min.js') }}"></script>
-<script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
+{{-- <script src="{{ asset('assets/js/jquery-3.7.0.min.js') }}"></script> --}}
+{{-- <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script> --}}
+{{-- <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script> --}}
+{{-- <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/moment/moment.min.js') }}"></script>
-<script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
-<script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/datatables@1.10.18/media/js/jquery.dataTables.min.js"></script>
-<script src="{{ asset('assets/js/feather.min.js') }}"></script>
+<script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script> --}}
+{{-- <script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script> --}}
+{{-- <script src="https://cdn.jsdelivr.net/npm/datatables@1.10.18/media/js/jquery.dataTables.min.js"></script> --}}
+{{-- <script src="{{ asset('assets/js/feather.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js">
 </script>
@@ -86,61 +86,80 @@
 		form.addEventListener('submit', function(event) {
 			event.preventDefault(); // Prevent default form submission
 
-			// Check if the form is valid
-			if (form.checkValidity()) {
-				// Show SweetAlert confirmation
-				Swal.fire({
-					title: 'Are you sure?',
-					text: 'Are you sure you want to submit?',
-					icon: 'question',
-					showCancelButton: true,
-					confirmButtonColor: '#1D326C',
-					cancelButtonColor: '#969698',
-					confirmButtonText: 'Yes, go ahead',
-					cancelButtonText: 'No, cancel'
-				}).then((result) => {
-					if (result.isConfirmed) {
-						// If user confirms, disable the activate button
-						loadingButton.disabled = true;
-						// Show message indicating activation in progress
-						Swal.fire({
-							title: 'Please wait',
-							text: 'Activating attestation...',
-							icon: 'info',
-							allowOutsideClick: false,
-							allowEscapeKey: false,
-							showConfirmButton: false
-						});
-						form.submit();
-					}
-				});
-			}
-		});
-	});
+            // Check if the form is valid
+            if (form.checkValidity()) {
+                // Show SweetAlert confirmation
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Are you sure you want to submit?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#1D326C',
+                    cancelButtonColor: '#969698',
+                    confirmButtonText: 'Yes, go ahead',
+                    cancelButtonText: 'No, cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // If user confirms, disable the activate button
+                        loadingButton.disabled = true;
+
+                        // Show message indicating activation in progress
+                        Swal.fire({
+                            title: 'Please wait',
+                            text: 'Activating attestation...',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            showConfirmButton: false
+                        });
+
+                        // Simulate activation process (replace with actual logic)
+                        setTimeout(function() {
+                            // Upon successful activation, redirect or perform other actions
+                          form.submit();
+                            // window.location.href = '/success'; // Replace '/success' with your success route
+                        }, 3000); // Replace 3000 with the duration of your activation process in milliseconds
+                    }
+                });
+            }
+        });
+    });
 </script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-		var packageSelect = document.getElementById("packageSelect");
-		var accountNumber = document.getElementById("accountNumber");
-		// var FMDQ = document.getElementById("FMDQ");
+    document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('myForm');
+    const submitButton = document.getElementById('loading');
+    const form = document.getElementById('update');
+    const updateButton = document.getElementById('updateButton');
 
-		// Add an event listener to the package select element
-		packageSelect.addEventListener("change", function() {
-			var selectedPackageId = packageSelect.value;
-			if (selectedPackageId === "7" || selectedPackageId === "8" || selectedPackageId ===
-				"9" ||
-				selectedPackageId === "10" || selectedPackageId === "11" || selectedPackageId ===
-				"12") {
-				// Display the RTGS Account Number field
-				accountNumber.style.display = "block";
-				// Hide the FMDQ Account Number field
-				FMDQ.style.display = "none";
-			} else {
-				// Hide the FMDQ Account Number field
-				// FMDQ.style.display = "none";
-				accountNumber.style.display = "none";
-			}
-		});
-	});
+  form.addEventListener('submit', function(event) {
+    //
+    updateButton.disabled = true;
+        // updateButton.innerHTML = 'Please wait...';
+    event.preventDefault(); // Prevent default form submission
+
+    // Check if the form is valid
+    if (form.checkValidity()) {
+      // Show SweetAlert confirmation
+      updateButton.disabled = true;
+      updateButton.innerHTML = 'Please wait...';
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Are you sure you want to submit?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#1D326C',
+        cancelButtonColor: '#969698',
+        confirmButtonText: 'Yes, go ahead',
+        cancelButtonText:'No, cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // If user confirms, submit the form
+          form.submit();
+        }
+      });
+    }
+  });
+});
 </script>
