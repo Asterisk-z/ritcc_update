@@ -211,8 +211,6 @@
                                         <th>Code</th>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        {{-- <th>Inputter</th> --}}
-                                        {{-- <th>Authoriser</th> --}}
                                         <th>Date Created</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -266,11 +264,7 @@
                                                                 data-bs-target="#delete{{ $institution->ID }}"
                                                                 href=""><i class="far fa-trash-alt me-2"></i>Delete</a>
                                                         </li>
-
                                                         @endif
-
-
-
                                                     </ul>
                                                 </div>
                                             </div>

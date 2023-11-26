@@ -38,14 +38,20 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/activity-logs', [IQXController::class, 'activityLog'])->name('iqx.logs');
 
         Route::get('/auction-management', [AuctionManagementController::class, 'index'])->name('auction.mgt.dashboard');
-
+        // profile
         Route::get('/profile-management', [ProfileController::class, 'index'])->name('profile.index');
         Route::get('/profile-management/pending', [ProfileController::class, 'pending'])->name('profile.pending');
         Route::get('/profile-management/rejected', [ProfileController::class, 'rejected'])->name('profile.rejected');
         Route::get('/profile-management/approved', [ProfileController::class, 'approved'])->name('profile.approved');
         Route::post('/profile/create', [ProfileController::class, 'create'])->name('profile.create');
-        Route::post('/profile/update/{id}', [ProfileController::class, 'update'])->name('profile.update');
-        Route::post('/profile/delete/{id}', [ProfileController::class, 'delete'])->name('profile.delete');
+        // authorise create
+        Route::post('/profile/create/approve/{id}', [ProfileController::class, 'approveCreate'])->name('profile.approveCreate');
+        Route::post('/profile/create/reject/{id}', [ProfileController::class, 'rejectCreate'])->name('profile.rejectCreate');
+        // authorise delete for profile
+        // Route::post('/profile/delete/approve/{id}', [ProfileController::class, 'approveDelete'])->name('profile.approveDelete');
+        // Route::post('/profile/delete/reject/{id}', [ProfileController::class, 'rejectDelete'])->name('profile.rejectDelete');
+
+
         // Institution
         Route::get('/institution-management', [InstitutionController::class, 'index'])->name('institution.index');
         Route::get('/institution-management/pending', [InstitutionController::class, 'pending'])->name('institution.pending');

@@ -79,7 +79,6 @@
                 </div>
             </div>
         </div>
-        {{-- tables --}}
         {{-- --}}
         <div class="page-header">
             <div class="content-page-header">
@@ -132,8 +131,7 @@
                                         {{-- --}}
                                         <div class="col-md-6 mb-3">
                                             <label for="validationCustom01">Package</label>
-                                            <select name="package" id="validationCustom01" class="form-control"
-                                                required>
+                                            <select name="package" id="packageSelect" class="form-control" required>
                                                 <option value="">--Select--</option>
                                                 @foreach ($packages as $package)
                                                 <option value="{{ $package->ID }}">{{ $package->Name }}</option>
@@ -151,7 +149,8 @@
                                                 <option value="">--Select--</option>
                                                 @foreach ($institutions as $institution)
                                                 <option value="{{ $institution->ID }}">{{ $institution->institutionName
-                                                    }}</option>
+                                                    }}
+                                                </option>
                                                 @endforeach
                                             </select>
                                             <div class="invalid-feedback">
@@ -174,6 +173,57 @@
                                                 This field is required
                                             </div>
                                         </div>
+                                        {{-- --}}
+                                        {{-- <div class="col-lg-12 mb-3">
+                                            <div class="form-group">
+                                                <label for="role">RTGS Account
+                                                    Number</label>
+                                                <input type="number" class="form-control" min="1" name="RTGS"
+                                                    placeholder="Leave empty if profile is an FMDQ Profile">
+                                                <div class="invalid-feedback">
+                                                    This field is required
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label for="role">FMDQ Depository
+                                                    Custodian Account Number</label>
+                                                <input type="number" class="form-control" min="1"
+                                                    placeholder="Leave empty if profile is an FMDQ Profile" name="FMDQ">
+                                                <div class="invalid-feedback">
+                                                    This field is required
+                                                </div>
+                                            </div>
+                                        </div> --}}
+                                        <div id="accountNumber" style="display: none;">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="role">RTGS Account
+                                                        Number</label>
+                                                    <input type="number" class="form-control" min="0" name="RTGS"
+                                                        placeholder="Leave empty if profile is an FMDQ Profile"
+                                                        required>
+                                                    <div class="invalid-feedback">
+                                                        This field is required
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="role">FMDQ Depository
+                                                        Custodian Account Number</label>
+                                                    <input type="number" class="form-control" min="0"
+                                                        placeholder="Leave empty if profile is an FMDQ Profile"
+                                                        name="FMDQ" required>
+                                                    <div class="invalid-feedback">
+                                                        This field is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -194,16 +244,16 @@
                                     aria-hidden="true"></i>All</a>
                         </li>
                         <li>
-                            <a class="btn btn-outline-primary" href="add-pages.html"><i class="fa fa-pause me-2"
-                                    aria-hidden="true"></i>Pending</a>
+                            <a class="btn btn-outline-primary" href="{{ route('profile.pending') }}"><i
+                                    class="fa fa-pause me-2" aria-hidden="true"></i>Pending</a>
                         </li>
                         <li>
-                            <a class="btn btn-outline-primary" href="add-pages.html"><i class="fa fa-check me-2"
-                                    aria-hidden="true"></i>Approved</a>
+                            <a class="btn btn-outline-primary" href="{{ route('profile.approved') }}"><i
+                                    class="fa fa-check me-2" aria-hidden="true"></i>Approved</a>
                         </li>
                         <li>
-                            <a class="btn btn-outline-primary" href="add-pages.html"><i class="fa fa-times me-2"
-                                    aria-hidden="true"></i>Rejected</a>
+                            <a class="btn btn-outline-primary" href="{{ route('profile.rejected') }}"><i
+                                    class="fa fa-times me-2" aria-hidden="true"></i>Rejected</a>
                         </li>
                     </ul>
                 </div>
@@ -211,21 +261,17 @@
         </div>
         {{-- --}}
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-lg-12">
                 <div class="card-table">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="datatable table table-center table-stripped table-bordered" id="example2">
+                            <table class="datatable table table-center table-stripped table-bordered" id="example1">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
                                         <th>Contact</th>
                                         <th>Package</th>
-                                        <th>Institution</th>
-                                        {{-- <th>Inputter</th> --}}
-                                        {{-- <th>Authoriser</th> --}}
-                                        {{-- <th>Date Created</th> --}}
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -237,22 +283,16 @@
                                     @forelse ($profiles as $profile)
                                     <tr>
                                         <td>{{ $i++; }}</td>
-                                        <td>
-                                            <h2 class="table-avatar">{{ $profile->firstName.' '.$profile->lastName }}
-                                            </h2>
-                                        </td>
+                                        <td>{{ $profile->firstName .' '.$profile->lastName }}</td>
                                         <td>{{ $profile->email }}</td>
                                         <td>{{ $profile->package->Name }}</td>
-                                        <td>{{ $profile->institution->institutionName }}</td>
-                                        {{-- <td>{{ date('F d, Y',strtotime($profile->inputDate))}}</td> --}}
+                                        <td>{{ date('F d, Y',strtotime($profile->inputDate))}}</td>
                                         @if ($profile->status ==='0')
                                         <td><span class="badge bg-3">Pending Approval</span></td>
                                         @elseif($profile->status ==='1')
                                         <td><span class="badge bg-1">Approved</span></td>
                                         @elseif($profile->status ==='2')
                                         <td><span class="badge bg-2">Rejected</span></td>
-                                        @elseif ($profile->status ==='3')
-                                        <td><span class="badge bg-3">Pending Update</span></td>
                                         @elseif($profile->status ==='4')
                                         <td><span class="badge bg-3">Pending Delete</span></td>
                                         @endif
@@ -263,25 +303,29 @@
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul>
                                                         <li>
-                                                            <a class="dropdown-item" href="edit-user.html"><i
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#view{{ $profile->id }}" href=""><i
                                                                     class="far fa-edit me-2"></i>View</a>
                                                         </li>
+                                                        @if (!($profile->status === '0'|| $profile->status ===
+                                                        '4'))
                                                         <li>
-                                                            <a class="dropdown-item" href="edit-user.html"><i
-                                                                    class="far fa-edit me-2"></i>Edit</a>
+                                                            <a class="dropdown-item" class="dropdown-item"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#delete{{ $profile->id }}" href=""><i
+                                                                    class="far fa-trash-alt me-2"></i>Deactivate</a>
                                                         </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                data-bs-toggle="modal" data-bs-target="#delete_modal"><i
-                                                                    class="far fa-trash-alt me-2"></i>Delete</a>
-                                                        </li>
+                                                        @endif
                                                     </ul>
                                                 </div>
                                             </div>
                                         </td>
+                                        {{-- deactivate user --}}
                                     </tr>
                                     @empty
-                                    {{ 'No information available yet' }}
+                                    <tr>
+                                        <td>{{ 'No information available yet' }}</td>
+                                    </tr>
                                     @endforelse
                                 </tbody>
                             </table>
