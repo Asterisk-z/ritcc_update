@@ -174,11 +174,11 @@
                                             </div>
                                         </div>
                                         {{-- --}}
-                                        {{-- <div class="col-lg-12 mb-3">
+                                        <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label for="role">RTGS Account
                                                     Number</label>
-                                                <input type="number" class="form-control" min="1" name="RTGS"
+                                                <input type="number" class="form-control" min="0" name="RTGS"
                                                     placeholder="Leave empty if profile is an FMDQ Profile">
                                                 <div class="invalid-feedback">
                                                     This field is required
@@ -190,14 +190,14 @@
                                             <div class="form-group">
                                                 <label for="role">FMDQ Depository
                                                     Custodian Account Number</label>
-                                                <input type="number" class="form-control" min="1"
+                                                <input type="number" class="form-control" min="0"
                                                     placeholder="Leave empty if profile is an FMDQ Profile" name="FMDQ">
                                                 <div class="invalid-feedback">
                                                     This field is required
                                                 </div>
                                             </div>
-                                        </div> --}}
-                                        <div id="accountNumber" style="display: none;">
+                                        </div>
+                                        {{-- <div id="accountNumber" style="display: none;">
                                             <div class="col-12">
                                                 <div class="form-group">
                                                     <label for="role">RTGS Account
@@ -223,11 +223,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary" id="loadingButton">Create
+                                    <button type="submit" class="btn btn-primary">Create
                                         Profile</button>
                                     &nbsp;&nbsp;&nbsp;
                                     <button type="button" class="btn btn-secondary"
@@ -272,6 +272,7 @@
                                         <th>Name</th>
                                         <th>Contact</th>
                                         <th>Package</th>
+                                        <th>Created At</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -280,7 +281,7 @@
                                     @php
                                     $i = 1;
                                     @endphp
-                                    @forelse ($profiles as $profile)
+                                    @foreach ($profiles as $profile)
                                     <tr>
                                         <td>{{ $i++; }}</td>
                                         <td>{{ $profile->firstName .' '.$profile->lastName }}</td>
@@ -322,11 +323,7 @@
                                         </td>
                                         {{-- deactivate user --}}
                                     </tr>
-                                    @empty
-                                    <tr>
-                                        <td>{{ 'No information available yet' }}</td>
-                                    </tr>
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

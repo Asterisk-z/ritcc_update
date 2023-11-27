@@ -48,7 +48,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-lg btn-block btn-primary w-100" type="submit">Login</button>
+                                <button class="btn btn-lg btn-block btn-primary w-100" type="submit"
+                                    onclick="changeText(this);">Login</button>
                             </form>
                         </div>
                     </div>
