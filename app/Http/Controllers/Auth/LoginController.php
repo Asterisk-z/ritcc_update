@@ -104,22 +104,25 @@ class LoginController extends Controller
             return redirect()->route('changePassword')->with('info', 'Kindly update your password.');
         }
         // super admin
-        if (auth()->user()->type == 'super') {
+        if (auth()->user()->type === 'super') {
             return redirect()->route('iqx.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
         // inputter and authoriser
-        else if ((auth()->user()->type == 'inputter' || auth()->user()->type == 'authoriser')) {
-            // dd('Inputter');
+        else if ((auth()->user()->type === 'inputter' || auth()->user()->type === 'authoriser')) {
             return redirect()->route('profile.index')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
         // auctioneer
-        elseif (auth()->user()->type == 'auctioneer') {
+        elseif (auth()->user()->type === 'auctioneer') {
             return redirect()->route('auction.mgt.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
         // firs
-        elseif (auth()->user()->type == 'firs') {
-            return redirect()->route('auction.mgt.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
-        }
+        // elseif (auth()->user()->type == 'firs') {
+        //     return redirect()->route('auction.mgt.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
+        // }
+        //
+        // elseif (auth()->user()->type == 'bidder') {
+        //     return redirect()->route('auction.mgt.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
+        // }
     }
 
     //

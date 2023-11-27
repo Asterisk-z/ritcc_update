@@ -31,12 +31,12 @@
                                 @csrf
                                 <div class="form-group">
                                     <label class="form-control-label">Email Address</label>
-                                    <input type="email" name="email" class="form-control">
+                                    <input type="email" name="email" class="form-control" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-control-label">Password</label>
                                     <div class="pass-group">
-                                        <input type="password" name="password" class="form-control pass-input">
+                                        <input type="password" name="password" class="form-control pass-input" required>
                                         <span class="fas fa-eye toggle-password"></span>
                                         {{-- <i class="bi bi-eye-slash"></i> --}}
                                     </div>
