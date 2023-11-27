@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','RITCC Institution Management')
+@section('title','RITCC Profile Management')
 
 @section('content')
 <div class="page-wrapper">
@@ -96,8 +96,8 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('profile.create') }}" method="POST" class="needs-validation"
-                                novalidate>
+                            <form action="{{ route('profile.create') }}" method="POST" id="myForm"
+                                class="needs-validation" novalidate>
                                 @csrf
                                 <div class="modal-body">
                                     <div class="form-row row">
@@ -173,15 +173,14 @@
                                                 This field is required
                                             </div>
                                         </div>
-
+                                        {{-- --}}
                                         <div id="accountNumber" style="display: none;">
                                             <div class="col-12">
                                                 <div class="form-group">
                                                     <label for="role">RTGS Account
                                                         Number</label>
                                                     <input type="number" class="form-control" min="0" name="RTGS"
-                                                        placeholder="Leave empty if profile is an FMDQ Profile"
-                                                        required>
+                                                        placeholder="Leave empty if profile is an FMDQ Profile">
                                                     <div class="invalid-feedback">
                                                         This field is required
                                                     </div>
@@ -194,7 +193,7 @@
                                                         Custodian Account Number</label>
                                                     <input type="number" class="form-control" min="0"
                                                         placeholder="Leave empty if profile is an FMDQ Profile"
-                                                        name="FMDQ" required>
+                                                        name="FMDQ">
                                                     <div class="invalid-feedback">
                                                         This field is required
                                                     </div>
@@ -204,7 +203,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary" id="loadingButton">Create
+                                    <button type="submit" class="btn btn-primary">Create
                                         Profile</button>
                                     &nbsp;&nbsp;&nbsp;
                                     <button type="button" class="btn btn-secondary"
@@ -217,12 +216,12 @@
                 <div class="list-btn">
                     <ul class="filter-list">
                         <li>
-                            <a class="btn btn-primary" href="{{ route('profile.index') }}"><i class="fas fa-users me-2"
-                                    aria-hidden="true"></i>All</a>
+                            <a class="btn btn-outline-primary" href="{{ route('profile.index') }}"><i
+                                    class="fas fa-users me-2" aria-hidden="true"></i>All</a>
                         </li>
                         <li>
-                            <a class="btn btn-outline-primary" href="{{ route('profile.pending') }}"><i
-                                    class="fa fa-pause me-2" aria-hidden="true"></i>Pending</a>
+                            <a class="btn btn-primary" href="{{ route('profile.pending') }}"><i class="fa fa-pause me-2"
+                                    aria-hidden="true"></i>Pending</a>
                         </li>
                         <li>
                             <a class="btn btn-outline-primary" href="{{ route('profile.approved') }}"><i
@@ -249,7 +248,7 @@
                                         <th>Name</th>
                                         <th>Contact</th>
                                         <th>Package</th>
-                                        <th>Institution</th>
+                                        <th>Created At</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -258,10 +257,10 @@
                                     @php
                                     $i = 1;
                                     @endphp
-                                    @forelse ($profiles as $profile)
+                                    @foreach ($profiles as $profile)
                                     <tr>
                                         <td>{{ $i++; }}</td>
-                                        <td>{{ $profile->firstName .' '.$profile->lastName }}</td>
+                                        <td>{{ $profile->firstName.' '.$profile->lastName }}</td>
                                         <td>{{ $profile->email }}</td>
                                         <td>{{ $profile->package->Name }}</td>
                                         <td>{{ date('F d, Y',strtotime($profile->inputDate))}}</td>
@@ -300,6 +299,26 @@
                                                                 data-bs-target="#reject{{ $profile->id }}" href=""><i
                                                                     class="fa fa-times me-2"></i>Reject</a>
                                                         </li>
+                                                        @elseif ($profile->status === '3')
+                                                        <li>
+                                                            {{--
+                                                        <li>
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#viewUpdate{{ $profile->id }}"
+                                                                href=""><i class="far fa-edit me-2"></i>View Update</a>
+                                                        </li> --}}
+                                                        <a class="dropdown-item" data-bs-toggle="modal"
+                                                            data-bs-target="#approveUpdate{{ $profile->id }}" href=""><i
+                                                                class="fa fa-check me-2"></i>Approve
+                                                            Update</a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item" class="dropdown-item"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#rejectUpdate{{ $profile->id }}"
+                                                                href=""><i class="fa fa-times me-2"></i>Reject
+                                                                Update</a>
+                                                        </li>
                                                         @elseif ($profile->status === '4')
                                                         <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal"
@@ -315,11 +334,69 @@
                                                                 Delete</a>
                                                         </li>
                                                         @endif
+
                                                         @endif
                                                     </ul>
                                                 </div>
                                             </div>
                                         </td>
+                                        {{-- view modal --}}
+                                        <div id="view{{ $profile->id }}" class="modal fade" tabindex="-1" role="dialog"
+                                            aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        {{-- <h4 class="modal-title" id="standard-modalLabel">View
+                                                        </h4> --}}
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                        <div class="card-text">
+                                                            <h6>NAME: <strong>{{ $profile->firstName.'
+                                                                    '.$profile->lastName }}</strong></h6>
+                                                            <br>
+                                                            <h6>CONTACT EMAIL: <strong>{{ $profile->email }}</strong>
+                                                            </h6>
+                                                            <br>
+                                                            <h6>CONTACT PHONE NUMBER: <strong>{{ $profile->mobile ?? 'No
+                                                                    information available'
+                                                                    }}</strong>
+                                                            </h6>
+                                                            <br>
+                                                            <h6>PACKAGE: <strong>{{ $profile->package->Name ?? 'No
+                                                                    information available'
+                                                                    }}</strong>
+                                                            </h6>
+                                                            <br>
+                                                            <h6>INSTIUTION: <strong>{{
+                                                                    $profile->institution->institutionName ?? 'No
+                                                                    information available'
+                                                                    }}</strong>
+                                                            </h6>
+                                                            <br>
+                                                            <h6>CREATED BY: <strong>{{
+                                                                    $profile->inputter ?? 'No
+                                                                    information available'
+                                                                    }}</strong>
+                                                            </h6>
+                                                            <br>
+                                                            <h6>CREATED DATE: <strong>{{
+                                                                    date('F d, Y',strtotime( $profile->inputDate)) ??
+                                                                    'No
+                                                                    information available'
+                                                                    }}</strong>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary btn-lg"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         {{-- approve --}}
                                         <div id="approve{{ $profile->id }}" class="modal fade" tabindex="-1"
                                             role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
@@ -332,14 +409,16 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('profile.approveCreate',$profile->id) }}"
-                                                        method="POST" class="needs-validation" id="myForm" novalidate>
+                                                        method="POST" class="needs-validation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
-                                                            <h4>Are you sure you want to approve this profile?</h4>
+                                                            <h6 class="text-center">Are you sure you want to approve
+                                                                this
+                                                                profile?</h6>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Approve</button>
+                                                                onclick="changeText(this);">Approve</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
@@ -354,22 +433,25 @@
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="standard-modalLabel">Reject
-                                                        </h4>
+                                                        {{-- <h4 class="modal-title" id="standard-modalLabel">Approve
+                                                        </h4> --}}
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('profile.rejectCreate',$profile->id) }}"
-                                                        method="POST" class="needs-validation" id="myForm" novalidate>
+                                                        method="POST" class="needs-validation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
+                                                            <h6 class="text-center">Are you sure you want to reject
+                                                                this
+                                                                profile?</h6>
                                                             <label for="">Reason for Rejection</label>
-                                                            <input type="text" name="reason" class="form-control"
+                                                            <input type="text" class="form-control" name="reason"
                                                                 required>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Reject</button>
+                                                                onclick="changeText(this);">Reject</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
@@ -379,11 +461,7 @@
                                             </div>
                                         </div>
                                     </tr>
-                                    @empty
-                                    <tr>
-                                        <td>{{ 'No information available yet' }}</td>
-                                    </tr>
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

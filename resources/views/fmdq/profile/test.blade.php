@@ -131,3 +131,20 @@
   });
 });
 </script>
+
+<table>
+    <tr>
+        <td>
+            <div style="background-color: aliceblue; border-radius: 10px; ">
+                <p>
+                <h4>Password Policy</h4>
+                </p>
+                <p><img src="img/bullet2.png"> Password must contain at least six characters</p>
+                <p><img src="img/bullet2.png"> Password must be different from username</p>
+                <p><img src="img/bullet2.png"> Password must contain at least one number (0-9)</p>
+                <p><img src="img/bullet2.png"> Password must contain at least one lowercase letter (a-z)</p>
+                <p><img src="img/bullet2.png"> Password must contain at least one uppercase letter (A-Z)</p>
+            </div>
+        </td>
+    </tr>
+</table>

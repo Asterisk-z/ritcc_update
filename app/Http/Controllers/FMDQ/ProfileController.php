@@ -5,6 +5,7 @@ namespace App\Http\Controllers\FMDQ;
 use App\Http\Controllers\Controller;
 use App\Mail\FMDQ\ApprovedMail;
 use App\Mail\FMDQ\CreateMail;
+use App\Mail\FMDQ\RejectedMail;
 use App\Models\ActivityLog;
 use App\Models\Institution;
 use App\Models\Package;
@@ -14,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+
+use function PHPUnit\Framework\assertNotTrue;
 
 class ProfileController extends Controller
 {
@@ -63,33 +66,35 @@ class ProfileController extends Controller
     public function rejected()
     {
         $user = Auth::user();
-        $page = 'Rejected Institutions';
-        $institutions = Institution::where('status', '2')->orderBy('CreatedDate', 'ASC')->get();
-        $all = Institution::count();
-        $approved = Institution::where('status', '1')->count();
-        $pending = Institution::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();
-        $rejected = Institution::where('status', '2')->count();
+        $page = 'Rejected Profiles';
+        $profiles = Profile::where('status', '2')->orderBy('inputDate', 'ASC')->get();
+        $all = Profile::count();
+        $approved = Profile::where('status', '1')->count();
+        $pending = Profile::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();
+        $rejected = Profile::where('status', '2')->count();
         $authorisers = Profile::where('status', '1')->where(function ($query) {
             $query->where('Package', '3')->orWhere('Package', '5');
         })->get();
-
-        return view('fmdq.profile.rejected', compact('user', 'institutions', 'all', 'pending', 'approved', 'rejected', 'page', 'authorisers'));
+        $packages = Package::all();
+        $institutions = Institution::where('status', '1')->get();
+        return view('fmdq.profile.rejected', compact('user', 'profiles', 'all', 'pending', 'approved', 'rejected', 'page', 'authorisers', 'packages', 'institutions'));
     }
 
     public function approved()
     {
         $user = Auth::user();
-        $page = 'Approved Institutions';
-        $institutions = Institution::where('status', '1')->orderBy('CreatedDate', 'ASC')->get();
-        $all = Institution::count();
-        $approved = Institution::where('status', '1')->count();
-        $pending = Institution::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();
-        $rejected = Institution::where('status', '2')->count();
+        $page = 'Approved Profiles';
+        $profiles = Profile::where('status', '1')->orderBy('inputDate', 'ASC')->get();
+        $all = Profile::count();
+        $approved = Profile::where('status', '1')->count();
+        $pending = Profile::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();
+        $rejected = Profile::where('status', '2')->count();
         $authorisers = Profile::where('status', '1')->where(function ($query) {
             $query->where('Package', '3')->orWhere('Package', '5');
         })->get();
-
-        return view('fmdq.profile.approved', compact('user', 'institutions', 'all', 'pending', 'approved', 'rejected', 'page', 'authorisers'));
+        $packages = Package::all();
+        $institutions = Institution::where('status', '1')->get();
+        return view('fmdq.profile.approved', compact('user', 'profiles', 'all', 'pending', 'approved', 'rejected', 'page', 'authorisers', 'packages', 'institutions'));
     }
 
     // inputter
@@ -112,9 +117,9 @@ class ProfileController extends Controller
             $fmdqNumber = $request->input('FMDQ');
             $rtgsNumber = $request->input('RTGS');
             // default password
-            $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            $uniqueString = substr(str_shuffle($characters), 0, 7);
-            $defaultPassword = Hash::make($uniqueString);
+            // $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            // $uniqueString = substr(str_shuffle($characters), 0, 7);
+            // $defaultPassword = Hash::make($uniqueString);
             // type
             if ($package === '1') {
                 $type = 'super';
@@ -143,7 +148,7 @@ class ProfileController extends Controller
             // $profile->approvedBy = $authoriser;
             $profile->status = $status;
             $profile->passwordStatus = $passwordStatus;
-            $profile->defaultPassword = $defaultPassword;
+            // $profile->defaultPassword = $defaultPassword;
             $profile->type = $type;
             $profile->fmdqNumber = $fmdqNumber;
             $profile->rtgsNumber = $rtgsNumber;
@@ -220,7 +225,7 @@ class ProfileController extends Controller
         //
         $profile = Profile::findOrFail($id);
         // $approver = Profile::where('email', $authoriser)->first();
-        $approveCreate = Profile::where('id', $id)->update(['status' => 1, 'defaultPassword' => $defaultPassword, 'passwordStatus' => '0', 'authoriserDate' => now(), 'authoriser' => $user->email]);
+        $approveCreate = Profile::where('id', $id)->update(['status' => 1, 'defaultPassword' => $defaultPassword, 'password' => $defaultPassword, 'passwordStatus' => false, 'authoriserDate' => now(), 'authoriser' => $user->email]);
         //
         if ($approveCreate) {
             // log activity
@@ -246,35 +251,34 @@ class ProfileController extends Controller
             return redirect()->back()->with('success', "New Profile has been approved.");
         }
     }
+
     // reject create
     public function rejectCreate(Request $request, $id)
     {
         $user = Auth::user();
         //
-        $institution = Institution::findOrFail($id);
-        $rejectCreate = Institution::where('ID', $id)->update(['status' => 2, 'reason' => $request->reason, 'approvedBy' => $user->email, 'approvedDate' => now()]);
+        $profile = Profile::findOrFail($id);
+        $rejectCreate = Profile::where('id', $id)->update(['status' => 2, 'rejectReason' => $request->reason, 'authoriser' => $user->email, 'authoriserDate' => now()]);
         if ($rejectCreate) {
             // log activity
             $activity = new ActivityLog();
             $activity->date = now();
             $activity->app = 'RITCC';
-            $activity->type = 'Reject Institution';
-            $activity->activity = $user->email . ' approved institution: ' . $institution->institutionName . '.';
+            $activity->type = 'Reject New Profile';
+            $activity->activity = $user->email . ' rejected a new profile: ' . $profile->firstName . ' ' . $profile->lastName . '.';
             $activity->username = $user->email;
             $log = $activity->save();
         }
         if ($log) {
             // mail
-            // $approver = Profile::where('email', $authoriser)->first();
-            // $update = ([
-            //     'name' => $approver->FirstName,
-            //     'type' => 'institution',
-            //     'previous' => $previous->institutionName,
+            $rejected = ([
+                'name' => $user->firstName,
+                'type' => 'profile',
+                'reason' => $request->reason
 
-            // ]);
-            // Mail::to($approver->email)->send(new UpdateMail($update));
-
-            return redirect()->back()->with('success', "Institution has been rejected.");
+            ]);
+            Mail::to($profile->inputter)->send(new RejectedMail($rejected));
+            return redirect()->back()->with('success', "New Profile has been rejected.");
         }
     }
 
