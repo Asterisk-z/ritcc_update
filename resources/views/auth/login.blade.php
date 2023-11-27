@@ -61,6 +61,33 @@
     <script src="{{ asset('assets/js/jquery-3.7.0.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     {{-- <script src="{{ asset('assets/js/script.js') }}"></script> --}}
+    <script>
+        @if ($errors->any())
+Swal.fire({
+icon: 'error',
+title: 'Validation Error',
+html: `{!! implode("<br>", $errors->all()) !!}`,
+showConfirmButton: true,
+confirmButtonColor: "#23346A",
+});
+ @elseif (session('success'))
+Swal.fire({
+icon: 'success',
+title: 'Success',
+text: '{{ session('success') }}',
+showConfirmButton: true,
+confirmButtonColor: "#23346A",
+});
+@elseif (session('info'))
+Swal.fire({
+icon: 'info',
+// title: 'Informa',
+text: '{{ session('info') }}',
+showConfirmButton: true,
+confirmButtonColor: "#23346A",
+});
+@endif
+    </script>
 </body>
 
 </html>

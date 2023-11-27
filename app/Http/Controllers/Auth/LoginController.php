@@ -33,10 +33,7 @@ class LoginController extends Controller
         if (!$attempt_login) {
             return redirect()->route('login')->with('error', 'Invalid credentials.');
         }
-        // if user has not changed their password
-        if (auth()->user()->passwordStatus == '0') {
-            return redirect()->route('changePassword')->with('info', 'Kindly update your password to begin.');
-        }
+
         // super admin
         if (auth()->user()->type == 'super') {
             return redirect()->route('iqx.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
@@ -45,6 +42,9 @@ class LoginController extends Controller
         else if ((auth()->user()->type == 'inputter' || auth()->user()->type == 'authoriser')) {
             // dd('Inputter');
             return redirect()->route('profile.index')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
+        } else if (auth()->user()->passwordStatus === '0') {
+            // if user has not changed their password
+            return redirect()->route('changePassword')->with('info', 'Kindly update your password to begin.');
         }
         // firs
         // auctioneer
