@@ -25,8 +25,7 @@
                             Management</span>
                 </li>
                 <li class="">
-                    <a href="#"><i class="fa-solid fa-key"></i> <span> Certificate
-                            Management</span>
+                    <a href="{{ route('certificate.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span> Certificate Management</span>
                 </li>
                 <li class="">
                     <a href="{{ route('auction.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span> Auction Management</span>

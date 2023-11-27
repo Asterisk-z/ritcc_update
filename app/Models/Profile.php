@@ -47,4 +47,9 @@ class Profile extends Authenticatable
     {
         return $this->hasMany(Security::class, 'auctioneerRef', 'id');
     }
+
+    public function user_inst()
+    {
+        return $this->hasOne(Institution::class, 'id', 'Institution');
+    }
 }

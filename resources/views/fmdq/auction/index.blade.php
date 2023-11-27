@@ -39,13 +39,6 @@
                                                 This field is required
                                             </div>
                                         </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="validationCustom01">Offer Amount ((₦‘mm)</label>
-                                            <input type="number" name="amount" class="form-control" id="validationCustom01" required>
-                                            <div class="invalid-feedback">
-                                                This field is required
-                                            </div>
-                                        </div>
                                         {{-- --}}
                                         <div class="col-md-6 mb-3">
                                             <label for="validationCustom01">Offer Date</label>
@@ -70,6 +63,14 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3">
+                                            <label for="validationCustom01">Bids Result Time</label>
+                                            <input type="datetime-local" name="bids_result_time" class="form-control" id="validationCustom01" required>
+                                            <div class="invalid-feedback">
+                                                This field is required
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
                                             <label for="validationCustom01">Minimum Rate</label>
                                             <input type="number" name="minimum_rate" class="form-control" id="validationCustom01" required>
                                             <div class="invalid-feedback">
@@ -85,13 +86,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-12 mb-3">
-                                            <label for="validationCustom01">Bids Result Time</label>
-                                            <input type="datetime-local" name="bids_result_time" class="form-control" id="validationCustom01" required>
-                                            <div class="invalid-feedback">
-                                                This field is required
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -220,13 +214,6 @@
                                                         <input type='hidden' name='securityId' value="{{ $auction->securityRef }}" />
                                                         <div class="modal-body">
                                                             <div class="form-row row">
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label for="validationCustom01">Offer Amount ((₦‘mm)</label>
-                                                                    <input type="number" name="amount" class="form-control" id="validationCustom01" value="{{ $auction->offerAmount }}" required>
-                                                                    <div class="invalid-feedback">
-                                                                        This field is required
-                                                                    </div>
-                                                                </div>
                                                                 {{-- --}}
                                                                 <div class="col-md-6 mb-3">
                                                                     <label for="validationCustom01">Offer Date</label>
@@ -251,6 +238,13 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-6 mb-3">
+                                                                    <label for="validationCustom01">Bids Result Time</label>
+                                                                    <input type="datetime-local" name="bids_result_time" class="form-control" id="validationCustom01" value="{{ $auction->bidResultTime }}" required>
+                                                                    <div class="invalid-feedback">
+                                                                        This field is required
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6 mb-3">
                                                                     <label for="validationCustom01">Minimum Rate</label>
                                                                     <input type="number" name="minimum_rate" class="form-control" id="validationCustom01" value="{{ $auction->minimumRate }}" required>
                                                                     <div class="invalid-feedback">
@@ -266,13 +260,6 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-md-12 mb-3">
-                                                                    <label for="validationCustom01">Bids Result Time</label>
-                                                                    <input type="datetime-local" name="bids_result_time" class="form-control" id="validationCustom01" value="{{ $auction->bidResultTime }}" required>
-                                                                    <div class="invalid-feedback">
-                                                                        This field is required
-                                                                    </div>
-                                                                </div>
                                                             </div>
 
                                                         </div>
