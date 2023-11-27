@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FMDQ\AuctionManagementController;
+use App\Http\Controllers\FMDQ\CertificateManagementController;
 use App\Http\Controllers\FMDQ\InstitutionController;
 use App\Http\Controllers\FMDQ\IQXController;
 use App\Http\Controllers\FMDQ\ProfileController;
@@ -82,6 +83,22 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/auction-management/delete', [AuctionManagementController::class, 'delete'])->name('auction.mgt.delete');
         Route::post('/auction-management/approve/delete', [AuctionManagementController::class, 'approveDelete'])->name('auction.mgt.approve.delete');
         Route::post('/auction-management/reject/delete', [AuctionManagementController::class, 'rejectDelete'])->name('auction.mgt.reject.delete');
+        
+        // Certificate
+        Route::get('/certificate-management', [CertificateManagementController::class, 'index'])->name('certificate.mgt.dashboard');
+        Route::get('/certificate-management/pending', [CertificateManagementController::class, 'pendingIndex'])->name('certificate.mgt.pending');
+        Route::get('/certificate-management/rejected', [CertificateManagementController::class, 'rejectedIndex'])->name('certificate.mgt.rejected');
+        Route::get('/certificate-management/approved', [CertificateManagementController::class, 'approvedIndex'])->name('certificate.mgt.approved');
+        Route::post('/certificate-management/create', [CertificateManagementController::class, 'create'])->name('certificate.mgt.create');
+        Route::post('/certificate-management/approve/create', [CertificateManagementController::class, 'approveCreate'])->name('certificate.mgt.approve.create');
+        Route::post('/certificate-management/reject/create', [CertificateManagementController::class, 'rejectCreate'])->name('certificate.mgt.reject.create');
+        Route::post('/certificate-management/update', [CertificateManagementController::class, 'update'])->name('certificate.mgt.update');
+        Route::post('/certificate-management/approve/update', [CertificateManagementController::class, 'approveUpdate'])->name('certificate.mgt.approve.update');
+        Route::post('/certificate-management/reject/update', [CertificateManagementController::class, 'rejectUpdate'])->name('certificate.mgt.reject.update');
+        Route::post('/certificate-management/delete', [CertificateManagementController::class, 'delete'])->name('certificate.mgt.delete');
+        Route::post('/certificate-management/approve/delete', [CertificateManagementController::class, 'approveDelete'])->name('certificate.mgt.approve.delete');
+        Route::post('/certificate-management/reject/delete', [CertificateManagementController::class, 'rejectDelete'])->name('certificate.mgt.reject.delete');
+
     });
     //
     Route::middleware(['isAuthoriser'])->group(function () {

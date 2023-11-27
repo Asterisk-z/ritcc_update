@@ -5,7 +5,6 @@ namespace App\Http\Controllers\FMDQ;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\Auction;
-use App\Models\Profile;
 use App\Models\Security;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -90,7 +89,6 @@ class AuctionManagementController extends Controller
     {
         $validated = $request->validate([
             'securityId' => 'bail|required|unique:tblAuction,securityRef',
-            'amount' => 'bail|required',
             'offerDate' => 'bail|required',
             'auction_start_time' => 'bail|required',
             'bids_close_time' => 'bail|required',
@@ -104,7 +102,6 @@ class AuctionManagementController extends Controller
         }
 
         $securityId = $request->input('securityId');
-        $amount = $request->input('amount');
         $offerDate = Carbon::create($request->input('offerDate'));
         $auction_start_time = Carbon::create($request->input('auction_start_time'));
         $bids_close_time = Carbon::create($request->input('bids_close_time'));
@@ -124,7 +121,7 @@ class AuctionManagementController extends Controller
         $auctions->securityCode = $security->securityCode;
         $auctions->auctioneerRef = $security->auctioneerRef;
         $auctions->auctioneerEmail = $security->auctioneer->email;
-        $auctions->offerAmount = $amount;
+        $auctions->offerAmount = $security->offerAmount;
         $auctions->isinNumber = $security->isinNumber;
         $auctions->offerDate = $offerDate;
         $auctions->auctionStartTime = $auction_start_time;
@@ -266,7 +263,6 @@ class AuctionManagementController extends Controller
         $validated = $request->validate([
             'auction_ref' => 'bail|required|exists:tblAuction,id',
             'securityId' => 'bail|required|exists:tblAuction,securityRef',
-            'amount' => 'bail|required',
             'offerDate' => 'bail|required',
             'auction_start_time' => 'bail|required',
             'bids_close_time' => 'bail|required',
@@ -280,7 +276,6 @@ class AuctionManagementController extends Controller
         }
 
         $securityId = $request->input('securityId');
-        $amount = $request->input('amount');
         $offerDate = Carbon::create($request->input('offerDate'));
         $auction_start_time = Carbon::create($request->input('auction_start_time'));
         $bids_close_time = Carbon::create($request->input('bids_close_time'));
@@ -303,7 +298,7 @@ class AuctionManagementController extends Controller
         $auctions['securityCode'] = $security->securityCode;
         $auctions['auctioneerRef'] = $security->auctioneerRef;
         $auctions['auctioneerEmail'] = $security->auctioneer->email;
-        $auctions['offerAmount'] = $amount;
+        $auctions['offerAmount'] = $$security->offerAmount;
         $auctions['isinNumber'] = $security->isinNumber;
         $auctions['offerDate'] = $offerDate;
         $auctions['auctionStartTime'] = $auction_start_time;

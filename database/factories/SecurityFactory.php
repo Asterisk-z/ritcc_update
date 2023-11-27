@@ -21,6 +21,7 @@ class SecurityFactory extends Factory
             'issueDate' => $this->faker->date(),
             'transactionSettlementFeeRate' => $this->faker->randomDigit(),
             'status' => 1,
+            'offerAmount' => 5000,
             'auctioneerRef' => 7,
             'createdBy' => 'msg.inputter@fmdqgroup.com',
             'createdDate' => $this->faker->date(),
