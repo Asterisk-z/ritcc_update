@@ -15,8 +15,8 @@
 --}}
 <script src="{{ asset('assets/js/script.js') }}"></script>
 <script src="{{ asset('assets/js/form-validation.js') }}"></script>
-<script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+{{-- <script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script> --}}
+{{-- <script src="{{ asset('assets/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script> --}}
 {{-- <script src="{{ asset('assets/js/jquery-3.7.0.min.js') }}"></script> --}}
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -90,7 +90,7 @@
 	@endif
 </script>
 {{-- --}}
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
 		const form = document.getElementById('myForm');
 		// const loadingButton = document.getElementById('loadingButton'); // Replace with your button ID
@@ -123,7 +123,7 @@
                             allowEscapeKey: false,
                             showConfirmButton: false
                         });
-form.submit();
+                        form.submit();
                         // // Simulate activation process (replace with actual logic)
                         // setTimeout(function() {
                         //     // Upon successful activation, redirect or perform other actions
@@ -135,7 +135,7 @@ form.submit();
             }
         });
     });
-</script>
+</script> --}}
 
 {{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -169,7 +169,7 @@ form.submit();
     });
 </script> --}}
 
-<script>
+{{-- <script>
     document.addEventListener("DOMContentLoaded", function() {
 		var packageSelect = document.getElementById("packageSelect");
 		var accountNumber = document.getElementById("accountNumber");
@@ -193,4 +193,4 @@ form.submit();
 			}
 		});
 	});
-</script>
+</script> --}}

@@ -11,7 +11,7 @@
     </div>
     <div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
-
+            <br><br>
             <ul>
                 @if (auth()->user()->type ==='super')
                 <li class="">
@@ -26,7 +26,8 @@
                             Management</span>
                 </li>
                 <li class="">
-                    <a href="{{ route('certificate.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span> Certificate Management</span>
+                    <a href="{{ route('certificate.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span>
+                            Certificate Management</span>
                 </li>
                 <li class="">
                     <a href="{{ route('auction.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span> Auction
@@ -46,7 +47,7 @@
                 <li class="">
                     <a href="{{ route('iqx.logs') }}"><i class="fa fa-bullseye"></i> <span> Activity Logs</span>
                 </li>
-                <li class="submenu">
+                {{-- <li class="submenu">
                     <a href="#"><i class="fa-solid fa-gear"></i></i> <span> System Settings</span> <span
                             class="menu-arrow"></span></a>
                     <ul>
@@ -54,7 +55,11 @@
                         <li><a href="#">Public Holidays</a></li>
                         <li><a href="#">Auction Window</a></li>
                     </ul>
-                </li>
+                </li> --}}
+                {{-- <li class="">
+                    <a href="{{ route('system.settings') }}"><i class="fa fa-bullseye"></i> <span>System Settings</span>
+                </li> --}}
+
                 @elseif (auth()->user()->type ==='inputter')
                 <li class="">
                     <a href="{{ route('profile.index') }}"><i class="fas fa-users"></i><span> Profile
@@ -78,7 +83,7 @@
                             Management</span>
                 </li>
 
-                @elseif (auth()->user()->type ==='authoriser')
+                @elseif (auth()->user()->type ==='auctioneer')
                 <li class="">
                     <a href="{{ route('profile.index') }}"><i class="fas fa-users"></i><span> Profile
                             Management</span>
@@ -91,7 +96,6 @@
                     <a href="#"><i class="fa-solid fa-key"></i> <span> Certificate
                             Management</span>
                 </li>
-                @elseif (auth()->user()->type ==='bidder')
                 @elseif (auth()->user()->type ==='firs')
                 <li class="">
                     <a href="#"><i class="fa-solid fa-key"></i> <span> Certificate
