@@ -85,7 +85,8 @@
                 {{-- <h5>Pages list</h5> --}}
                 <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal"
                     data-bs-target="#standard-modal"><i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add
-                    Profile</button>
+                    Profile
+                </button>
                 {{-- modal --}}
                 <div id="standard-modal" class="modal fade" tabindex="-1" role="dialog"
                     aria-labelledby="standard-modalLabel" aria-hidden="true">
@@ -237,6 +238,7 @@
                         </div>
                     </div>
                 </div>
+                {{-- --}}
                 <div class="list-btn">
                     <ul class="filter-list">
                         <li>

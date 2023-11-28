@@ -33,6 +33,7 @@ Route::get('/change-password', [LoginController::class, 'changePassword'])->name
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/update-password', [LoginController::class, 'updatePassword'])->name('updatePassword');
+    // Route::get('/system-settings', [SystemController::class, 'index'])->name('system.settings');
     //
     Route::middleware(['isSuperUser'])->group(function () {
 
