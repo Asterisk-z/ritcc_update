@@ -11,4 +11,9 @@ class Auction extends Model
     protected $table = 'tblAuction';
     public $guarded = [];
     public $timestamps = false;
+
+    public function security()
+    {
+        return $this->hasOne(Security::class, 'id', 'securityRef');
+    }
 }

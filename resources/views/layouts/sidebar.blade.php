@@ -41,7 +41,7 @@
                             Allocation</span></a>
                 </li>
                 <li class="">
-                    <a href="#"><i class="fa-solid fa-key"></i> <span> Trade
+                    <a href="{{ route('trade.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span> Trade
                             Management</span></a>
                 </li>
                 <li class="">
