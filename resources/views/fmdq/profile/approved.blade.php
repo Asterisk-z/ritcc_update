@@ -82,10 +82,12 @@
         {{-- --}}
         <div class="page-header">
             <div class="content-page-header">
+                @if (auth()->user()->type ==='inputter')
                 {{-- <h5>Pages list</h5> --}}
                 <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal"
                     data-bs-target="#standard-modal"><i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add
-                    Profile</button>
+                    Profile
+                </button>
                 {{-- modal --}}
                 <div id="standard-modal" class="modal fade" tabindex="-1" role="dialog"
                     aria-labelledby="standard-modalLabel" aria-hidden="true">
@@ -96,7 +98,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('profile.create') }}" method="POST" id="myForm"
+                            <form action="{{ route('inputter.profile.create') }}" method="POST" id="myForm"
                                 class="needs-validation" novalidate>
                                 @csrf
                                 <div class="modal-body">
@@ -174,13 +176,37 @@
                                             </div>
                                         </div>
                                         {{-- --}}
-                                        <div id="accountNumber" style="display: none;">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label for="role">RTGS Account
+                                                    Number</label>
+                                                <input type="number" class="form-control" min="0" name="RTGS"
+                                                    placeholder="Leave empty if profile is an FMDQ Profile">
+                                                <div class="invalid-feedback">
+                                                    This field is required
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <label for="role">FMDQ Depository
+                                                    Custodian Account Number</label>
+                                                <input type="number" class="form-control" min="0"
+                                                    placeholder="Leave empty if profile is an FMDQ Profile" name="FMDQ">
+                                                <div class="invalid-feedback">
+                                                    This field is required
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- <div id="accountNumber" style="display: none;">
                                             <div class="col-12">
                                                 <div class="form-group">
                                                     <label for="role">RTGS Account
                                                         Number</label>
                                                     <input type="number" class="form-control" min="0" name="RTGS"
-                                                        placeholder="Leave empty if profile is an FMDQ Profile">
+                                                        placeholder="Leave empty if profile is an FMDQ Profile"
+                                                        required>
                                                     <div class="invalid-feedback">
                                                         This field is required
                                                     </div>
@@ -193,13 +219,13 @@
                                                         Custodian Account Number</label>
                                                     <input type="number" class="form-control" min="0"
                                                         placeholder="Leave empty if profile is an FMDQ Profile"
-                                                        name="FMDQ">
+                                                        name="FMDQ" required>
                                                     <div class="invalid-feedback">
                                                         This field is required
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -213,14 +239,20 @@
                         </div>
                     </div>
                 </div>
+                {{-- --}}
+                @endif
+
+
                 <div class="list-btn">
+                    {{-- iqx --}}
+                    @if (auth()->user()->type ==='super')
                     <ul class="filter-list">
                         <li>
                             <a class="btn btn-outline-primary" href="{{ route('profile.index') }}"><i
                                     class="fas fa-users me-2" aria-hidden="true"></i>All</a>
                         </li>
                         <li>
-                            <a class="btn btn-outline-primary" href="{{ route('profile.pending') }}"><i
+                            <a class="btn btn-outline-primary" href="{{ route('profile.pending')}}"><i
                                     class="fa fa-pause me-2" aria-hidden="true"></i>Pending</a>
                         </li>
                         <li>
@@ -232,6 +264,51 @@
                                     class="fa fa-times me-2" aria-hidden="true"></i>Rejected</a>
                         </li>
                     </ul>
+                    @endif
+
+                    {{-- inputter --}}
+                    @if (auth()->user()->type ==='inputter')
+                    <ul class="filter-list">
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('inputter.profile.index') }}"><i
+                                    class="fas fa-users me-2" aria-hidden="true"></i>All</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('inputter.profile.pending')}}"><i
+                                    class="fa fa-pause me-2" aria-hidden="true"></i>Pending</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary" href="{{ route('inputter.profile.approved') }}"><i
+                                    class="fa fa-check me-2" aria-hidden="true"></i>Approved</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('inputter.profile.rejected') }}"><i
+                                    class="fa fa-times me-2" aria-hidden="true"></i>Rejected</a>
+                        </li>
+                    </ul>
+                    @endif
+
+                    {{-- authoriser --}}
+                    @if (auth()->user()->type ==='authoriser')
+                    <ul class="filter-list">
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('authoriser.profile.index') }}"><i
+                                    class="fas fa-users me-2" aria-hidden="true"></i>All</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('authoriser.profile.pending')}}"><i
+                                    class="fa fa-pause me-2" aria-hidden="true"></i>Pending</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary" href="{{ route('authoriser.profile.approved') }}"><i
+                                    class="fa fa-check me-2" aria-hidden="true"></i>Approved</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('authoriser.profile.rejected') }}"><i
+                                    class="fa fa-times me-2" aria-hidden="true"></i>Rejected</a>
+                        </li>
+                    </ul>
+                    @endif
                 </div>
             </div>
         </div>
@@ -421,7 +498,8 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('profile.approveCreate',$profile->id) }}"
+                                                    <form
+                                                        action="{{ route('authoriser.profile.approveCreate',$profile->id) }}"
                                                         method="POST" class="needs-validation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">

@@ -107,9 +107,13 @@ class LoginController extends Controller
         if (auth()->user()->type === 'super') {
             return redirect()->route('iqx.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
-        // inputter and authoriser
-        else if ((auth()->user()->type === 'inputter' || auth()->user()->type === 'authoriser')) {
-            return redirect()->route('profile.index')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
+        // inputter
+        else if (auth()->user()->type === 'inputter') {
+            return redirect()->route('inputter.profile.index')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
+        }
+        // authoriser
+        else if (auth()->user()->type === 'authoriser') {
+            return redirect()->route('authoriser.profile.index')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
         // auctioneer
         elseif (auth()->user()->type === 'auctioneer') {
