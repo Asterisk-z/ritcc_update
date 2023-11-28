@@ -104,8 +104,9 @@ Route::middleware(['auth'])->group(function () {
         // Bidding
         Route::get('/trade-management', [TradeManagementController::class, 'index'])->name('trade.mgt.dashboard');
         Route::get('/trade-management/bids', [TradeManagementController::class, 'bidIndex'])->name('trade.mgt.bids');
-        Route::post('/trade-management/create', [CertificateManagementController::class, 'create'])->name('trade.mgt.create');
-        Route::post('/trade-management/update', [CertificateManagementController::class, 'update'])->name('trade.mgt.update');
+        Route::post('/trade-management/create', [TradeManagementController::class, 'create'])->name('trade.mgt.create');
+        Route::post('/trade-management/update', [TradeManagementController::class, 'update'])->name('trade.mgt.update');
+        Route::post('/trade-management/delete', [TradeManagementController::class, 'delete'])->name('trade.mgt.delete');
 
     });
 

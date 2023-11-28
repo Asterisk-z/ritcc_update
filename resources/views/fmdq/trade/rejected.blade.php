@@ -12,6 +12,12 @@
         <div class="page-header">
             <div class="content-page-header">
 
+                <button type="button" class="btn btn-primary mt-1" style="background-color: transparent; border: transparent;"></button>
+
+
+                <div class="list-btn">
+                    @include('fmdq.auction.buttons')
+                </div>
 
             </div>
         </div>
@@ -44,7 +50,8 @@
                                         <td>{{ $auction->auctioneerEmail }}</td>
                                         <td>{{ $auction->isinNumber }}</td>
                                         <td>{{ date('F d, Y',strtotime($auction->createdDate))}}</td>
-                                        <td><span class="badge bg-1">Approved</span></td>
+                                        <td><span class="badge bg-2">Rejected</span></td>
+
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>

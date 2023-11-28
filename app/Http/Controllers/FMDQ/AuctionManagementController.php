@@ -37,13 +37,13 @@ class AuctionManagementController extends Controller
     public function auctionsIndex()
     {
         $page = 'Auctions';
-        $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('createdBy', auth()->user()->id)->orderBy('createdDate', 'DESC')->get();
+        $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('createdBy', auth()->user()->email)->orderBy('createdDate', 'DESC')->get();
         $all = Auction::count();
-        $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('createdBy', auth()->user()->id)->count();
-        $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('createdBy', auth()->user()->id)->count();
-        $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->where('createdBy', auth()->user()->id)->count();
+        $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('createdBy', auth()->user()->email)->count();
+        $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('createdBy', auth()->user()->email)->count();
+        $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->where('createdBy', auth()->user()->email)->count();
 
-        return view('fmdq.auction.lists', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
+        return view('fmdq.auction.list', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
 
     }
 
