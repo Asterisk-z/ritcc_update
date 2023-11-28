@@ -6,6 +6,7 @@ use App\Http\Controllers\FMDQ\CertificateManagementController;
 use App\Http\Controllers\FMDQ\InstitutionController;
 use App\Http\Controllers\FMDQ\IQXController;
 use App\Http\Controllers\FMDQ\ProfileController;
+use App\Http\Controllers\FMDQ\TradeManagementController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,6 +71,7 @@ Route::middleware(['auth'])->group(function () {
 
         // Auctions
         Route::get('/auction-management', [AuctionManagementController::class, 'index'])->name('auction.mgt.dashboard');
+        Route::get('/auction-management/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('auction.mgt.auctions');
         Route::get('/auction-management/pending', [AuctionManagementController::class, 'pendingIndex'])->name('auction.mgt.pending');
         Route::get('/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('auction.mgt.rejected');
         Route::get('/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('auction.mgt.approved');
@@ -97,6 +99,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/certificate-management/delete', [CertificateManagementController::class, 'delete'])->name('certificate.mgt.delete');
         Route::post('/certificate-management/approve/delete', [CertificateManagementController::class, 'approveDelete'])->name('certificate.mgt.approve.delete');
         Route::post('/certificate-management/reject/delete', [CertificateManagementController::class, 'rejectDelete'])->name('certificate.mgt.reject.delete');
+
+        // Bidding
+        Route::get('/trade-management', [TradeManagementController::class, 'index'])->name('trade.mgt.dashboard');
+        Route::get('/trade-management/bids', [TradeManagementController::class, 'bidIndex'])->name('trade.mgt.bids');
+        Route::post('/certificate-management/create', [CertificateManagementController::class, 'create'])->name('trade.mgt.create');
+        Route::post('/certificate-management/update', [CertificateManagementController::class, 'update'])->name('trade.mgt.update');
 
     });
 
