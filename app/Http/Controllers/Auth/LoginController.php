@@ -121,7 +121,7 @@ class LoginController extends Controller
         }
         // firs
         elseif (auth()->user()->type == 'firs') {
-            return redirect()->route('certificate.mgt.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
+            return redirect()->route('firs.certificate.mgt.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
         //
         elseif (auth()->user()->type == 'bidder') {

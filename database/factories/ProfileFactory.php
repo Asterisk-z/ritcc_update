@@ -20,9 +20,10 @@ class ProfileFactory extends Factory
             'defaultPassword' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
             'status' => 1,
-            'Package' => $this->faker->randomElement(["7", "9", "11"]),
+            'passwordStatus' => true,
+            'Package' => $this->faker->randomElement(["8", "10", "12"]),
             'Institution' => $this->faker->randomElement(["1", "2", "3", "4", "5"]),
-            'type' => 'authoriser'
+            'type' => 'bidder'
         ];
     }
 }

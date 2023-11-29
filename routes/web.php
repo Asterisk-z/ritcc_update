@@ -146,6 +146,17 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/inputter/certificate-management/create', [CertificateManagementController::class, 'create'])->name('inputter.certificate.mgt.create');
         Route::post('/inputter/certificate-management/update', [CertificateManagementController::class, 'update'])->name('inputter.certificate.mgt.update');
         Route::post('/inputter/certificate-management/delete', [CertificateManagementController::class, 'delete'])->name('inputter.certificate.mgt.delete');
+        // auctions
+        Route::get('/inputter/auction-management', [AuctionManagementController::class, 'index'])->name('inputter.auction.mgt.dashboard');
+        Route::get('/inputter/auction-management/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('inputter.auction.mgt.auctions');
+        Route::get('/inputter/auction-management/history', [AuctionManagementController::class, 'auctionsHistory'])->name('inputter.auction.mgt.history');
+        Route::post('/inputter/auction-management/delete', [AuctionManagementController::class, 'delete'])->name('inputter.auction.mgt.delete');
+        Route::post('/inputter/auction-management/update', [AuctionManagementController::class, 'update'])->name('inputter.auction.mgt.update');
+        Route::get('/inputter/auction-management/bids/{id}', [AuctionManagementController::class, 'auctionBids'])->name('inputter.auction.mgt.bids');
+        Route::get('/inputter/auction-management/pending', [AuctionManagementController::class, 'pendingIndex'])->name('inputter.auction.mgt.pending');
+        Route::get('/inputter/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('inputter.auction.mgt.rejected');
+        Route::get('/inputter/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('inputter.auction.mgt.approved');
+        Route::post('/inputter/auction-management/create', [AuctionManagementController::class, 'create'])->name('inputter.auction.mgt.create');
     });
 
     // authoriser
@@ -155,12 +166,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/authoriser/profile-management/pending', [ProfileController::class, 'pending'])->name('authoriser.profile.pending');
         Route::get('/authoriser/profile-management/rejected', [ProfileController::class, 'rejected'])->name('authoriser.profile.rejected');
         Route::get('/authoriser/profile-management/approved', [ProfileController::class, 'approved'])->name('authoriser.profile.approved');
-        // authorise create
         Route::post('/authoriser/profile/create/approve/{id}', [ProfileController::class, 'approveCreate'])->name('authoriser.profile.approveCreate');
         Route::post('/authoriser/profile/create/reject/{id}', [ProfileController::class, 'rejectCreate'])->name('authoriser.profile.rejectCreate');
-        // authorise delete for profile
         Route::post('/authoriser/profile/delete/approve/{id}', [ProfileController::class, 'approveDelete'])->name('authoriser.profile.approveDelete');
         Route::post('/authoriser/profile/delete/reject/{id}', [ProfileController::class, 'rejectDelete'])->name('authoriser.profile.rejectDelete');
+
         // Institution
         Route::get('/authoriser/institution-management', [InstitutionController::class, 'index'])->name('authoriser.institution.index');
         Route::get('/authoriser/institution-management/pending', [InstitutionController::class, 'pending'])->name('authoriser.institution.pending');
@@ -169,14 +179,47 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/authoriser/institution/create', [InstitutionController::class, 'create'])->name('authoriser.institution.create');
         Route::post('/authoriser/institution/update/{id}', [InstitutionController::class, 'update'])->name('authoriser.institution.update');
         Route::post('/authoriser/institution/delete/{id}', [InstitutionController::class, 'delete'])->name('authoriser.institution.delete');
-        // authorise create
         Route::post('/authoriser/institution/create/approve/{id}', [InstitutionController::class, 'approveCreate'])->name('authoriser.institution.approveCreate');
         Route::post('/authoriser/institution/create/reject/{id}', [InstitutionController::class, 'rejectCreate'])->name('authoriser.institution.rejectCreate');
-        // authorise update
         Route::post('/authoriser/institution/update/approve/{id}', [InstitutionController::class, 'approveUpdate'])->name('authoriser.institution.approveUpdate');
         Route::post('/authoriser/institution/update/reject/{id}', [InstitutionController::class, 'rejectUpdate'])->name('authoriser.institution.rejectUpdate');
-        // authorise delete
         Route::post('/authoriser/institution/delete/approve/{id}', [InstitutionController::class, 'approveDelete'])->name('authoriser.institution.approveDelete');
         Route::post('/authoriser/institution/delete/reject/{id}', [InstitutionController::class, 'rejectDelete'])->name('authoriser.institution.rejectDelete');
     });
+
+    // firs
+    Route::middleware(['isFirs'])->group(function () {
+        // Certificate
+        Route::get('/firs/certificate-management', [CertificateManagementController::class, 'index'])->name('firs.certificate.mgt.dashboard');
+        Route::get('/firs/certificate-management/pending', [CertificateManagementController::class, 'pendingIndex'])->name('firs.certificate.mgt.pending');
+        Route::get('/firs/certificate-management/rejected', [CertificateManagementController::class, 'rejectedIndex'])->name('firs.certificate.mgt.rejected');
+        Route::get('/firs/certificate-management/approved', [CertificateManagementController::class, 'approvedIndex'])->name('firs.certificate.mgt.approved');
+        Route::post('/firs/certificate-management/create', [CertificateManagementController::class, 'create'])->name('firs.certificate.mgt.create');
+        Route::post('/firs/certificate-management/update', [CertificateManagementController::class, 'update'])->name('firs.certificate.mgt.update');
+        Route::post('/firs/certificate-management/delete', [CertificateManagementController::class, 'delete'])->name('firs.certificate.mgt.delete');
+        Route::post('/firs/certificate-management/approve/create', [CertificateManagementController::class, 'approveCreate'])->name('firs.certificate.mgt.approve.create');
+        Route::post('/firs/certificate-management/reject/create', [CertificateManagementController::class, 'rejectCreate'])->name('firs.certificate.mgt.reject.create');
+        Route::post('/firs/certificate-management/approve/update', [CertificateManagementController::class, 'approveUpdate'])->name('firs.certificate.mgt.approve.update');
+        Route::post('/firs/certificate-management/reject/update', [CertificateManagementController::class, 'rejectUpdate'])->name('firs.certificate.mgt.reject.update');
+        Route::post('/firs/certificate-management/approve/delete', [CertificateManagementController::class, 'approveDelete'])->name('firs.certificate.mgt.approve.delete');
+        Route::post('/firs/certificate-management/reject/delete', [CertificateManagementController::class, 'rejectDelete'])->name('firs.certificate.mgt.reject.delete');
+        // auctions
+        Route::get('/firs/auction-management', [AuctionManagementController::class, 'index'])->name('firs.auction.mgt.dashboard');
+        Route::get('/firs/auction-management/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('firs.auction.mgt.auctions');
+        Route::get('/firs/auction-management/history', [AuctionManagementController::class, 'auctionsHistory'])->name('firs.auction.mgt.history');
+        Route::get('/firs/auction-management/bids/{id}', [AuctionManagementController::class, 'auctionBids'])->name('firs.auction.mgt.bids');
+        Route::get('/firs/auction-management/pending', [AuctionManagementController::class, 'pendingIndex'])->name('firs.auction.mgt.pending');
+        Route::get('/firs/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('firs.auction.mgt.rejected');
+        Route::get('/firs/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('firs.auction.mgt.approved');
+        Route::post('/firs/auction-management/approve/create', [AuctionManagementController::class, 'approveCreate'])->name('firs.auction.mgt.approve.create');
+        Route::post('/firs/auction-management/reject/create', [AuctionManagementController::class, 'rejectCreate'])->name('firs.auction.mgt.reject.create');
+        Route::post('/firs/auction-management/approve/update', [AuctionManagementController::class, 'approveUpdate'])->name('firs.auction.mgt.approve.update');
+        Route::post('/firs/auction-management/reject/update', [AuctionManagementController::class, 'rejectUpdate'])->name('firs.auction.mgt.reject.update');
+        Route::post('/firs/auction-management/approve/delete', [AuctionManagementController::class, 'approveDelete'])->name('firs.auction.mgt.approve.delete');
+        Route::post('/firs/auction-management/reject/delete', [AuctionManagementController::class, 'rejectDelete'])->name('firs.auction.mgt.reject.delete');
+    });
+    // auctioneer
+
+    // bidder
+
 });

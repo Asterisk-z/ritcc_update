@@ -31,7 +31,7 @@ class CreateMail extends Mailable
     public function build()
     {
         return $this->subject('RITCC Auctioning System')
-            ->from('no-reply@fmdqgroup.com', 'FMDQ RITCC Auctioning System')
+            ->from('no-reply@fmdqgroup.com', 'RITCC Auctioning System')
             ->view('emails.fmdq.create')
             ->with(['create' => $this->create]);
     }

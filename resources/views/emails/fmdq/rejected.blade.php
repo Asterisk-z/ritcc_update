@@ -150,8 +150,9 @@
                 <p>A new institution has been rejected. Please approve</p>
                 @endif
 
-                @if ($rejected['type']=== 'certificate')
-                <p>A new certificate has been rejected. Please approve</p>
+                @if ($rejected['type']=== 'rejectCreateCertificate')
+                A new certificate has been rejected.<br>
+                Reason: <strong>{{$rejected['reason'] }}.</strong>
                 @endif
 
                 <p>Kindly click on this <a href="{{ route('login') }}">link</a> to proceed.</p>

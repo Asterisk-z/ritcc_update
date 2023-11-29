@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\FMDQ;
 
 use App\Http\Controllers\Controller;
+use App\Mail\FMDQ\ApprovedMail;
+use App\Mail\FMDQ\CreateMail;
+use App\Mail\FMDQ\RejectedMail;
 use App\Models\ActivityLog;
 use App\Models\Profile;
 use App\Models\Security;
 use App\Models\SecurityType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CertificateManagementController extends Controller
 {
@@ -46,7 +50,6 @@ class CertificateManagementController extends Controller
         $rejected = Security::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
 
         return view('fmdq.certificate.pending', compact('securities', 'all', 'pending', 'approved', 'rejected', 'page'));
-
     }
     /**
      * Show the form for creating a new resource.
@@ -145,14 +148,15 @@ class CertificateManagementController extends Controller
         $activity->username = auth()->user()->email;
         $activity->save();
         // mail
-        // $approver = Profile::where('email', $authoriser)->first();
-        // $new = ([
-        //     'name' => $approver->FirstName,
-        // ]);
-        // Mail::to($authoriser)->send(new CreateInstitutionMail($new));
-
+        $authorisers = Profile::where('status', '1')->where('type', 'firs')->get();
+        foreach ($authorisers as $authoriser) {
+            $create = ([
+                'authoriser' => $authoriser->firstName,
+                'type' => 'certificate',
+            ]);
+            Mail::to($authoriser)->send(new CreateMail($create));
+        }
         return redirect()->back()->with('success', "Certificate has been sent for approval.");
-
     }
     /**
      * Show the form for creating a new resource.
@@ -249,8 +253,16 @@ class CertificateManagementController extends Controller
         $activity->activity = auth()->user()->email . ' rejected Security';
         $activity->username = auth()->user()->email;
         $activity->save();
-
-        return redirect()->back()->with('success', "Security Approved Successfully.");
+        //
+        $approver = Profile::where('email', $security->createdBy)->first();
+        $rejected = ([
+            'name' => $approver->firstName,
+            'type' => 'rejectCreateCertificate',
+            'reason' => $reason
+        ]);
+        Mail::to($security->createdBy)->send(new RejectedMail($rejected));
+        //
+        return redirect()->back()->with('success', "Security Rejected Successfully.");
     }
     /**
      * Show the form for creating a new resource.
@@ -335,7 +347,6 @@ class CertificateManagementController extends Controller
         $activity->save();
 
         return redirect()->back()->with('success', "Security has been sent for approval.");
-
     }
     /**
      * Show the form for creating a new resource.
@@ -376,7 +387,7 @@ class CertificateManagementController extends Controller
         $security->modifiedFlag = 1;
         $security->modifiedBy = auth()->user()->email;
         $security->modifiedDate = now();
-        
+
         $security->securityCode = $modifyData->securityCode;
         $security->auctioneerRef = $modifyData->auctioneerRef;
         $security->offerAmount = $modifyData->offerAmount;
@@ -454,7 +465,6 @@ class CertificateManagementController extends Controller
         $activity->save();
 
         return redirect()->back()->with('success', "Auction Rejected Successfully.");
-
     }
     /**
      * Show the form for creating a new resource.

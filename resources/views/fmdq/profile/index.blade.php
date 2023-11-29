@@ -441,7 +441,7 @@
                                                     </div>
                                                     <form
                                                         action="{{ route('inputter.profile.deactivateProfile',$profile->id) }}"
-                                                        method="POST" id="myForm" class="needs-validation" novalidate>
+                                                        method="POST" class="needs-validation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
                                                             <div class="form-row row">
@@ -449,8 +449,7 @@
                                                                     <label for="validationCustom01">Reason for
                                                                         Deactivation</label>
                                                                     <input type="text" name="reason"
-                                                                        class="form-control" id="validationCustom01"
-                                                                        required>
+                                                                        class="form-control" required>
                                                                     <div class="invalid-feedback">
                                                                         This field is required
                                                                     </div>
@@ -458,15 +457,14 @@
 
                                                                 <div class="col-md-12 mb-3">
                                                                     <label for="validationCustom01">Authoriser</label>
-                                                                    <select name="authoriser" id="validationCustom01"
-                                                                        class="form-control" required>
+                                                                    <select name="authoriser" class="form-control"
+                                                                        required>
                                                                         <option value="">--Select--</option>
-                                                                        @forelse ($authorisers as $authoriser)
+                                                                        @foreach ($authorisers as $authoriser)
                                                                         <option value="{{ $authoriser->email }}">{{
                                                                             $authoriser->firstName.'
                                                                             '.$authoriser->lastName }}</option>
-                                                                        @empty
-                                                                        @endforelse
+                                                                        @endforeach
                                                                     </select>
                                                                     <div class="invalid-feedback">
                                                                         This field is required
@@ -496,5 +494,4 @@
         </div>
     </div>
 </div>
-
 @endsection

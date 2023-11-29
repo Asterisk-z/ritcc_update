@@ -130,28 +130,22 @@
         <main>
             <div class="body-text">
                 <h1 style="text-align: center;">RITCC Auctioning System</h1>
-                <p>Hi <span>{{ $create['authoriser'] }}</span>,</p>
-                {{-- Profie --}}
-                @if ($create['type'] == 'profile')
-                <p>A new profile has been created. Please approve</p>
-                @endif
+                <>Dear <span>{{ $create['authoriser'] }}</span>,<br><br>
+                    {{-- Profie --}}
+                    @if ($create['type'] == 'profile')
 
-                @if ($create['type']=== 'institution')
-                <p>A new institution has been created. Please approve</p>
-                @endif
+                    A new profile has been created. Kindly approve
+                    @endif
 
-                @if ($create['type']=== 'certificate')
-                <p>A new certificate has been created. Please approve</p>
-                @endif
+                    @if ($create['type']=== 'institution')
+                    A new institution has been created. Kindly approve
+                    @endif
 
+                    @if ($create['type']=== 'certificate')
+                    A new certificate has been created.<br>Kindly approve
+                    @endif
 
-
-                {{--
-                <p>Deadline: <strong>{{ date('F d, Y', strtotime($activate['deadline'])) }}</strong></p> --}}
-                <p>
-                    <a href="{{ route('login') }}" class="btn btn-primary"
-                        style="background-color: #1D326C; color:#FFF;">Login to RITCC Portal To Approve</a>
-                </p>
+                    <p>Kindly click on this <a href="{{ route('login') }}"><strong>link</strong></a> to proceed.</p>
             </div>
         </main>
         <footer>

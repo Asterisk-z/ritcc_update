@@ -92,8 +92,31 @@
 {{-- --}}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-		const form = document.getElementById('myForm');
-		// const loadingButton = document.getElementById('loadingButton'); // Replace with your button ID
+        //
+        var packageSelect = document.getElementById("packageSelect");
+        var accountNumber = document.getElementById("accountNumber");
+        //
+        const form = document.getElementById('myForm');
+
+        // Add an event listener to the package select element
+                packageSelect.addEventListener("change", function() {
+                var selectedPackageId = packageSelect.value;
+                if (selectedPackageId === "7" || selectedPackageId === "8" || selectedPackageId ===
+                "9" ||
+                selectedPackageId === "10" || selectedPackageId === "11" || selectedPackageId ===
+                "12") {
+                // Display the RTGS Account Number field
+                accountNumber.style.display = "block";
+                // Hide the FMDQ Account Number field
+                FMDQ.style.display = "none";
+                } else {
+                // Hide the FMDQ Account Number field
+                // FMDQ.style.display = "none";
+                accountNumber.style.display = "none";
+                }
+                });
+
+		//
 		form.addEventListener('submit', function(event) {
 			event.preventDefault(); // Prevent default form submission
 
@@ -169,7 +192,7 @@
     });
 </script> --}}
 
-<script>
+{{-- <script>
     document.addEventListener("DOMContentLoaded", function() {
 		var packageSelect = document.getElementById("packageSelect");
 		var accountNumber = document.getElementById("accountNumber");
@@ -193,4 +216,4 @@
 			}
 		});
 	});
-</script>
+</script> --}}

@@ -38,7 +38,8 @@
                             Auction</span></a>
                 </li>
                 <li class="">
-                    <a href="{{ route('auction.mgt.history') }}"><i class="fa-solid fa-key"></i> <span> Auction History</span></a>
+                    <a href="{{ route('auction.mgt.history') }}"><i class="fa-solid fa-key"></i> <span> Auction
+                            History</span></a>
                 </li>
                 <li class="">
                     <a href="#"><i class="fa-solid fa-key"></i> <span> Auction
@@ -69,10 +70,7 @@
                             Institution
                             Management</span></a>
                 </li>
-                <li class="mb-3">
-                    <a href="#"><i class="fa-solid fa-key"></i> <span> Auction
-                            Allocation</span></a>
-                </li>
+
                 <li class="mb-3">
                     <a href="#"><i class="fa-solid fa-key"></i> <span> Settlement</span></a>
                 </li>
@@ -93,8 +91,9 @@
                             Certificate Management</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="#"><i class="fa fa-bullseye"></i> <span> Auction
-                            Allocation</span></a>
+                    <a href="{{ route('inputter.auction.mgt.dashboard') }}"><i class="fa fa-bullseye"></i> <span>
+                            Auction
+                            Management</span></a>
                 </li>
                 <li class="mb-3">
                     <a href="#"><i class="fa fa-bullseye"></i> <span> Settlement</span></a>
@@ -104,9 +103,14 @@
                             Settings</span></a>
                 </li>
                 @elseif (auth()->user()->type === 'firs')
+                <br><br>
                 <li class="mb-3">
-                    <a href="{{ route('certificate.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span>
+                    <a href="{{ route('firs.certificate.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span>
                             Certificate Management</span></a>
+                </li>
+                <li class="mb-3">
+                    <a href="{{ route('firs.auction.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span> Auction
+                            Management</span></a>
                 </li>
                 @elseif (auth()->user()->type === 'auctioneer')
                 <li class="mb-3">
