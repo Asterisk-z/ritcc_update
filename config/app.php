@@ -54,7 +54,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'asset_url' => env('ASSET_URL', 'http://localhost/fmdqritcc/public'),
+    'asset_url' => env('ASSET_URL', 'http://localhost/ritccapp/public'),
 
     /*
     |--------------------------------------------------------------------------
