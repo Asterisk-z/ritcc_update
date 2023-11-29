@@ -79,10 +79,10 @@
                 </div>
             </div>
         </div>
-        {{-- tables --}}
         {{-- --}}
         <div class="page-header">
             <div class="content-page-header">
+                @if (auth()->user()->type === 'inputter')
                 {{-- <h5>Pages list</h5> --}}
                 <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal"
                     data-bs-target="#standard-modal"><i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add
@@ -97,7 +97,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('institution.create') }}" method="POST" id="myForm"
+                            <form action="{{ route('inputter.institution.create') }}" method="POST" id="myForm"
                                 class="needs-validation" novalidate>
                                 @csrf
                                 <div class="modal-body">
@@ -175,8 +175,12 @@
                         </div>
                     </div>
                 </div>
+                @endif
+
 
                 <div class="list-btn">
+                    {{-- iqx --}}
+                    @if (auth()->user()->type ==='super')
                     <ul class="filter-list">
                         <li>
                             <a class="btn btn-primary" href="{{ route('institution.index') }}"><i
@@ -195,7 +199,56 @@
                                     class="fa fa-times me-2" aria-hidden="true"></i>Rejected</a>
                         </li>
                     </ul>
+                    @endif
+
+                    {{-- inputter --}}
+                    @if (auth()->user()->type ==='inputter')
+                    <ul class="filter-list">
+                        <li>
+                            <a class="btn btn-primary" href="{{ route('inputter.institution.index') }}"><i
+                                    class="fas fa-users me-2" aria-hidden="true"></i>All</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('inputter.institution.pending')}}"><i
+                                    class="fa fa-pause me-2" aria-hidden="true"></i>Pending</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('inputter.institution.approved') }}"><i
+                                    class="fa fa-check me-2" aria-hidden="true"></i>Approved</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('inputter.institution.rejected') }}"><i
+                                    class="fa fa-times me-2" aria-hidden="true"></i>Rejected</a>
+                        </li>
+                    </ul>
+                    @endif
+
+                    {{-- authoriser --}}
+                    @if (auth()->user()->type ==='authoriser')
+                    <ul class="filter-list">
+                        <li>
+                            <a class="btn btn-primary" href="{{ route('authoriser.institution.index') }}"><i
+                                    class="fas fa-users me-2" aria-hidden="true"></i>All</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('authoriser.institution.pending')}}"><i
+                                    class="fa fa-pause me-2" aria-hidden="true"></i>Pending</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('authoriser.institution.approved') }}"><i
+                                    class="fa fa-check me-2" aria-hidden="true"></i>Approved</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('authoriser.institution.rejected') }}"><i
+                                    class="fa fa-times me-2" aria-hidden="true"></i>Rejected</a>
+                        </li>
+                    </ul>
+                    @endif
                 </div>
+
+                {{-- <div class="list-btn">
+
+                </div> --}}
             </div>
         </div>
         {{-- --}}

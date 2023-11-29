@@ -124,9 +124,9 @@ class LoginController extends Controller
             return redirect()->route('certificate.mgt.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
         //
-        // elseif (auth()->user()->type == 'bidder') {
-        //     return redirect()->route('auction.mgt.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
-        // }
+        elseif (auth()->user()->type == 'bidder') {
+            return redirect()->route('auction.mgt.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
+        }
     }
 
     //

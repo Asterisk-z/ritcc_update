@@ -16,17 +16,18 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"> --}}
 </head>
 
-<body>
+<body class="login">
 
     <div class="main-wrapper login-body">
         <div class="login-wrapper">
             <div class="container">
-                <img class="img-fluid logo-dark mb-2" src="{{ asset('assets/img/FMDQLogo.png') }}" alt="Logo">
                 <div class="loginbox">
                     <div class="login-right">
                         <div class="login-right-wrap">
-                            <h1>Login</h1>
-                            <p class="account-subtitle">Access to our dashboard</p>
+                            <img class="img-fluid logo-dark mb-2" src="{{ asset('assets/img/FMDQLogo.png') }}"
+                                alt="Logo">
+                            <h1></h1>
+                            <p class="account-subtitle">Login to <b>Road Infrastructure Tax Credit Certificate</b></p>
                             <form action="{{ route('signIn') }}" method="POST" autocomplete="on">
                                 @csrf
                                 <div class="form-group">
@@ -62,6 +63,7 @@
     <script src="{{ asset('assets/js/jquery-3.7.0.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     {{-- <script src="{{ asset('assets/js/script.js') }}"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         @if ($errors->any())
 Swal.fire({

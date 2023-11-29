@@ -130,10 +130,10 @@
         <main>
             <div class="body-text">
                 <h1 style="text-align: center;">RITCC Auctioning System</h1>
-                <p>Hi <span>{{ $approved['name'] }}</span>,</p>
+                <p>Dear <span>{{ $approved['name'] }}</span>,</p>
                 {{-- Profie --}}
                 @if ($approved['type'] == 'profile')
-                <p>Your profile has been approved.</p>
+                <p>Your account has been successfully created;<br>Your login details are as follows:</p>
                 <p>These are your login credentials:
                     <br><br>
                     Email address: <strong>{{ $approved['email'] }}</strong>
@@ -149,10 +149,13 @@
                 @if ($approved['type']=== 'certificate')
                 <p>A new certificate has been approved. Please approve</p>
                 @endif
-                <p>
-                    <a href="{{ route('login') }}" class="btn btn-primary"
-                        style="background-color: #1D326C; color:#FFF;">Login to RITCC Portal</a>
-                </p>
+                {{-- <p>
+                    <a href="" class="btn btn-primary" style="background-color: #1D326C; color:#FFF;">Login to RITCC
+                        Portal</a>
+                </p> --}}
+                <p>Kindly click on this <a href="{{ route('login') }}"><strong>link</strong></a> to proceed.</p>
+
+                <p>Thank You,<br>FMDQ Securities Exchange</p>
             </div>
         </main>
         <footer>

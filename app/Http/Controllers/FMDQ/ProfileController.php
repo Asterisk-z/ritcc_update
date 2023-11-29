@@ -5,6 +5,7 @@ namespace App\Http\Controllers\FMDQ;
 use App\Http\Controllers\Controller;
 use App\Mail\FMDQ\ApprovedMail;
 use App\Mail\FMDQ\CreateMail;
+use App\Mail\FMDQ\DeleteMail;
 use App\Mail\FMDQ\RejectedMail;
 use App\Models\ActivityLog;
 use App\Models\Institution;
@@ -183,34 +184,36 @@ class ProfileController extends Controller
     }
 
     //
-    public function delete(Request $request, $id)
+    public function deactivateProfile(Request $request, $id)
     {
         $user = Auth::user();
         //
-        $previous = Institution::findOrFail($id);
-        $updateStatus = Institution::where('ID', $id)->update(['status' => 4, 'deletingBy' => $user->email, 'deletingReason' => $request->reason, 'deletingDate' => now()]);
+        $profile = Profile::findOrFail($id);
+        $updateStatus = Profile::where('id', $id)->update(['status' => 4, 'deactivateReason' => $request->reason, 'modifiedBy' => $user->email, 'modifiedDate' => now()]);
         if ($updateStatus) {
             // log activity
             $activity = new ActivityLog();
             $activity->date = now();
             $activity->app = 'RITCC';
-            $activity->type = 'Delete Institution';
-            $activity->activity = $user->email . ' deleted institution: ' . $previous->institutionName . ' and sent it for approval.';
+            $activity->type = 'Request to Deactivate Profile';
+            $activity->activity = $user->email . ' made a request to deactivate profile: ' . $profile->firstName . ' ' . $profile->lastName . ' and sent it for approval.';
             $activity->username = $user->email;
             $log = $activity->save();
         }
         if ($log) {
             // mail
-            // $approver = Profile::where('email', $authoriser)->first();
-            // $update = ([
-            //     'name' => $approver->FirstName,
-            //     'type' => 'institution',
-            //     'previous' => $previous->institutionName,
+            $authoriser = Profile::where('email', $request->authoriser)->first();
+            $delete = ([
+                'authoriser' => $authoriser->firstName,
+                'type' => 'profile',
+                'reason' => $request->reason,
+                'profile' => $profile->firstName . ' ' . $profile->lastName,
 
-            // ]);
-            // Mail::to($approver->email)->send(new UpdateMail($update));
+            ]);
 
-            return redirect()->back()->with('success', "Institution delete has been sent for approval.");
+            Mail::to($authoriser->email)->send(new DeleteMail($delete));
+
+            return redirect()->back()->with('success', "Profile has been sent for deactivation.");
         }
     }
 
@@ -219,8 +222,8 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         // default password
-        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $uniqueString = substr(str_shuffle($characters), 0, 7);
+        $characters = '!@#$%^&*0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $uniqueString = substr(str_shuffle($characters), 0, 8);
         $defaultPassword = Hash::make($uniqueString);
         //
         $profile = Profile::findOrFail($id);
@@ -258,7 +261,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         //
         $profile = Profile::findOrFail($id);
-        $rejectCreate = Profile::where('id', $id)->update(['status' => 2, 'rejectReason' => $request->reason, 'authoriser' => $user->email, 'authoriserDate' => now()]);
+        $rejectCreate = Profile::where('id', $id)->update(['status' => 1, 'rejectReason' => $request->reason, 'authoriser' => $user->email, 'authoriserDate' => now()]);
         if ($rejectCreate) {
             // log activity
             $activity = new ActivityLog();
@@ -287,25 +290,28 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         //
-        $institution = Institution::findOrFail($id);
-        $temp = InstitutionTemp::where('institutionRef', $id)->first();
-
-        $institutions = new InstitutionTemp();
-        $institutions->institutionRef = $institution->ID;
-        $institutions->code = $institution->code;
-        $institutions->name = $institution->institutionName;
-        $institutions->address = $institution->address;
-        $institutions->email = $institution->institutionEmail;
-        $institutions->chiefDealerEmail = $institution->chiefDealerEmail;
-        $institutions->deletingBy = $user->email;
-        $institutions->deletedDate = now();
-        $institutions->reason = $request->reason;
-        $institutions->status = 3;
-        $approveDelete = $institutions->save();
-        // $approveUpdate = InstitutionTemp::where('ID', $id)->update(['code' => $temp->code, 'institutionName' => $temp->name, 'address' => $temp->address, 'institutionEmail' => $temp->email, 'chiefDealerEmail' => $temp->chiefDealerEmail, 'status' => 1, 'modifiedDate' => now(), 'modifiedBy' => $user->email]);
-
+        $profile = Profile::findOrFail($id);
+        //
+        $dump = new ProfileTemp();
+        $dump->firstName = $profile->firstName;
+        $dump->lastName = $profile->lastName;
+        $dump->email = $profile->email;
+        $dump->institution = $profile->institution;
+        $dump->mobile = $profile->mobile;
+        $dump->package = $profile->Package;
+        $dump->institution = $profile->Institution;
+        $dump->password = $profile->password;
+        $dump->reason = $profile->deactivatingReason;
+        $dump->inputter = $profile->inputter;
+        $dump->confirmedBy = $profile->authoriser;
+        $dump->createdDate = $profile->inputDate;
+        $dump->deletedBy = $profile->deactivateInputter;
+        $dump->deleteApprovedBy = $user->email;
+        $dump->deleteDate = now();
+        $approveDelete = $dump->save();
+        //
         if ($approveDelete) {
-            $delete = Institution::where('ID', $id)->delete();
+            $delete = Profile::where('id', $id)->delete();
         }
 
         if ($delete) {
@@ -313,8 +319,8 @@ class ProfileController extends Controller
             $activity = new ActivityLog();
             $activity->date = now();
             $activity->app = 'RITCC';
-            $activity->type = 'Approve Delete for Institution';
-            $activity->activity = $user->email . ' approved delete for institution: ' . $institutions->name . '.';
+            $activity->type = 'Approve Delete for Profile';
+            $activity->activity = $user->email . ' approved delete for profile: ' . $dump->firstName . ' ' . $dump->lastName . '.';
             $activity->username = $user->email;
             $log = $activity->save();
         }
@@ -322,14 +328,14 @@ class ProfileController extends Controller
             // mail
             // $approver = Profile::where('email', $authoriser)->first();
             // $update = ([
-            //     'name' => $approver->FirstName,
-            //     'type' => 'institution',
+            //     'name' => $dump->firstName . ' ' . $profile->lastName,
+            //     'type' => 'approve_delete',
             //     'previous' => $previous->institutionName,
 
             // ]);
             // Mail::to($approver->email)->send(new UpdateMail($update));
 
-            return redirect()->back()->with('success', "Institution delete has been approved.");
+            return redirect()->back()->with('success', "Profile delete has been approved.");
         }
     }
 
@@ -338,31 +344,30 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         //
-        $institution = Institution::findOrFail($id);
-        $temp = InstitutionTemp::where('institutionRef', $id)->first();
-        $rejectDelete = Institution::where('ID', $id)->update(['status' => 1, 'deleteRejectReason' => $request->reason, 'deleteRejectBy' => $user->email, 'deletedDate' => now()]);
+        $profile = Profile::findOrFail($id);
+        $rejectDelete = Profile::where('id', $id)->update(['status' => 1, 'deactivatedRejectReason' => $request->reason, 'modifiedApprovedBy' => $user->email, 'modifiedApprovedDate' => now()]);
         if ($rejectDelete) {
             // log activity
             $activity = new ActivityLog();
             $activity->date = now();
             $activity->app = 'RITCC';
-            $activity->type = 'Reject Delete for Institution';
-            $activity->activity = $user->email . ' rejected approval to delete institution: ' . $institution->institutionName . '.';
+            $activity->type = 'Reject Delete for Profile';
+            $activity->activity = $user->email . ' rejected approval to delete profile: ' . $profile->firstName . ' ' . $profile->lastName . '.';
             $activity->username = $user->email;
             $log = $activity->save();
         }
         if ($log) {
-            // mail
-            // $approver = Profile::where('email', $authoriser)->first();
-            // $update = ([
-            //     'name' => $approver->FirstName,
-            //     'type' => 'institution',
-            //     'previous' => $previous->institutionName,
+            // Mail
+            $inputter = Profile::where('email', $profile->modifiedBy)->first();
+            $rejected = ([
+                'name' => $inputter->firstName,
+                'type' => 'rejected_delete',
+                'reason' => $request->reason
 
-            // ]);
-            // Mail::to($approver->email)->send(new UpdateMail($update));
+            ]);
+            Mail::to($profile->modifiedBy)->send(new RejectedMail($rejected));
 
-            return redirect()->back()->with('success', "Institution delete has been rejected.");
+            return redirect()->back()->with('success', "Profile delete has been rejected.");
         }
     }
 }

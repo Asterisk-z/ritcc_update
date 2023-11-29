@@ -32,7 +32,7 @@
     btn.innerText = 'Please wait...'; // Change the button text to indicate submission
     btn.disabled = true; // Disable the button to prevent multiple submissions
        btn.form.submit(); // Submit the form
-//    return true;
+   return true;
     }
 </script>
 
@@ -116,8 +116,8 @@
 
                         // Show message indicating activation in progress
                         Swal.fire({
-                            title: 'Please wait',
-                            text: 'Activating attestation...',
+                            title: 'Please wait.....',
+                            // text: 'Activating attestation...',
                             icon: 'info',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
@@ -169,7 +169,7 @@
     });
 </script> --}}
 
-{{-- <script>
+<script>
     document.addEventListener("DOMContentLoaded", function() {
 		var packageSelect = document.getElementById("packageSelect");
 		var accountNumber = document.getElementById("accountNumber");
@@ -193,4 +193,4 @@
 			}
 		});
 	});
-</script> --}}
+</script>

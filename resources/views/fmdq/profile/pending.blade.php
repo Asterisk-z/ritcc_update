@@ -375,26 +375,7 @@
                                                                 data-bs-target="#reject{{ $profile->id }}" href=""><i
                                                                     class="fa fa-times me-2"></i>Reject</a>
                                                         </li>
-                                                        @elseif ($profile->status === '3')
-                                                        <li>
-                                                            {{--
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal"
-                                                                data-bs-target="#viewUpdate{{ $profile->id }}"
-                                                                href=""><i class="far fa-edit me-2"></i>View Update</a>
-                                                        </li> --}}
-                                                        <a class="dropdown-item" data-bs-toggle="modal"
-                                                            data-bs-target="#approveUpdate{{ $profile->id }}" href=""><i
-                                                                class="fa fa-check me-2"></i>Approve
-                                                            Update</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" class="dropdown-item"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#rejectUpdate{{ $profile->id }}"
-                                                                href=""><i class="fa fa-times me-2"></i>Reject
-                                                                Update</a>
-                                                        </li>
+
                                                         @elseif ($profile->status === '4')
                                                         <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal"
@@ -506,6 +487,71 @@
                                         </div>
                                         {{-- reject --}}
                                         <div id="reject{{ $profile->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        {{-- <h4 class="modal-title" id="standard-modalLabel">Approve
+                                                        </h4> --}}
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <form
+                                                        action="{{ route('authoriser.profile.rejectCreate',$profile->id) }}"
+                                                        method="POST" class="needs-validation" novalidate>
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <h6 class="text-center">Are you sure you want to reject
+                                                                this
+                                                                profile?</h6>
+                                                            <label for="">Reason for Rejection</label>
+                                                            <input type="text" class="form-control" name="reason"
+                                                                required>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary"
+                                                                onclick="changeText(this);">Reject</button>
+                                                            &nbsp;&nbsp;&nbsp;
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- approve deactivate --}}
+                                        <div id="approveDelete{{ $profile->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        {{-- <h4 class="modal-title" id="standard-modalLabel">Approve
+                                                        </h4> --}}
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <form
+                                                        action="{{ route('authoriser.profile.approveDelete',$profile->id) }}"
+                                                        method="POST" class="needs-validation" novalidate>
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <h6 class="text-center">Are you sure you want to approve
+                                                                this
+                                                                profile?</h6>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary"
+                                                                onclick="changeText(this);">Approve</button>
+                                                            &nbsp;&nbsp;&nbsp;
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- reject --}}
+                                        <div id="rejectDelete{{ $profile->id }}" class="modal fade" tabindex="-1"
                                             role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">

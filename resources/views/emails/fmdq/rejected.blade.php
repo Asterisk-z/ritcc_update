@@ -130,11 +130,19 @@
         <main>
             <div class="body-text">
                 <h1 style="text-align: center;">RITCC Auctioning System</h1>
-                <p>Hi <span>{{ $rejected['name'] }}</span>,</p>
+                <p>Dear <span>{{ $rejected['name'] }}</span>,</p>
                 {{-- Profie --}}
                 @if ($rejected['type'] == 'profile')
                 <p>The request to approve this profile has been rejected because <strong>{{
                         $rejected['reason']}}</strong>.</p>
+
+                @endif
+                {{-- --}}
+                @if ($rejected['type'] === 'rejected_delete')
+                <p>The request to approve this profile has been rejected.
+                    <br><br>
+                    Reason: <strong>{{$rejected['reason']}}</strong>.
+                </p>
 
                 @endif
 
@@ -145,10 +153,15 @@
                 @if ($rejected['type']=== 'certificate')
                 <p>A new certificate has been rejected. Please approve</p>
                 @endif
+
+                <p>Kindly click on this <a href="{{ route('login') }}">link</a> to proceed.</p>
+
                 <p>
-                    <a href="{{ route('login') }}" class="btn btn-primary"
-                        style="background-color: #1D326C; color:#FFF;">Login to RITCC Portal</a>
+                    Thank You,
+                    <br>
+                    FMDQ Securities Exchange
                 </p>
+
             </div>
         </main>
         <footer>

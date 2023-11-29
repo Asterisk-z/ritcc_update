@@ -176,7 +176,7 @@
                                             </div>
                                         </div>
                                         {{-- --}}
-                                        <div class="col-lg-12">
+                                        {{-- <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label for="role">RTGS Account
                                                     Number</label>
@@ -198,8 +198,8 @@
                                                     This field is required
                                                 </div>
                                             </div>
-                                        </div>
-                                        {{-- <div id="accountNumber" style="display: none;">
+                                        </div> --}}
+                                        <div id="accountNumber" style="display: none;">
                                             <div class="col-12">
                                                 <div class="form-group">
                                                     <label for="role">RTGS Account
@@ -225,7 +225,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div> --}}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -431,26 +431,43 @@
                                             </div>
                                         </div>
                                         {{-- --}}
-                                        {{-- <div class="modal fade" id="delete{{ $profile->id }}" tabindex="-1"
+                                        <div class="modal fade" id="delete{{ $profile->id }}" tabindex="-1"
                                             role="dialog" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="myCenterModalLabel">Center modal
-                                                        </h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('deactivateProfile',$profile->id) }}"
-                                                        method="POST" class="needs-validation" novalidate>
+                                                    <form
+                                                        action="{{ route('inputter.profile.deactivateProfile',$profile->id) }}"
+                                                        method="POST" id="myForm" class="needs-validation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
                                                             <div class="form-row row">
                                                                 <div class="col-lg-12 mb-3">
-                                                                    <label for="validationCustom01">Package Name</label>
+                                                                    <label for="validationCustom01">Reason for
+                                                                        Deactivation</label>
                                                                     <input type="text" name="reason"
                                                                         class="form-control" id="validationCustom01"
                                                                         required>
+                                                                    <div class="invalid-feedback">
+                                                                        This field is required
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-12 mb-3">
+                                                                    <label for="validationCustom01">Authoriser</label>
+                                                                    <select name="authoriser" id="validationCustom01"
+                                                                        class="form-control" required>
+                                                                        <option value="">--Select--</option>
+                                                                        @forelse ($authorisers as $authoriser)
+                                                                        <option value="{{ $authoriser->email }}">{{
+                                                                            $authoriser->firstName.'
+                                                                            '.$authoriser->lastName }}</option>
+                                                                        @empty
+                                                                        @endforelse
+                                                                    </select>
                                                                     <div class="invalid-feedback">
                                                                         This field is required
                                                                     </div>
@@ -467,7 +484,7 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                        </div> --}}
+                                        </div>
                                     </tr>
                                     @endforeach
                                 </tbody>

@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProfileTemp extends Model
 {
     use HasFactory;
+    protected $table = 'tblProfileTemp';
+    public $guarded = [];
+    public $timestamps = false;
 }

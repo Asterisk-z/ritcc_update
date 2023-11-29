@@ -242,7 +242,6 @@
                 {{-- --}}
                 @endif
 
-
                 <div class="list-btn">
                     {{-- iqx --}}
                     @if (auth()->user()->type ==='super')

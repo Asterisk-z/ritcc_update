@@ -81,6 +81,15 @@
                             Management</span></a>
                 </li>
                 <li class="mb-3">
+                    <a href="{{ route('inputter.institution.index') }}"><i class="fas fa-building"></i><span>
+                            Institution
+                            Management</span></a>
+                </li>
+                <li class="mb-3">
+                    <a href="{{ route('inputter.certificate.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span>
+                            Certificate Management</span></a>
+                </li>
+                <li class="mb-3">
                     <a href="#"><i class="fa fa-bullseye"></i> <span> Auction
                             Allocation</span></a>
                 </li>

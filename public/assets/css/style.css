@@ -5386,10 +5386,10 @@ span.select2-container.select2-container--default.select2-container--open {
 }
 
 .card-table .card-body .table td {
-    color: #878a99;
+    color: #000;
     font-weight: 400;
     border-top: 0;
-    font-size: 13px;
+    font-size: 15px;
     padding: 15px 25px;
     white-space: nowrap;
     box-shadow: none;
@@ -13597,6 +13597,12 @@ li.previous {
     height: 100vh;
     min-height: 100vh;
     margin: auto
+}
+
+.login {
+    background-image: url(../img/RITCC-bg.png);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .logo-dark {
