@@ -75,9 +75,6 @@
                     </div>
                 </div>
 
-                <div class="list-btn">
-                    @include('fmdq.trade.buttons')
-                </div>
             </div>
         </div>
         {{-- --}}
@@ -86,17 +83,17 @@
                 <div class="card-table">
                     <div class="card-body">
                         <div class="table-responsive">
+                            <h5>My Trades </h5>
                             <table class="datatable table table-center table-stripped table-bordered" id="example2">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
                                         <th>Security Code</th>
-                                        <th>Auctioneer</th>
-                                        <th>ISIN Number</th>
-                                        <th>Offer Amount</th>
-                                        <th>Auction Start Time</th>
+                                        <th>Issuer Code</th>
+                                        <th>Settlement Account</th>
+                                        <th>Nominal Amount (₦‘mm)</th>
+                                        <th>Discount Rate (%)</th>
                                         <th>Date Created</th>
-                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -104,70 +101,57 @@
                                     @php
                                     $i = 1;
                                     @endphp
-                                    @forelse ($auctions as $auction)
+                                    @forelse ($trades as $bid)
                                     <tr>
                                         <td>{{ $i++; }}</td>
-                                        <td>{{ $auction->securityCode }}</td>
-                                        <td>{{ $auction->auctioneerEmail }}</td>
-                                        <td>{{ $auction->isinNumber }}</td>
-                                        <td>{{ $auction->offerAmount }}</td>
-                                        <td>{{ date('F d, Y h:m',strtotime($auction->auctionStartTime))}}</td>
-                                        <td>{{ date('F d, Y',strtotime($auction->createdDate))}}</td>
-                                        <td><span class="badge bg-3">Pending Approval</span></td>
+                                        <td>{{ $bid->securityCode }}</td>
+                                        <td>{{ $bid->institutionCode }}</td>
+                                        <td>{{ $bid->settlementAccount }}</td>
+                                        <td>{{ $bid->nominalAmount }}</td>
+                                        <td>{{ $bid->discountRate }}</td>
+                                        <td>{{ date('F d, Y h:m',strtotime($bid->timestamp))}}</td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul>
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#view{{ $auction->id }}" href=""><i class="far fa-edit me-2"></i>View</a>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#view{{ $bid->id }}" href=""><i class="far fa-edit me-2"></i>View</a>
 
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit{{ $auction->id }}" href=""><i class="far fa-edit me-2"></i>Edit</a>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit{{ $bid->id }}" href=""><i class="far fa-edit me-2"></i>Edit</a>
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete{{ $auction->id }}" href=""><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                                            <a class="dropdown-item" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete{{ $bid->id }}" href=""><i class="far fa-trash-alt me-2"></i>Delete</a>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </td>
                                         {{-- view modal --}}
-                                        <div id="view{{ $auction->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="view{{ $bid->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        {{-- <h4 class="modal-title" id="standard-modalLabel">View
-                                                        </h4> --}}
+                                                        <h4 class="modal-title" id="standard-modalLabel">View</h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
 
                                                     <div class="modal-body">
                                                         <div class="text-center">
-                                                            <h6>Security Code : <strong>{{ $auction->securityCode }}</strong></h6>
+                                                            <h6>Security Code : <strong>{{ $bid->securityCode }}</strong></h6>
                                                             <br>
-                                                            <h6>Offer Amount : <strong>{{ $auction->offerAmount }}</strong></h6>
+                                                            <h6>Offer Amount : <strong>{{ $bid->institutionCode }}</strong></h6>
                                                             <br>
-                                                            <h6>Auctioneer Email : <strong>{{ $auction->auctioneerEmail }}</strong></h6>
+                                                            <h6>Auctioneer Email : <strong>{{ $bid->settlementAccount }}</strong></h6>
                                                             <br>
-                                                            <h6>Security ISIN NUmber : <strong>{{ $auction->isinNumber }}</strong></h6>
+                                                            <h6>Security ISIN NUmber : <strong>{{ $bid->nominalAmount }}</strong></h6>
                                                             <br>
-                                                            <h6>Ofer Date : <strong>{{ $auction->offerDate }}</strong></h6>
+                                                            <h6>Ofer Date : <strong>{{ $bid->discountRate }}</strong></h6>
                                                             <br>
-                                                            <h6>Auction Start Time : <strong>{{ date('F d, Y h:m:s',strtotime($auction->auctionStartTime)) }}</strong></h6>
+                                                            <h6>Auction Start Time : <strong>{{ date('F d, Y h:m:s',strtotime($bid->timestamp)) }}</strong></h6>
                                                             <br>
-                                                            <h6>Bid Close Time : <strong>{{ date('F d, Y h:m:s',strtotime($auction->bidCloseTime)) }}</strong></h6>
-                                                            <br>
-                                                            <h6>Bid Result Time : <strong>{{ date('F d, Y h:m:s',strtotime($auction->bidResultTime)) }}</strong></h6>
-                                                            <br>
-                                                            <h6>Minimum Rate : <strong>{{ $auction->minimumRate }}</strong></h6>
-                                                            <br>
-                                                            <h6>Maximum Rate : <strong>{{ $auction->maximumRate }}</strong></h6>
-                                                            <br>
-                                                            <h6>Inputter: <strong>{{ $auction->createdBy }}</strong></h6>
-                                                            <br>
-                                                            <h6>Created Date: <strong>{{ date('F d, Y h:m:s',strtotime($auction->createdDate))}}</strong></h6>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -177,7 +161,7 @@
                                             </div>
                                         </div>
                                         {{-- edit --}}
-                                        <div id="edit{{ $auction->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="edit{{ $bid->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -185,63 +169,42 @@
                                                         </h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('auction.mgt.update') }}" method="POST" class="needs-validation" id="update" novalidate>
+                                                    <form action="{{ route('trade.mgt.update') }}" method="POST" class="needs-validation" id="update" novalidate>
                                                         @csrf
-                                                        <input type='hidden' name='auction_ref' value="{{ $auction->id }}" />
-                                                        <input type='hidden' name='securityId' value="{{ $auction->securityRef }}" />
-                                                        <div class="modal-body">
-                                                            <div class="form-row row">
-                                                                {{-- --}}
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label for="validationCustom01">Offer Date</label>
-                                                                    <input type="date" name="offerDate" class="form-control" id="validationCustom01" value="{{ $auction->offerDate }}" required>
-                                                                    <div class="invalid-feedback">
-                                                                        This field is required
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label for="validationCustom01">Auction Start Time</label>
-                                                                    <input type="datetime-local" name="auction_start_time" class="form-control" id="validationCustom01" value="{{ $auction->auctionStartTime }}" required>
-                                                                    <div class="invalid-feedback">
-                                                                        This field is required
-                                                                    </div>
-                                                                </div>
-                                                                {{-- --}}
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label for="validationCustom01">Bids Close Time</label>
-                                                                    <input type="datetime-local" name="bids_close_time" class="form-control" id="validationCustom01" value="{{ $auction->bidCloseTime }}" required>
-                                                                    <div class="invalid-feedback">
-                                                                        This field is required
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label for="validationCustom01">Bids Result Time</label>
-                                                                    <input type="datetime-local" name="bids_result_time" class="form-control" id="validationCustom01" value="{{ $auction->bidResultTime }}" required>
-                                                                    <div class="invalid-feedback">
-                                                                        This field is required
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label for="validationCustom01">Minimum Rate</label>
-                                                                    <input type="number" name="minimum_rate" class="form-control" id="validationCustom01" value="{{ $auction->minimumRate }}" required>
-                                                                    <div class="invalid-feedback">
-                                                                        This field is required
-                                                                    </div>
-                                                                </div>
-                                                                {{-- --}}
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label for="validationCustom01">Maximum Rate</label>
-                                                                    <input type="number" name="maximum_rate" class="form-control" id="validationCustom01" value="{{ $auction->maximumRate }}" required>
-                                                                    <div class="invalid-feedback">
-                                                                        This field is required
-                                                                    </div>
-                                                                </div>
+                                                        <input type='hidden' name='transaction_ref' value="{{ $bid->id }}" />
+                                                        <input type='hidden' name='auction_ref' value="{{ $bid->auctionRef }}" />
 
+                                                        <div class="form-row row">
+                                                            {{-- code --}}
+                                                            {{-- --}}
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="validationCustom01">Settlement Account</label>
+                                                                <input type="number" name="settlementAccount" class="form-control" id="validationCustom01" value="{{ $bid->settlementAccount }}" required>
+                                                                <div class="invalid-feedback">
+                                                                    This field is required
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="validationCustom01">Nominal Amount (₦‘mm)</label>
+                                                                <input type="number" name="nominalAmount" class="form-control" id="validationCustom01" value="{{ $bid->nominalAmount }}" required>
+                                                                <div class="invalid-feedback">
+                                                                    This field is required
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12 mb-3">
+                                                                <label for="validationCustom01">Dicount Rate (%)</label>
+                                                                <input type="number" name="discountRate" class="form-control" id="validationCustom01" value="{{ $bid->discountRate }}" required>
+                                                                <div class="invalid-feedback">
+                                                                    This field is required
+                                                                </div>
                                                             </div>
 
                                                         </div>
+
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary" id="updateButton">Update Auction</button>
+                                                            <button type="submit" class="btn btn-primary" id="updateButton">Update Bid</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                         </div>
@@ -250,7 +213,7 @@
                                             </div>
                                         </div>
                                         {{-- delete --}}
-                                        <div id="delete{{ $auction->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="delete{{ $bid->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -258,15 +221,15 @@
                                                         </h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('auction.mgt.delete') }}" method="POST" class="needs-validation" id="myForm" novalidate>
+                                                    <form action="{{ route('trade.mgt.delete') }}" method="POST" class="needs-validation" id="myForm" novalidate>
                                                         @csrf
-                                                        <input type='hidden' name='auction_ref' value="{{ $auction->id }}" />
+                                                        <input type='hidden' name='transaction_ref' value="{{ $bid->id }}" />
                                                         <div class="modal-body">
-                                                            <p>Are you sure you want to delete this institution?</p>
+                                                            <p>Are you sure you want to delete this bid?</p>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-primary" id="updateButton">Delete
-                                                                Institution</button>
+                                                                bid</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                         </div>

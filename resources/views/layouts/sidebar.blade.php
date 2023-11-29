@@ -37,7 +37,10 @@
                     <a href="{{ route('auction.mgt.auctions') }}"><i class="fa-solid fa-key"></i> <span> My
                             Auction</span></a>
                 </li>
-                <li class="mb-3">
+                <li class="">
+                    <a href="{{ route('auction.mgt.history') }}"><i class="fa-solid fa-key"></i> <span> Auction History</span></a>
+                </li>
+                <li class="">
                     <a href="#"><i class="fa-solid fa-key"></i> <span> Auction
                             Allocation</span></a>
                 </li>
