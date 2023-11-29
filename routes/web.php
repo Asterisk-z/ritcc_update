@@ -1,13 +1,14 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Bank\BankDashboardController;
 use App\Http\Controllers\FMDQ\AuctionManagementController;
 use App\Http\Controllers\FMDQ\CertificateManagementController;
 use App\Http\Controllers\FMDQ\InstitutionController;
 use App\Http\Controllers\FMDQ\IQXController;
 use App\Http\Controllers\FMDQ\ProfileController;
-use App\Http\Controllers\FMDQ\TradeManagementController;
 use App\Http\Controllers\FMDQ\SystemController;
+use App\Http\Controllers\FMDQ\TradeManagementController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -185,6 +186,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/authoriser/institution/update/reject/{id}', [InstitutionController::class, 'rejectUpdate'])->name('authoriser.institution.rejectUpdate');
         Route::post('/authoriser/institution/delete/approve/{id}', [InstitutionController::class, 'approveDelete'])->name('authoriser.institution.approveDelete');
         Route::post('/authoriser/institution/delete/reject/{id}', [InstitutionController::class, 'rejectDelete'])->name('authoriser.institution.rejectDelete');
+    });
+
+    Route::middleware(['isBank'])->group(function () {
+
+        Route::get('/bank-dashboard', [BankDashboardController::class, 'index'])->name('bank.dashboard');
+        Route::get('/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('bank.mgt.auctions');
+        Route::get('/certificates', [CertificateManagementController::class, 'myIndex'])->name('bank.mgt.certificates');
     });
 
     // firs
