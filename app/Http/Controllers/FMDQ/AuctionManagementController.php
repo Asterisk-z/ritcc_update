@@ -20,7 +20,7 @@ class AuctionManagementController extends Controller
     public function index()
     {
         $page = 'All Auctions';
-        $securities = Security::where('status', '1')->orderBy('CreatedDate', 'DESC')->get();
+        $securities = Security::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->orderBy('CreatedDate', 'DESC')->get();
         $auctions = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
         $all = Auction::count();
         $approved = Auction::where('status', '1')->count();

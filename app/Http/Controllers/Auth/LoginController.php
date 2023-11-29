@@ -116,17 +116,14 @@ class LoginController extends Controller
             return redirect()->route('authoriser.profile.index')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
         // auctioneer
-        elseif (auth()->user()->type === 'auctioneer') {
+        elseif (auth()->user()->type == 'auctioneer' || auth()->user()->type == 'bidder') {
             return redirect()->route('bank.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
         // firs
         elseif (auth()->user()->type == 'firs') {
             return redirect()->route('firs.certificate.mgt.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
-        //
-        elseif (auth()->user()->type == 'bidder') {
-            return redirect()->route('bank.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
-        }
+
     }
 
     //
