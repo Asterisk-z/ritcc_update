@@ -172,7 +172,7 @@ class ProfileController extends Controller
                     'type' => 'profile',
                     // 'profileName' => $firstName . ' ' . $lastName,
                 ]);
-                // Mail::to($authoriser)->send(new CreateMail($create));
+                Mail::to($authoriser)->send(new CreateMail($create));
                 return redirect()->back()->with('success', "Profile has been sent for approval.");
             }
             // Redirect or display a success message

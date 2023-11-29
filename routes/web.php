@@ -7,6 +7,7 @@ use App\Http\Controllers\FMDQ\InstitutionController;
 use App\Http\Controllers\FMDQ\IQXController;
 use App\Http\Controllers\FMDQ\ProfileController;
 use App\Http\Controllers\FMDQ\TradeManagementController;
+use App\Http\Controllers\FMDQ\SystemController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,9 +32,18 @@ Route::post('/sign-out', [LoginController::class, 'signOut'])->name('signOut');
 Route::get('/change-password', [LoginController::class, 'changePassword'])->name('changePassword');
 // dashboard
 
+//
+// Route::group(['middleware'=>'auth','isSuperUser']);
+
 Route::middleware(['auth'])->group(function () {
     Route::post('/update-password', [LoginController::class, 'updatePassword'])->name('updatePassword');
-    // Route::get('/system-settings', [SystemController::class, 'index'])->name('system.settings');
+    Route::get('/system-settings', [SystemController::class, 'index'])->name('system.settings');
+    Route::get('/packages', [SystemController::class, 'packagesIndex'])->name('packages');
+    Route::post('/create-package', [SystemController::class, 'packageStore'])->name('createPackage');
+    Route::post('/update-package/{id}', [SystemController::class, 'packageUpdate'])->name('updatePackage');
+    Route::post('/delete-package', [SystemController::class, 'packageDelete'])->name('deletePackage');
+    Route::get('/auction-windows', [SystemController::class, 'auctionWindowsIndex'])->name('auctionWindows');
+    Route::get('/public-holidays', [SystemController::class, 'publicHolidaysIndex'])->name('publicHolidays');
     //
     Route::middleware(['isSuperUser'])->group(function () {
 
@@ -109,7 +119,53 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/trade-management/create', [TradeManagementController::class, 'create'])->name('trade.mgt.create');
         Route::post('/trade-management/update', [TradeManagementController::class, 'update'])->name('trade.mgt.update');
         Route::post('/trade-management/delete', [TradeManagementController::class, 'delete'])->name('trade.mgt.delete');
-
     });
-
+    //
+    Route::middleware(['isInputter'])->group(function () {
+        // profile
+        Route::get('/inputter/profile-management', [ProfileController::class, 'index'])->name('inputter.profile.index');
+        Route::get('/inputter/profile-management/pending', [ProfileController::class, 'pending'])->name('inputter.profile.pending');
+        Route::get('/inputter/profile-management/rejected', [ProfileController::class, 'rejected'])->name('inputter.profile.rejected');
+        Route::get('/inputter/profile-management/approved', [ProfileController::class, 'approved'])->name('inputter.profile.approved');
+        Route::post('/inputter/profile/create', [ProfileController::class, 'create'])->name('inputter.profile.create');
+        // institution
+        Route::get('/inputter/institution-management', [InstitutionController::class, 'index'])->name('inputter.institution.index');
+        Route::get('/inputter/institution-management/pending', [InstitutionController::class, 'pending'])->name('inputter.institution.pending');
+        Route::get('/inputter/institution-management/rejected', [InstitutionController::class, 'rejected'])->name('inputter.institution.rejected');
+        Route::get('/inputter/institution-management/approved', [InstitutionController::class, 'approved'])->name('inputter.institution.approved');
+        Route::post('/inputter/institution/create', [InstitutionController::class, 'create'])->name('inputter.institution.create');
+        Route::post('/inputter/institution/update/{id}', [InstitutionController::class, 'update'])->name('inputter.institution.update');
+        Route::post('/inputter/institution/delete/{id}', [InstitutionController::class, 'delete'])->name('inputter.institution.delete');
+    });
+    //
+    Route::middleware(['isAuthoriser'])->group(function () {
+        // profile
+        Route::get('/authoriser/profile-management', [ProfileController::class, 'index'])->name('authoriser.profile.index');
+        Route::get('/authoriser/profile-management/pending', [ProfileController::class, 'pending'])->name('authoriser.profile.pending');
+        Route::get('/authoriser/profile-management/rejected', [ProfileController::class, 'rejected'])->name('authoriser.profile.rejected');
+        Route::get('/authoriser/profile-management/approved', [ProfileController::class, 'approved'])->name('authoriser.profile.approved');
+        // authorise create
+        Route::post('/authoriser/profile/create/approve/{id}', [ProfileController::class, 'approveCreate'])->name('authoriser.profile.approveCreate');
+        Route::post('/authoriser/profile/create/reject/{id}', [ProfileController::class, 'rejectCreate'])->name('authoriser.profile.rejectCreate');
+        // authorise delete for profile
+        // Route::post('/profile/delete/approve/{id}', [ProfileController::class, 'approveDelete'])->name('profile.approveDelete');
+        // Route::post('/profile/delete/reject/{id}', [ProfileController::class, 'rejectDelete'])->name('profile.rejectDelete');
+        // Institution
+        Route::get('/authoriser/institution-management', [InstitutionController::class, 'index'])->name('authoriser.institution.index');
+        Route::get('/authoriser/institution-management/pending', [InstitutionController::class, 'pending'])->name('authoriser.institution.pending');
+        Route::get('/authoriser/institution-management/rejected', [InstitutionController::class, 'rejected'])->name('authoriser.institution.rejected');
+        Route::get('/authoriser/institution-management/approved', [InstitutionController::class, 'approved'])->name('authoriser.institution.approved');
+        Route::post('/authoriser/institution/create', [InstitutionController::class, 'create'])->name('authoriser.institution.create');
+        Route::post('/authoriser/institution/update/{id}', [InstitutionController::class, 'update'])->name('authoriser.institution.update');
+        Route::post('/authoriser/institution/delete/{id}', [InstitutionController::class, 'delete'])->name('authoriser.institution.delete');
+        // authorise create
+        Route::post('/authoriser/institution/create/approve/{id}', [InstitutionController::class, 'approveCreate'])->name('authoriser.institution.approveCreate');
+        Route::post('/authoriser/institution/create/reject/{id}', [InstitutionController::class, 'rejectCreate'])->name('authoriser.institution.rejectCreate');
+        // authorise update
+        Route::post('/authoriser/institution/update/approve/{id}', [InstitutionController::class, 'approveUpdate'])->name('authoriser.institution.approveUpdate');
+        Route::post('/authoriser/institution/update/reject/{id}', [InstitutionController::class, 'rejectUpdate'])->name('authoriser.institution.rejectUpdate');
+        // authorise delete
+        Route::post('/authoriser/institution/delete/approve/{id}', [InstitutionController::class, 'approveDelete'])->name('authoriser.institution.approveDelete');
+        Route::post('/authoriser/institution/delete/reject/{id}', [InstitutionController::class, 'rejectDelete'])->name('authoriser.institution.rejectDelete');
+    });
 });

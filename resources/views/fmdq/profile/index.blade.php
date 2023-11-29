@@ -82,6 +82,7 @@
         {{-- --}}
         <div class="page-header">
             <div class="content-page-header">
+                @if (auth()->user()->type ==='inputter')
                 {{-- <h5>Pages list</h5> --}}
                 <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal"
                     data-bs-target="#standard-modal"><i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add
@@ -97,7 +98,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('profile.create') }}" method="POST" id="myForm"
+                            <form action="{{ route('inputter.profile.create') }}" method="POST" id="myForm"
                                 class="needs-validation" novalidate>
                                 @csrf
                                 <div class="modal-body">
@@ -239,14 +240,18 @@
                     </div>
                 </div>
                 {{-- --}}
+                @endif
+
                 <div class="list-btn">
+                    {{-- iqx --}}
+                    @if (auth()->user()->type ==='super')
                     <ul class="filter-list">
                         <li>
                             <a class="btn btn-primary" href="{{ route('profile.index') }}"><i class="fas fa-users me-2"
                                     aria-hidden="true"></i>All</a>
                         </li>
                         <li>
-                            <a class="btn btn-outline-primary" href="{{ route('profile.pending') }}"><i
+                            <a class="btn btn-outline-primary" href="{{ route('profile.pending')}}"><i
                                     class="fa fa-pause me-2" aria-hidden="true"></i>Pending</a>
                         </li>
                         <li>
@@ -258,6 +263,51 @@
                                     class="fa fa-times me-2" aria-hidden="true"></i>Rejected</a>
                         </li>
                     </ul>
+                    @endif
+
+                    {{-- inputter --}}
+                    @if (auth()->user()->type ==='inputter')
+                    <ul class="filter-list">
+                        <li>
+                            <a class="btn btn-primary" href="{{ route('inputter.profile.index') }}"><i
+                                    class="fas fa-users me-2" aria-hidden="true"></i>All</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('inputter.profile.pending')}}"><i
+                                    class="fa fa-pause me-2" aria-hidden="true"></i>Pending</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('inputter.profile.approved') }}"><i
+                                    class="fa fa-check me-2" aria-hidden="true"></i>Approved</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('inputter.profile.rejected') }}"><i
+                                    class="fa fa-times me-2" aria-hidden="true"></i>Rejected</a>
+                        </li>
+                    </ul>
+                    @endif
+
+                    {{-- authoriser --}}
+                    @if (auth()->user()->type ==='authoriser')
+                    <ul class="filter-list">
+                        <li>
+                            <a class="btn btn-primary" href="{{ route('authoriser.profile.index') }}"><i
+                                    class="fas fa-users me-2" aria-hidden="true"></i>All</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('authoriser.profile.pending')}}"><i
+                                    class="fa fa-pause me-2" aria-hidden="true"></i>Pending</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('authoriser.profile.approved') }}"><i
+                                    class="fa fa-check me-2" aria-hidden="true"></i>Approved</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-outline-primary" href="{{ route('authoriser.profile.rejected') }}"><i
+                                    class="fa fa-times me-2" aria-hidden="true"></i>Rejected</a>
+                        </li>
+                    </ul>
+                    @endif
                 </div>
             </div>
         </div>
@@ -308,7 +358,7 @@
                                                         <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal"
                                                                 data-bs-target="#view{{ $profile->id }}" href=""><i
-                                                                    class="far fa-edit me-2"></i>View</a>
+                                                                    class="far fa-eye me-2"></i>View</a>
                                                         </li>
                                                         @if (!($profile->status === '0'|| $profile->status ===
                                                         '4'))
@@ -323,7 +373,101 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        {{-- deactivate user --}}
+                                        {{-- view --}}
+                                        <div class="modal fade" id="view{{ $profile->id }}" tabindex="-1" role="dialog"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        {{-- <h4 class="modal-title" id="myCenterModalLabel">Center
+                                                            modal
+                                                        </h4> --}}
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="card-text">
+                                                            <h6>NAME: <strong>{{ $profile->firstName.'
+                                                                    '.$profile->lastName }}</strong></h6>
+                                                            <br>
+                                                            <h6>CONTACT EMAIL: <strong>{{ $profile->email }}</strong>
+                                                            </h6>
+                                                            <br>
+                                                            <h6>CONTACT PHONE NUMBER: <strong>{{ $profile->mobile ?? 'No
+                                                                    information available'
+                                                                    }}</strong>
+                                                            </h6>
+                                                            <br>
+                                                            <h6>PACKAGE: <strong>{{ $profile->package->Name ?? 'No
+                                                                    information available'
+                                                                    }}</strong>
+                                                            </h6>
+                                                            <br>
+                                                            <h6>INSTIUTION: <strong>{{
+                                                                    $profile->institution->institutionName ?? 'No
+                                                                    information available'
+                                                                    }}</strong>
+                                                            </h6>
+                                                            <hr>
+                                                            <h6>CREATED BY: <strong>{{
+                                                                    $profile->inputter ?? 'No
+                                                                    information available'
+                                                                    }}</strong>
+                                                            </h6>
+                                                            <br>
+                                                            <h6>CREATED DATE: <strong>{{
+                                                                    date('F d, Y',strtotime( $profile->inputDate)) ??
+                                                                    'No
+                                                                    information available'
+                                                                    }}</strong>
+                                                            </h6>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary btn-lg"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- --}}
+                                        {{-- <div class="modal fade" id="delete{{ $profile->id }}" tabindex="-1"
+                                            role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="myCenterModalLabel">Center modal
+                                                        </h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <form action="{{ route('deactivateProfile',$profile->id) }}"
+                                                        method="POST" class="needs-validation" novalidate>
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <div class="form-row row">
+                                                                <div class="col-lg-12 mb-3">
+                                                                    <label for="validationCustom01">Package Name</label>
+                                                                    <input type="text" name="reason"
+                                                                        class="form-control" id="validationCustom01"
+                                                                        required>
+                                                                    <div class="invalid-feedback">
+                                                                        This field is required
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary">Deactivate
+                                                                Profile</button>
+                                                            &nbsp;&nbsp;&nbsp;
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div> --}}
                                     </tr>
                                     @endforeach
                                 </tbody>

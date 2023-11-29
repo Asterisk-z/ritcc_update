@@ -90,7 +90,7 @@
 	@endif
 </script>
 {{-- --}}
-{{-- <script>
+<script>
     document.addEventListener('DOMContentLoaded', function() {
 		const form = document.getElementById('myForm');
 		// const loadingButton = document.getElementById('loadingButton'); // Replace with your button ID
@@ -135,7 +135,7 @@
             }
         });
     });
-</script> --}}
+</script>
 
 {{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
