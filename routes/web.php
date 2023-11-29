@@ -73,6 +73,8 @@ Route::middleware(['auth'])->group(function () {
         // Auctions
         Route::get('/auction-management', [AuctionManagementController::class, 'index'])->name('auction.mgt.dashboard');
         Route::get('/auction-management/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('auction.mgt.auctions');
+        Route::get('/auction-management/history', [AuctionManagementController::class, 'auctionsHistory'])->name('auction.mgt.history');
+        Route::get('/auction-management/bids/{id}', [AuctionManagementController::class, 'auctionBids'])->name('auction.mgt.bids');
         Route::get('/auction-management/pending', [AuctionManagementController::class, 'pendingIndex'])->name('auction.mgt.pending');
         Route::get('/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('auction.mgt.rejected');
         Route::get('/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('auction.mgt.approved');

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\Auction;
 use App\Models\Security;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -19,12 +20,13 @@ class AuctionManagementController extends Controller
     public function index()
     {
         $page = 'All Auctions';
-        $securities = Security::where('status', '1')->orderBy('CreatedDate', 'DESC')->get();
+        $securities = Security::where('status', '1')->orderBy('CreatedDate', 'DESC')->first();
         $auctions = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
         $all = Auction::count();
         $approved = Auction::where('status', '1')->count();
         $pending = Auction::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();
         $rejected = Auction::where('status', '2')->count();
+        dd($securities);
 
         return view('fmdq.auction.index', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
     }
@@ -98,6 +100,86 @@ class AuctionManagementController extends Controller
 
         return view('fmdq.auction.approved', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
     }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function auctionsHistory()
+    {
+        $page = 'Auctions History';
+        $securities = Security::where('status', '1')->orderBy('CreatedDate', 'DESC')->get();
+
+        $auctions = [];
+        $all = Auction::count();
+        $approved = Auction::where('approveFlag', 9)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+        $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+        $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 9)->where('deleteFlag', 0)->count();
+
+        if (auth()->user()->type == 'super') {
+            $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->orderBy('createdDate', 'DESC')->get();
+        } else {
+            $auctions = Auction::where('auctioneerEmail', auth()->user()->email)->where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->orderBy('createdDate', 'DESC')->get();
+        }
+
+        return view('fmdq.auction.history', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function auctionBids()
+    {
+        $page = 'Auctions History Bids';
+        $bids = Transaction::where('auctionRef', request('id'))->orderBy('nominalAmount', 'DESC')->orderBy('discountRate', 'DESC')->get();
+        return view('fmdq.auction.bids', compact('bids', 'page'));
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function closeAuction(Request $request)
+    {
+
+        $validated = $request->validate([
+            'auction_ref' => 'bail|required|exists:tblAuction,id',
+        ], []);
+
+        if (!$validated) {
+            return back()->withErrors($validated);
+        }
+
+        $auction_ref = $request->input('auction_ref');
+
+        $auction = Auction::where('id', $auction_ref)->where('rejectionFlag', 0)->where('approveFlag', 1)->first();
+
+        if (!$auction) {
+            return redirect()->back()->with('error', "Fail to Close Auction.");
+        }
+
+        $auction->bidCloseTime = now();
+
+        $approve_action = $auction->save();
+
+        if (!$approve_action) {
+            return redirect()->back()->with('error', "Fail to approve Auction.");
+        }
+
+        $activity = new ActivityLog();
+        $activity->date = now();
+        $activity->app = 'RITCC';
+        $activity->type = 'Closed Auction';
+        $activity->activity = auth()->user()->email . ' closed Auction for bidding';
+        $activity->username = auth()->user()->email;
+        $activity->save();
+
+        return redirect()->back()->with('success', "Auction Approved Successfully.");
+    }
+
     /**
      * Show the form for creating a new resource.
      *
