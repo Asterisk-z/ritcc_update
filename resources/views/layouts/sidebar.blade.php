@@ -114,9 +114,9 @@
                 </li>
                 @elseif (auth()->user()->type === 'auctioneer')
                 <li class="mb-3">
-                    <a href="{{ route('bank.mgt.certificates') }}">
+                    <a href="{{ route('bank.dashboard') }}">
                         <i class="fa-solid fa-key"></i>
-                        <span>Certificates</span>
+                        <span>Auctions</span>
                     </a>
                 </li>
                 <li class="mb-3">
@@ -132,9 +132,9 @@
                 <li class="mb-3">
                     <a href="#"><i class="fa-solid fa-key"></i> <span>Trade Management</span></a>
                 </li>
-                @elseif (auth()->user()->type === 'bidder')
+                @elseif (auth()->user()->type === 'bidder' )
                 <li class="mb-3">
-                    <a href="{{ route('auction.mgt.auctions') }}"><i class="fa-solid fa-key"></i> <span> My
+                    <a href="{{ route('bank.dashboard') }}"><i class="fa-solid fa-key"></i> <span> My
                             Auction</span></a>
                 </li>
                 <li class="mb-3">

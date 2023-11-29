@@ -261,7 +261,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         //
         $profile = Profile::findOrFail($id);
-        $rejectCreate = Profile::where('id', $id)->update(['status' => 1, 'rejectReason' => $request->reason, 'authoriser' => $user->email, 'authoriserDate' => now()]);
+        $rejectCreate = Profile::where('id', $id)->update(['status' => 2, 'rejectReason' => $request->reason, 'authoriser' => $user->email, 'authoriserDate' => now()]);
         if ($rejectCreate) {
             // log activity
             $activity = new ActivityLog();
@@ -345,9 +345,9 @@ class ProfileController extends Controller
         $user = Auth::user();
         //
         $profile = Profile::findOrFail($id);
-        $rejectDelete = Profile::where('id', $id)->update(['status' => 1, 'deactivatedRejectReason' => $request->reason, 'modifiedApprovedBy' => $user->email, 'modifiedApprovedDate' => now()]);
+        $rejectDelete = Profile::where('id', $id)->update(['status' => 2, 'deactivatedRejectReason' => $request->reason, 'modifiedApprovedBy' => $user->email, 'modifiedApprovedDate' => now()]);
         if ($rejectDelete) {
-            // log activity
+            // log activity2
             $activity = new ActivityLog();
             $activity->date = now();
             $activity->app = 'RITCC';
