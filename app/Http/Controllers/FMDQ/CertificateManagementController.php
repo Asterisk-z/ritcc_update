@@ -36,6 +36,24 @@ class CertificateManagementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function myIndex()
+    {
+        $page = 'Certificates';
+
+        $securities = Security::where('auctioneerRef', auth()->user()->id)->where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
+        $all = Security::where('auctioneerRef', auth()->user()->id)->count();
+        $approved = Security::where('auctioneerRef', auth()->user()->id)->where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+        $pending = Security::where('auctioneerRef', auth()->user()->id)->where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+        $rejected = Security::where('auctioneerRef', auth()->user()->id)->where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
+
+        return view('fmdq.certificate.bank_cert', compact('securities', 'all', 'pending', 'approved', 'rejected', 'page'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function pendingIndex()
     {
         $page = 'Pending Certificate';
@@ -78,7 +96,7 @@ class CertificateManagementController extends Controller
         $pending = Security::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
         $rejected = Security::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
 
-        return view('fmdq.certificate.approved', compact('securities',  'all', 'pending', 'approved', 'rejected', 'page'));
+        return view('fmdq.certificate.approved', compact('securities', 'all', 'pending', 'approved', 'rejected', 'page'));
     }
     /**
      * Show the form for creating a new resource.
@@ -376,7 +394,7 @@ class CertificateManagementController extends Controller
         $security->modifiedFlag = 1;
         $security->modifiedBy = auth()->user()->email;
         $security->modifiedDate = now();
-        
+
         $security->securityCode = $modifyData->securityCode;
         $security->auctioneerRef = $modifyData->auctioneerRef;
         $security->offerAmount = $modifyData->offerAmount;

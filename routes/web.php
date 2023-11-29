@@ -184,6 +184,8 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['isBank'])->group(function () {
 
         Route::get('/bank-dashboard', [BankDashboardController::class, 'index'])->name('bank.dashboard');
+        Route::get('/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('bank.mgt.auctions');
+        Route::get('/certificates', [CertificateManagementController::class, 'myIndex'])->name('bank.mgt.certificates');
 
     });
 });

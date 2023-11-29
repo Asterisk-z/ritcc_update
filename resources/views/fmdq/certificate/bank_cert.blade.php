@@ -14,11 +14,6 @@
 
                 <button type="button" class="btn btn-primary mt-1" style="background-color: transparent; border: transparent;"></button>
 
-
-                <div class="list-btn">
-                    @include('fmdq.certificate.buttons')
-                </div>
-
             </div>
         </div>
         {{-- --}}
