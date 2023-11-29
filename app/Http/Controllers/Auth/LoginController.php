@@ -32,7 +32,7 @@ class LoginController extends Controller
         //
         // $user = Profile::where('email', $request->email)->first();
         //
-        $validated =  $request->validate([
+        $validated = $request->validate([
             'password' => [
                 'required',
                 'string',
@@ -117,7 +117,7 @@ class LoginController extends Controller
         }
         // auctioneer
         elseif (auth()->user()->type === 'auctioneer') {
-            return redirect()->route('auction.mgt.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
+            return redirect()->route('bank.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
         // firs
         elseif (auth()->user()->type == 'firs') {
@@ -125,7 +125,7 @@ class LoginController extends Controller
         }
         //
         elseif (auth()->user()->type == 'bidder') {
-            return redirect()->route('auction.mgt.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
+            return redirect()->route('bank.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
     }
 

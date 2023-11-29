@@ -20,13 +20,12 @@ class AuctionManagementController extends Controller
     public function index()
     {
         $page = 'All Auctions';
-        $securities = Security::where('status', '1')->orderBy('CreatedDate', 'DESC')->first();
+        $securities = Security::where('status', '1')->orderBy('CreatedDate', 'DESC')->get();
         $auctions = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
         $all = Auction::count();
         $approved = Auction::where('status', '1')->count();
         $pending = Auction::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();
         $rejected = Auction::where('status', '2')->count();
-        dd($securities);
 
         return view('fmdq.auction.index', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
     }

@@ -72,6 +72,6 @@ class Kernel extends HttpKernel
         'isFirs' => \App\Http\Middleware\FirsMiddleware::class,
         'isAuctioneer' => \App\Http\Middleware\AuctioneerMiddleware::class,
         'isBidder' => \App\Http\Middleware\BidderMiddleware::class,
-
+        'isBank' => \App\Http\Middleware\BankMiddleware::class,
     ];
 }
