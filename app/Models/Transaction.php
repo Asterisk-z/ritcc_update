@@ -12,4 +12,8 @@ class Transaction extends Model
     protected $table = 'tblTransaction';
     public $guarded = [];
     public $timestamps = false;
+
+    public function auction() {
+        return $this->hasOne(Auction::class, 'id', 'auctionRef');
+    }
 }

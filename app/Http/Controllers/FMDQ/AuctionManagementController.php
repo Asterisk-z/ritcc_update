@@ -23,7 +23,7 @@ class AuctionManagementController extends Controller
         $securities = Security::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->orderBy('CreatedDate', 'DESC')->get();
         $auctions = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
         $all = Auction::count();
-        $approved = Auction::where('status', '1')->count();
+        $approved = Auction::count();
         $pending = Auction::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();
         $rejected = Auction::where('status', '2')->count();
 
@@ -38,11 +38,11 @@ class AuctionManagementController extends Controller
     public function auctionsIndex()
     {
         $page = 'Auctions';
-        $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('createdBy', auth()->user()->email)->orderBy('createdDate', 'DESC')->get();
-        $all = Auction::count();
-        $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('createdBy', auth()->user()->email)->count();
-        $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('createdBy', auth()->user()->email)->count();
-        $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->where('createdBy', auth()->user()->email)->count();
+        $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->orderBy('createdDate', 'DESC')->get();
+        $all = Auction::where('auctioneerRef', auth()->user()->id)->count();
+        $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->count();
+        $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->count();
+        $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->count();
 
         return view('fmdq.auction.list', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
 
@@ -73,7 +73,7 @@ class AuctionManagementController extends Controller
     public function rejectedIndex()
     {
         $page = 'Rejected Auctions';
-        $securities = Security::where('status', '1')->orderBy('CreatedDate', 'DESC')->get();
+        $securities = Security::orderBy('CreatedDate', 'DESC')->get();
         $auctions = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->orderBy('createdDate', 'DESC')->get();
         $all = Auction::count();
         $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
@@ -90,7 +90,7 @@ class AuctionManagementController extends Controller
     public function approvedIndex()
     {
         $page = 'Approved Auctions';
-        $securities = Security::where('status', '1')->orderBy('CreatedDate', 'DESC')->get();
+        $securities = Security::orderBy('CreatedDate', 'DESC')->get();
         $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->orderBy('createdDate', 'DESC')->get();
         $all = Auction::count();
         $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
@@ -108,7 +108,7 @@ class AuctionManagementController extends Controller
     public function auctionsHistory()
     {
         $page = 'Auctions History';
-        $securities = Security::where('status', '1')->orderBy('CreatedDate', 'DESC')->get();
+        $securities = Security::orderBy('CreatedDate', 'DESC')->get();
 
         $auctions = [];
         $all = Auction::count();
@@ -130,11 +130,59 @@ class AuctionManagementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function allocation()
+    {
+        $page = 'Auction Allocation';
+        $securities = Security::orderBy('CreatedDate', 'DESC')->get();
+
+        $auctions = Auction::where('auctioneerEmail', auth()->user()->email)->where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->orderBy('createdDate', 'DESC')->get();
+
+        return view('fmdq.auction.allocation', compact('securities', 'auctions', 'page'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function auctionBids()
     {
         $page = 'Auctions History Bids';
-        $bids = Transaction::where('auctionRef', request('id'))->orderBy('nominalAmount', 'DESC')->orderBy('discountRate', 'DESC')->get();
-        return view('fmdq.auction.bids', compact('bids', 'page'));
+        $bids = Transaction::where('auctionRef', request('id'))->orderBy('nominalAmount', 'DESC')->orderBy('timestamp', 'DESC')->get();
+        $amountOffered = Transaction::where('auctionRef', request('id'))->orderBy('nominalAmount', 'DESC')->orderBy('timestamp', 'DESC')->sum('amountOffered');
+        $offerAmount = Auction::where('id', request('id'))->first();
+        $availableAmount = $offerAmount->offerAmount - $amountOffered;
+
+        return view('fmdq.auction.bids', compact('bids', 'page', 'availableAmount'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function results()
+    {
+        $page = 'Auctions History Bids';
+
+        // $auctions = Auction::where('id', 5)->where('auctioneerEmail', auth()->user()->email)->where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->orderBy('createdDate', 'DESC')->first();
+        // $auctions = Auction::select( 'tblAuction.id', 'tblAuction.securityCode', DB::raw('count(*) as total'))->join('tblTransaction', 'tblAuction.id', '=', 'tblTransaction.auctionRef')
+        //             // ->where('tblAuction.securityCode', 'tblAuction.id')
+
+        //             ->where('tblAuction.auctioneerEmail', auth()->user()->email)->where('tblAuction.approveFlag', 1)
+        //             ->where('tblAuction.rejectionFlag', 0)->where('tblAuction.deleteFlag', 0)
+        //             ->groupBy('tblAuction.securityCode')->get();
+
+        $bids = Transaction::pluck('auctionRef');
+        $auctions = Auction::whereIn('tblAuction.id', $bids)->join('tblTransaction', 'tblAuction.id', '=', 'tblTransaction.auctionRef')->get();
+        dd($bids, $auctions);
+        if (request('id')) {
+
+            $bids = Transaction::where('auctionRef', request('id'))->where('awardedFlag', 1)->orderBy('nominalAmount', 'DESC')->orderBy('timestamp', 'DESC')->get();
+
+        }
+        return view('fmdq.auction.results', compact('bids', 'auctions', 'page'));
+
     }
     /**
      * Show the form for creating a new resource.
@@ -184,6 +232,101 @@ class AuctionManagementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function awardAuction(Request $request)
+    {
+
+        $validated = $request->validate([
+            'bid_ref' => 'bail|required|exists:tblTransaction,id',
+            'bidder_email' => 'bail|required',
+            'award_amount' => 'bail|required',
+        ], []);
+
+        if (!$validated) {
+            return back()->withErrors($validated);
+        }
+
+        $bid_ref = $request->input('bid_ref');
+        $bidder_email = $request->input('bidder_email');
+        $award_amount = $request->input('award_amount');
+
+        $bid = Transaction::where('id', $bid_ref)->where('bidder', $bidder_email)->first();
+
+        if (!$bid) {
+            return redirect()->back()->with('error', "Fail to Award Offer.");
+        }
+
+        $totalAwardedBids = Transaction::where('auctionRef', $bid->auctionRef)->where('awardedFlag', 1)->sum('amountOffered') + $award_amount;
+
+        if ($totalAwardedBids > $bid->auction->offerAmount) {
+            return redirect()->back()->with('error', "Fail to Award Offer.");
+        }
+
+        // dd($bid->auction, $totalAwardedBids, ($totalAwardedBids > $bid->auction->offerAmount));
+        $bid->awardedFlag = 1;
+        $bid->amountOffered = $award_amount;
+
+        $approve_action = $bid->save();
+
+        if (!$approve_action) {
+            return redirect()->back()->with('error', "Fail to approve Auction.");
+        }
+
+        $activity = new ActivityLog();
+        $activity->date = now();
+        $activity->app = 'RITCC';
+        $activity->type = 'Awarded Offer';
+        $activity->activity = auth()->user()->email . ' awarded bidding';
+        $activity->username = auth()->user()->email;
+        $activity->save();
+
+        return redirect()->back()->with('success', "Bid Awarded Successfully.");
+    }
+
+    public function awardCancelAuction(Request $request)
+    {
+
+        $validated = $request->validate([
+            'bid_ref' => 'bail|required|exists:tblTransaction,id',
+            'bidder_email' => 'bail|required',
+        ], []);
+
+        if (!$validated) {
+            return back()->withErrors($validated);
+        }
+
+        $bid_ref = $request->input('bid_ref');
+        $bidder_email = $request->input('bidder_email');
+
+        $bid = Transaction::where('id', $bid_ref)->where('bidder', $bidder_email)->first();
+
+        if (!$bid) {
+            return redirect()->back()->with('error', "Fail to Award Offer.");
+        }
+
+        $bid->awardedFlag = 0;
+        $bid->amountOffered = 0;
+
+        $approve_action = $bid->save();
+
+        if (!$approve_action) {
+            return redirect()->back()->with('error', "Fail to approve Auction.");
+        }
+
+        $activity = new ActivityLog();
+        $activity->date = now();
+        $activity->app = 'RITCC';
+        $activity->type = 'Cancel Awarded Offer';
+        $activity->activity = auth()->user()->email . ' cancel awarded bidding';
+        $activity->username = auth()->user()->email;
+        $activity->save();
+
+        return redirect()->back()->with('success', "Bid Awarded Successfully.");
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create(Request $request)
     {
         $validated = $request->validate([
@@ -208,11 +351,13 @@ class AuctionManagementController extends Controller
         $minimum_rate = $request->input('minimum_rate');
         $maximum_rate = $request->input('maximum_rate');
 
-        $security = Security::where('id', $securityId)->where('status', '1')->first();
+        $security = Security::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('id', $securityId)->first();
 
         if (!$security) {
             return redirect()->back()->with('error', "Fail to create Auction.");
         }
+
+        // dd($request->all(), $security);
 
         // You can now proceed with saving the other form data to your database or perform any other actions
         $auctions = new Auction();
@@ -383,7 +528,7 @@ class AuctionManagementController extends Controller
         $maximum_rate = $request->input('maximum_rate');
         $auction_ref = $request->input('auction_ref');
 
-        $security = Security::where('id', $securityId)->where('status', '1')->first();
+        $security = Security::where('id', $securityId)->first();
 
         if (!$security) {
             return redirect()->back()->with('error', "Fail to create Auction.");

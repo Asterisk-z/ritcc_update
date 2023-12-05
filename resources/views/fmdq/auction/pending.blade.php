@@ -65,13 +65,14 @@
                                                         <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#view{{ $auction->id }}" href=""><i class="far fa-edit me-2"></i>View</a>
                                                         </li>
+
                                                         @if ($auction->modifyingFlag)
                                                         <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#viewUpdate{{ $auction->id }}" href=""><i class="far fa-edit me-2"></i>View Update</a>
                                                         </li>
                                                         @endif
 
-                                                        @if (auth()->user()->type == 'authoriser' || auth()->user()->type == 'super')
+                                                        @if (auth()->user()->type == 'authoriser')
 
                                                         @if ($auction->modifyingFlag)
                                                         <li>

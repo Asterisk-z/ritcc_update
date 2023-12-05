@@ -10,7 +10,7 @@
         {{-- --}}
         <div class="page-header">
             <div class="content-page-header">
-
+                @if (auth()->user()->type == 'inputter' || auth()->user()->type == 'super')
                 <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal" data-bs-target="#standard-modal"><i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add Auction</button>
                 {{-- modal --}}
                 <div id="standard-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
@@ -20,7 +20,7 @@
                                 <h4 class="modal-title" id="standard-modalLabel">Add Auction</h4>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('auction.mgt.create') }}" method="POST" id="myForm" class="needs-validation" novalidate>
+                            <form action="{{ route('inputter.auction.mgt.create') }}" method="POST" id="myForm" class="needs-validation" novalidate>
                                 @csrf
                                 <div class="modal-body">
                                     <div class="form-row row">
@@ -97,6 +97,9 @@
                         </div>
                     </div>
                 </div>
+                @else
+                <button type="button" class="btn btn-primary mt-1" style="background-color: transparent; border: transparent;"></button>
+                @endif
 
                 <div class="list-btn">
                     @include('fmdq.auction.buttons')
@@ -146,12 +149,14 @@
                                                             <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#view{{ $auction->id }}" href=""><i class="far fa-edit me-2"></i>View</a>
 
                                                         </li>
+                                                        @if(auth()->user()->type == 'inputter' || auth()->user()->type == 'super')
                                                         <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit{{ $auction->id }}" href=""><i class="far fa-edit me-2"></i>Edit</a>
                                                         </li>
                                                         <li>
                                                             <a class="dropdown-item" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete{{ $auction->id }}" href=""><i class="far fa-trash-alt me-2"></i>Delete</a>
                                                         </li>
+                                                        @endif
                                                     </ul>
                                                 </div>
                                             </div>

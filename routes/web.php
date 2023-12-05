@@ -85,19 +85,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/auction-management', [AuctionManagementController::class, 'index'])->name('auction.mgt.dashboard');
         Route::get('/auction-management/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('auction.mgt.auctions');
         Route::get('/auction-management/history', [AuctionManagementController::class, 'auctionsHistory'])->name('auction.mgt.history');
-        Route::get('/auction-management/bids/{id}', [AuctionManagementController::class, 'auctionBids'])->name('auction.mgt.bids');
         Route::get('/auction-management/pending', [AuctionManagementController::class, 'pendingIndex'])->name('auction.mgt.pending');
-        Route::get('/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('auction.mgt.rejected');
-        Route::get('/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('auction.mgt.approved');
         Route::post('/auction-management/create', [AuctionManagementController::class, 'create'])->name('auction.mgt.create');
-        Route::post('/auction-management/approve/create', [AuctionManagementController::class, 'approveCreate'])->name('auction.mgt.approve.create');
-        Route::post('/auction-management/reject/create', [AuctionManagementController::class, 'rejectCreate'])->name('auction.mgt.reject.create');
         Route::post('/auction-management/update', [AuctionManagementController::class, 'update'])->name('auction.mgt.update');
-        Route::post('/auction-management/approve/update', [AuctionManagementController::class, 'approveUpdate'])->name('auction.mgt.approve.update');
-        Route::post('/auction-management/reject/update', [AuctionManagementController::class, 'rejectUpdate'])->name('auction.mgt.reject.update');
         Route::post('/auction-management/delete', [AuctionManagementController::class, 'delete'])->name('auction.mgt.delete');
-        Route::post('/auction-management/approve/delete', [AuctionManagementController::class, 'approveDelete'])->name('auction.mgt.approve.delete');
-        Route::post('/auction-management/reject/delete', [AuctionManagementController::class, 'rejectDelete'])->name('auction.mgt.reject.delete');
 
         // Certificate
         Route::get('/certificate-management', [CertificateManagementController::class, 'index'])->name('certificate.mgt.dashboard');
@@ -114,12 +105,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/certificate-management/approve/delete', [CertificateManagementController::class, 'approveDelete'])->name('certificate.mgt.approve.delete');
         Route::post('/certificate-management/reject/delete', [CertificateManagementController::class, 'rejectDelete'])->name('certificate.mgt.reject.delete');
 
-        // Bidding
-        Route::get('/trade-management', [TradeManagementController::class, 'index'])->name('trade.mgt.dashboard');
-        Route::get('/trade-management/bids', [TradeManagementController::class, 'bidIndex'])->name('trade.mgt.bids');
-        Route::post('/trade-management/create', [TradeManagementController::class, 'create'])->name('trade.mgt.create');
-        Route::post('/trade-management/update', [TradeManagementController::class, 'update'])->name('trade.mgt.update');
-        Route::post('/trade-management/delete', [TradeManagementController::class, 'delete'])->name('trade.mgt.delete');
+        // // Bidding
+        // Route::get('/trade-management', [TradeManagementController::class, 'index'])->name('trade.mgt.dashboard');
+        // Route::get('/trade-management/bids', [TradeManagementController::class, 'bidIndex'])->name('trade.mgt.bids');
+        // Route::post('/trade-management/create', [TradeManagementController::class, 'create'])->name('trade.mgt.create');
+        // Route::post('/trade-management/update', [TradeManagementController::class, 'update'])->name('trade.mgt.update');
+        // Route::post('/trade-management/delete', [TradeManagementController::class, 'delete'])->name('trade.mgt.delete');
     });
 
     // inputter
@@ -186,6 +177,21 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/authoriser/institution/update/reject/{id}', [InstitutionController::class, 'rejectUpdate'])->name('authoriser.institution.rejectUpdate');
         Route::post('/authoriser/institution/delete/approve/{id}', [InstitutionController::class, 'approveDelete'])->name('authoriser.institution.approveDelete');
         Route::post('/authoriser/institution/delete/reject/{id}', [InstitutionController::class, 'rejectDelete'])->name('authoriser.institution.rejectDelete');
+
+        // auctions
+        Route::get('/authoriser/auction-management', [AuctionManagementController::class, 'index'])->name('authoriser.auction.mgt.dashboard');
+        Route::get('/authoriser/auction-management/pending', [AuctionManagementController::class, 'pendingIndex'])->name('authoriser.auction.mgt.pending');
+        Route::get('/authoriser/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('authoriser.auction.mgt.rejected');
+        Route::get('/authoriser/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('authoriser.auction.mgt.approved');
+        Route::post('/auction-management/approve/delete', [AuctionManagementController::class, 'approveDelete'])->name('auction.mgt.approve.delete');
+        Route::post('/auction-management/reject/delete', [AuctionManagementController::class, 'rejectDelete'])->name('auction.mgt.reject.delete');
+        Route::post('/auction-management/approve/create', [AuctionManagementController::class, 'approveCreate'])->name('auction.mgt.approve.create');
+        Route::post('/auction-management/reject/create', [AuctionManagementController::class, 'rejectCreate'])->name('auction.mgt.reject.create');
+        Route::get('/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('auction.mgt.rejected');
+        Route::get('/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('auction.mgt.approved');
+        Route::post('/auction-management/approve/update', [AuctionManagementController::class, 'approveUpdate'])->name('auction.mgt.approve.update');
+        Route::post('/auction-management/reject/update', [AuctionManagementController::class, 'rejectUpdate'])->name('auction.mgt.reject.update');
+
     });
 
     Route::middleware(['isBank'])->group(function () {
@@ -193,6 +199,20 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/bank-dashboard', [BankDashboardController::class, 'index'])->name('bank.dashboard');
         Route::get('/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('bank.mgt.auctions');
         Route::get('/certificates', [CertificateManagementController::class, 'myIndex'])->name('bank.mgt.certificates');
+
+        Route::get('/trade-management', [TradeManagementController::class, 'index'])->name('trade.mgt.dashboard');
+        Route::get('/trade-management/bids', [TradeManagementController::class, 'bidIndex'])->name('trade.mgt.bids');
+        Route::post('/trade-management/create', [TradeManagementController::class, 'create'])->name('trade.mgt.create');
+        Route::post('/trade-management/update', [TradeManagementController::class, 'update'])->name('trade.mgt.update');
+        Route::post('/trade-management/delete', [TradeManagementController::class, 'delete'])->name('trade.mgt.delete');
+
+        Route::get('auctions/allocation', [AuctionManagementController::class, 'allocation'])->name('auction.mgt.allocation');
+        Route::post('auction/close', [AuctionManagementController::class, 'closeAuction'])->name('auction.mgt.close');
+        Route::post('auction/award', [AuctionManagementController::class, 'awardAuction'])->name('auction.mgt.award');
+        Route::post('auction/cancel', [AuctionManagementController::class, 'awardCancelAuction'])->name('auction.mgt.cancel.award');
+        Route::get('/auctions/bids/{id}', [AuctionManagementController::class, 'auctionBids'])->name('auction.mgt.bids');
+        Route::get('auctions/results/{id?}', [AuctionManagementController::class, 'results'])->name('auction.mgt.results');
+
     });
 
     // firs
@@ -211,20 +231,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/firs/certificate-management/reject/update', [CertificateManagementController::class, 'rejectUpdate'])->name('firs.certificate.mgt.reject.update');
         Route::post('/firs/certificate-management/approve/delete', [CertificateManagementController::class, 'approveDelete'])->name('firs.certificate.mgt.approve.delete');
         Route::post('/firs/certificate-management/reject/delete', [CertificateManagementController::class, 'rejectDelete'])->name('firs.certificate.mgt.reject.delete');
-        // auctions
-        Route::get('/firs/auction-management', [AuctionManagementController::class, 'index'])->name('firs.auction.mgt.dashboard');
-        Route::get('/firs/auction-management/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('firs.auction.mgt.auctions');
-        Route::get('/firs/auction-management/history', [AuctionManagementController::class, 'auctionsHistory'])->name('firs.auction.mgt.history');
-        Route::get('/firs/auction-management/bids/{id}', [AuctionManagementController::class, 'auctionBids'])->name('firs.auction.mgt.bids');
-        Route::get('/firs/auction-management/pending', [AuctionManagementController::class, 'pendingIndex'])->name('firs.auction.mgt.pending');
-        Route::get('/firs/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('firs.auction.mgt.rejected');
-        Route::get('/firs/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('firs.auction.mgt.approved');
-        Route::post('/firs/auction-management/approve/create', [AuctionManagementController::class, 'approveCreate'])->name('firs.auction.mgt.approve.create');
-        Route::post('/firs/auction-management/reject/create', [AuctionManagementController::class, 'rejectCreate'])->name('firs.auction.mgt.reject.create');
-        Route::post('/firs/auction-management/approve/update', [AuctionManagementController::class, 'approveUpdate'])->name('firs.auction.mgt.approve.update');
-        Route::post('/firs/auction-management/reject/update', [AuctionManagementController::class, 'rejectUpdate'])->name('firs.auction.mgt.reject.update');
-        Route::post('/firs/auction-management/approve/delete', [AuctionManagementController::class, 'approveDelete'])->name('firs.auction.mgt.approve.delete');
-        Route::post('/firs/auction-management/reject/delete', [AuctionManagementController::class, 'rejectDelete'])->name('firs.auction.mgt.reject.delete');
     });
     // auctioneer
 
