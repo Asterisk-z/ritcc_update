@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Bank;
 
 use App\Http\Controllers\Controller;
-use App\Models\Profile;
+use App\Models\Auction;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class BankDashboardController extends Controller
@@ -17,12 +18,34 @@ class BankDashboardController extends Controller
     {
 
         $user = auth()->user();
-        $profiles = Profile::orderBy('InputDate', 'ASC')->with('package')->get();
-        $all = Profile::count();
-        $approved = Profile::where('status', '1')->count();
-        $pending = Profile::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();
-        $rejected = Profile::where('status', '2')->count();
-        return view('bank.dashboard', compact('user', 'profiles', 'all', 'pending', 'approved', 'rejected'));
+
+        $auctions = [];
+        $trades = [];
+        $all = 0;
+        $approved = 0;
+        $pending = 0;
+        $rejected = 0;
+
+        if (auth()->user()->type == 'auctioneer') {
+            $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->orderBy('createdDate', 'DESC')->get();
+            $all = Auction::where('auctioneerRef', auth()->user()->id)->count();
+            $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->count();
+            $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->count();
+            $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->count();
+        }
+
+        if (auth()->user()->type == 'bidder') {
+
+            $trades = Transaction::where('bidderRef', auth()->user()->id)->orderBy('timestamp', 'DESC')->get();
+            $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
+            $all = Auction::where('deleteFlag', 0)->count();
+            $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+            $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+            $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
+
+        }
+
+        return view('bank.dashboard', compact('user', 'auctions', 'trades', 'all', 'pending', 'approved', 'rejected'));
 
     }
 

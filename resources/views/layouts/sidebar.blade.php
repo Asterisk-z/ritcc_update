@@ -9,7 +9,7 @@
             </a>
         </div>
     </div>
-    <div class="sidebar-inner slimscroll">
+    <div class="sidebar-inner slimscroll pt-5">
         <div id="sidebar-menu" class="sidebar-menu">
             <br><br>
             <ul>
@@ -159,6 +159,11 @@
                     <a href="{{ route('trade.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span>Trade</span></a>
 
                 </li>
+                <li class="mb-3">
+                    <a href="{{ route('trade.mgt.dashboard', 'result') }}"><i class="fa-solid fa-key"></i> <span>Allocated Trade</span></a>
+
+                </li>
+
                 @endif
 
             </ul>

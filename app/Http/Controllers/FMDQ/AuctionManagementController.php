@@ -165,22 +165,12 @@ class AuctionManagementController extends Controller
     {
         $page = 'Auctions History Bids';
 
-        // $auctions = Auction::where('id', 5)->where('auctioneerEmail', auth()->user()->email)->where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->orderBy('createdDate', 'DESC')->first();
-        // $auctions = Auction::select( 'tblAuction.id', 'tblAuction.securityCode', DB::raw('count(*) as total'))->join('tblTransaction', 'tblAuction.id', '=', 'tblTransaction.auctionRef')
-        //             // ->where('tblAuction.securityCode', 'tblAuction.id')
-
-        //             ->where('tblAuction.auctioneerEmail', auth()->user()->email)->where('tblAuction.approveFlag', 1)
-        //             ->where('tblAuction.rejectionFlag', 0)->where('tblAuction.deleteFlag', 0)
-        //             ->groupBy('tblAuction.securityCode')->get();
-
         $bids = Transaction::pluck('auctionRef');
-        $auctions = Auction::whereIn('tblAuction.id', $bids)->join('tblTransaction', 'tblAuction.id', '=', 'tblTransaction.auctionRef')->get();
-        dd($bids, $auctions);
-        if (request('id')) {
-
-            $bids = Transaction::where('auctionRef', request('id'))->where('awardedFlag', 1)->orderBy('nominalAmount', 'DESC')->orderBy('timestamp', 'DESC')->get();
-
-        }
+        $auctions = Auction::whereIn('tblAuction.id', $bids)->withCount('transactions')->get();
+        // dd($bids, $auctions);
+        // if (request('id')) {
+        //     $bids = Transaction::where('auctionRef', request('id'))->where('awardedFlag', 1)->orderBy('nominalAmount', 'DESC')->orderBy('timestamp', 'DESC')->get();
+        // }
         return view('fmdq.auction.results', compact('bids', 'auctions', 'page'));
 
     }

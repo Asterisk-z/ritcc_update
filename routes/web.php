@@ -200,7 +200,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('bank.mgt.auctions');
         Route::get('/certificates', [CertificateManagementController::class, 'myIndex'])->name('bank.mgt.certificates');
 
-        Route::get('/trade-management', [TradeManagementController::class, 'index'])->name('trade.mgt.dashboard');
+        Route::get('/trade-management/{id?}', [TradeManagementController::class, 'index'])->name('trade.mgt.dashboard');
         Route::get('/trade-management/bids', [TradeManagementController::class, 'bidIndex'])->name('trade.mgt.bids');
         Route::post('/trade-management/create', [TradeManagementController::class, 'create'])->name('trade.mgt.create');
         Route::post('/trade-management/update', [TradeManagementController::class, 'update'])->name('trade.mgt.update');

@@ -22,7 +22,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>S/N</th>
-                                        <th>Settlement Account</th>
+                                        <th>Trades</th>
                                         <th>Security</th>
                                         <th>Bidder Email</th>
                                         <th>Discount Rate (%)</th>
@@ -36,16 +36,16 @@
                                     @php
                                     $i = 1;
                                     @endphp
-                                    @forelse ($bids as $item)
+                                    @forelse ($auctions as $item)
                                     <tr>
                                         <td>{{ $i++; }}</td>
-                                        <td>{{ $item->settlementAccount }}</td>
+                                        <td>{{ $item->transactions_count }} bidders</td>
                                         <td>{{ $item->securityCode }}</td>
-                                        <td>{{ $item->bidder }}</td>
-                                        <td>{{ $item->discountRate }}</td>
-                                        <td>{{ $item->nominalAmount }}</td>
-                                        <td>{{ $item->amountOffered }}</td>
-                                        <td>{{ date('F d, Y',strtotime($item->timestamp))}}</td>
+                                        <td>{{ $item->offerAmount }}</td>
+                                        <td>{{ $item->maximumRate }}</td>
+                                        <td>{{ $item->minimumRate }}</td>
+                                        <td>{{ $item->isinNumber }}</td>
+                                        <td>{{ date('F d, Y',strtotime($item->bidCloseTime))}}</td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>

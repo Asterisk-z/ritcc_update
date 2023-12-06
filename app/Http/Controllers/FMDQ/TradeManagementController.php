@@ -20,14 +20,24 @@ class TradeManagementController extends Controller
     public function index()
     {
         $page = 'Trade Management';
-        $trades = Transaction::where('bidderRef', auth()->user()->id)->orderBy('timestamp', 'DESC')->get();
-        $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
-        $all = Auction::where('deleteFlag', 0)->count();
-        $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
-        $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
-        $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
+        if (request('id')) {
+            $trades = Transaction::where('bidderRef', auth()->user()->id)->where('awardedFlag', 1)->orderBy('timestamp', 'DESC')->get();
+            $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
+            $all = Auction::where('deleteFlag', 0)->count();
+            $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+            $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+            $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
+            return view('fmdq.trade.awarded', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page', 'trades'));
+        } else {
+            $trades = Transaction::where('bidderRef', auth()->user()->id)->where('awardedFlag', 0)->orderBy('timestamp', 'DESC')->get();
+            $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
+            $all = Auction::where('deleteFlag', 0)->count();
+            $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+            $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+            $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
+            return view('fmdq.trade.index', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page', 'trades'));
+        }
 
-        return view('fmdq.trade.index', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page', 'trades'));
     }
 
     /**
