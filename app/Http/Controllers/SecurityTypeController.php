@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
+use App\Models\SecurityType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SecurityTypeController extends Controller
 {
@@ -14,6 +17,9 @@ class SecurityTypeController extends Controller
     public function index()
     {
         //
+        $user = Auth::user();
+        $types = SecurityType::all();
+        return view('fmdq.settings.security-type', compact('user', 'types'));
     }
 
     /**
@@ -35,6 +41,37 @@ class SecurityTypeController extends Controller
     public function store(Request $request)
     {
         //
+        $user = Auth::user();
+        //
+        $validated = $request->validate([
+            'code' => 'bail|unique:tblSecurityType',
+        ], [
+            'code.unique' => 'This security code has already been registered.',
+        ]);
+        //
+        if ($validated) {
+            $type = new SecurityType();
+            $type->securityTypeCode = $request->code;
+            $type->description = $request->description;
+            $create = $type->save();
+            //
+            if ($create) {
+                // log activity
+                $activity = new ActivityLog();
+                $activity->date = now();
+                $activity->app = 'RITCC';
+                $activity->type = 'Create Security Type';
+                $activity->activity = $user->email . ' created a security type named: ' . $request->code . '.';
+                $activity->username = $user->email;
+                $log = $activity->save();
+            }
+            if ($log) {
+                return redirect()->back()->with('success', "Security Type created.");
+            }
+        } else {
+            // If there are validation errors, you can return to the form with the errors
+            return back()->withErrors($validated);
+        }
     }
 
     /**

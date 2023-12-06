@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AuctionWindows extends Model
 {
     use HasFactory;
+    protected $table = 'tblAuctionWindows';
+    public $guarded = [];
+    public $timestamps = false;
 }

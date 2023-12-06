@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PublicHoliday extends Model
 {
     use HasFactory;
+    protected $table = 'tblPublicHolidays';
+    public $guarded = [];
+    public $timestamps = false;
 }

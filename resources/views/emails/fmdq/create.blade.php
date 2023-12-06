@@ -129,7 +129,8 @@
         </header>
         <main>
             <div class="body-text">
-                <h1 style="text-align: center;">RITCC Auctioning System</h1>
+                <h1 style="text-align: center;">Road Infrastructure Tax Credit Certificate
+                    Auctionining System</h1>
                 <>Dear <span>{{ $create['authoriser'] }}</span>,<br><br>
                     {{-- Profie --}}
                     @if ($create['type'] == 'profile')

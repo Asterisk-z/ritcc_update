@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','RITCC System Settings | Packages')
+@section('title','RITCC System Settings | Security Types')
 
 @section('content')
 <div class="page-wrapper">
@@ -11,7 +11,7 @@
                     <div class="card-header">
                         <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal"
                             data-bs-target="#standard-modal"><i class="fa fa-plus-circle me-2"
-                                aria-hidden="true"></i>Add Package
+                                aria-hidden="true"></i>Add Security Type
                         </button>
                         {{-- modal --}}
                         <div id="standard-modal" class="modal fade" tabindex="-1" role="dialog"
@@ -23,15 +23,24 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-                                    <form action="{{ route('createPackage') }}" method="POST" id="myForm"
+                                    <form action="{{ route('storeSecurityType') }}" method="POST" id="myForm"
                                         class="needs-validation" novalidate>
                                         @csrf
                                         <div class="modal-body">
                                             <div class="form-row row">
-                                                {{-- code --}}
+                                                {{-- --}}
                                                 <div class="col-lg-12 mb-3">
-                                                    <label for="validationCustom01">Package Name</label>
-                                                    <input type="text" name="Name" class="form-control"
+                                                    <label for="validationCustom01">Code</label>
+                                                    <input type="text" name="code" class="form-control"
+                                                        id="validationCustom01" required>
+                                                    <div class="invalid-feedback">
+                                                        This field is required
+                                                    </div>
+                                                </div>
+                                                {{-- --}}
+                                                <div class="col-lg-12 mb-3">
+                                                    <label for="validationCustom01">Description</label>
+                                                    <input type="text" name="description" class="form-control"
                                                         id="validationCustom01" required>
                                                     <div class="invalid-feedback">
                                                         This field is required
@@ -40,8 +49,7 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Create
-                                                Package</button>
+                                            <button type="submit" class="btn btn-primary">Create</button>
                                             &nbsp;&nbsp;&nbsp;
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Close</button>
@@ -57,7 +65,8 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
+                                        <th>Code</th>
+                                        <th>Description</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -65,10 +74,11 @@
                                     @php
                                     $i = 1;
                                     @endphp
-                                    @foreach ($packages as $package)
+                                    @foreach ($types as $type)
                                     <tr>
                                         <td>{{ $i++; }}</td>
-                                        <td>{{ $package->Name }}</td>
+                                        <td>{{ $type->securityTypeCode }}</td>
+                                        <td>{{ $type->description }}</td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
@@ -79,13 +89,13 @@
                                                         <li>
                                                             <a class="dropdown-item" class="dropdown-item"
                                                                 data-bs-toggle="modal"
-                                                                data-bs-target="#edit{{ $package->ID }}" href=""><i
+                                                                data-bs-target="#edit{{ $type->id }}" href=""><i
                                                                     class="fa fa-edit me-2"></i>Edit</a>
                                                         </li>
                                                         <li>
                                                             <a class="dropdown-item" class="dropdown-item"
                                                                 data-bs-toggle="modal"
-                                                                data-bs-target="#delete{{ $package->ID }}" href=""><i
+                                                                data-bs-target="#delete{{ $type->id }}" href=""><i
                                                                     class="far fa-trash-alt me-2"></i>Delete</a>
                                                         </li>
                                                         @endif
@@ -94,26 +104,40 @@
                                             </div>
                                         </td>
                                         {{-- --}}
-                                        <div class="modal fade" id="edit{{ $package->ID }}" tabindex="-1" role="dialog"
+                                        <div class="modal fade" id="edit{{ $type->id }}" tabindex="-1" role="dialog"
                                             aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="myCenterModalLabel">Center modal
-                                                        </h4>
+                                                        {{-- <h4 class="modal-title" id="myCenterModalLabel">Center
+                                                            modal
+                                                        </h4> --}}
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('updatePackage',$package->ID) }}"
-                                                        method="POST" class="needs-validation" novalidate>
+                                                    <form action="{{ route('updateSecurityType') }}" method="POST"
+                                                        class="needs-validation" id="myForm" novalidate>
                                                         @csrf
+                                                        {{-- --}}
+                                                        <input type="hidden" value="{{ $type->id }}" name="id">
                                                         <div class="modal-body">
                                                             <div class="form-row row">
-                                                                {{-- code --}}
+                                                                {{-- --}}
                                                                 <div class="col-lg-12 mb-3">
-                                                                    <label for="validationCustom01">Package Name</label>
-                                                                    <input type="text" name="Name"
-                                                                        value="{{ $package->Name }}"
+                                                                    <label for="validationCustom01">Code</label>
+                                                                    <input type="text" name="code"
+                                                                        value="{{ $type->securityTypeCode }}"
+                                                                        class="form-control" id="validationCustom01"
+                                                                        required>
+                                                                    <div class="invalid-feedback">
+                                                                        This field is required
+                                                                    </div>
+                                                                </div>
+                                                                {{-- --}}
+                                                                <div class="col-lg-12 mb-3">
+                                                                    <label for="validationCustom01">Description</label>
+                                                                    <input type="date" name="description"
+                                                                        value="{{ $type->description }}"
                                                                         class="form-control" id="validationCustom01"
                                                                         required>
                                                                     <div class="invalid-feedback">
@@ -124,7 +148,50 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-primary">Update
-                                                                Package</button>
+                                                                type</button>
+                                                            &nbsp;&nbsp;&nbsp;
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- --}}
+                                        <div class="modal fade" id="delete{{ $type->id }}" tabindex="-1" role="dialog"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        {{-- <h4 class="modal-title" id="myCenterModalLabel">Center
+                                                            modal
+                                                        </h4> --}}
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <form action="{{ route('deleteSecurityType') }}" method="POST"
+                                                        class="needs-validation" novalidate>
+                                                        @csrf
+                                                        {{-- --}}
+                                                        <input type="hidden" value="{{ $type->id }}" name="id">
+                                                        <div class="modal-body">
+                                                            <div class="form-row row">
+                                                                {{-- --}}
+                                                                <div class="col-lg-12 mb-3">
+                                                                    <label for="validationCustom01">Reason</label>
+                                                                    <input type="text" name="reason"
+                                                                        class="form-control" id="validationCustom01"
+                                                                        required>
+                                                                    <div class="invalid-feedback">
+                                                                        This field is required
+                                                                    </div>
+                                                                </div>
+                                                                {{-- --}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit"
+                                                                class="btn btn-primary">Delete</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>

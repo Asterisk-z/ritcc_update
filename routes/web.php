@@ -9,6 +9,7 @@ use App\Http\Controllers\FMDQ\IQXController;
 use App\Http\Controllers\FMDQ\ProfileController;
 use App\Http\Controllers\FMDQ\SystemController;
 use App\Http\Controllers\FMDQ\TradeManagementController;
+use App\Http\Controllers\SecurityTypeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,13 +39,6 @@ Route::get('/change-password', [LoginController::class, 'changePassword'])->name
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/update-password', [LoginController::class, 'updatePassword'])->name('updatePassword');
-    Route::get('/system-settings', [SystemController::class, 'index'])->name('system.settings');
-    Route::get('/packages', [SystemController::class, 'packagesIndex'])->name('packages');
-    Route::post('/create-package', [SystemController::class, 'packageStore'])->name('createPackage');
-    Route::post('/update-package/{id}', [SystemController::class, 'packageUpdate'])->name('updatePackage');
-    Route::post('/delete-package', [SystemController::class, 'packageDelete'])->name('deletePackage');
-    Route::get('/auction-windows', [SystemController::class, 'auctionWindowsIndex'])->name('auctionWindows');
-    Route::get('/public-holidays', [SystemController::class, 'publicHolidaysIndex'])->name('publicHolidays');
     //
     Route::middleware(['isSuperUser'])->group(function () {
 
@@ -149,6 +143,27 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/inputter/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('inputter.auction.mgt.rejected');
         Route::get('/inputter/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('inputter.auction.mgt.approved');
         Route::post('/inputter/auction-management/create', [AuctionManagementController::class, 'create'])->name('inputter.auction.mgt.create');
+        // system settings
+        Route::get('/system-settings', [SystemController::class, 'index'])->name('system.settings');
+        Route::get('/packages', [SystemController::class, 'packagesIndex'])->name('packages');
+        Route::post('/create-package', [SystemController::class, 'packageStore'])->name('createPackage');
+        Route::post('/update-package/{id}', [SystemController::class, 'packageUpdate'])->name('updatePackage');
+        Route::post('/delete-package', [SystemController::class, 'packageDelete'])->name('deletePackage');
+        //
+        Route::get('/public-holidays', [SystemController::class, 'holidaysIndex'])->name('publicHolidays');
+        Route::post('/create-holiday', [SystemController::class, 'storeHoliday'])->name('storeHoliday');
+        Route::post('/update-holiday', [SystemController::class, 'updateHoliday'])->name('updateHoliday');
+        Route::post('/delete-holiday', [SystemController::class, 'deleteHoliday'])->name('deleteHoliday');
+        //
+        Route::get('/auction-windows', [SystemController::class, 'windowsIndex'])->name('auctionWindows');
+        Route::post('/create-window', [SystemController::class, 'storeWindow'])->name('storeWindow');
+        Route::post('/update-window', [SystemController::class, 'updateWindow'])->name('updateWindow');
+        Route::post('/delete-window', [SystemController::class, 'deleteWindow'])->name('deleteWindow');
+        //
+        Route::get('/security-type', [SecurityTypeController::class, 'index'])->name('securityType');
+        Route::post('/create-security-type', [SecurityTypeController::class, 'store'])->name('storeSecurityType');
+        Route::post('/update-security-type', [SecurityTypeController::class, 'update'])->name('updateSecurityType');
+        Route::post('/delete-security-type', [SecurityTypeController::class, 'delete'])->name('deleteSecurityType');
     });
 
     // authoriser
@@ -191,7 +206,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('auction.mgt.approved');
         Route::post('/auction-management/approve/update', [AuctionManagementController::class, 'approveUpdate'])->name('auction.mgt.approve.update');
         Route::post('/auction-management/reject/update', [AuctionManagementController::class, 'rejectUpdate'])->name('auction.mgt.reject.update');
-
     });
 
     Route::middleware(['isBank'])->group(function () {
@@ -212,7 +226,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('auction/cancel', [AuctionManagementController::class, 'awardCancelAuction'])->name('auction.mgt.cancel.award');
         Route::get('/auctions/bids/{id}', [AuctionManagementController::class, 'auctionBids'])->name('auction.mgt.bids');
         Route::get('auctions/results/{id?}', [AuctionManagementController::class, 'results'])->name('auction.mgt.results');
-
     });
 
     // firs

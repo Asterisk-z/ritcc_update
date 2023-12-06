@@ -129,7 +129,8 @@
         </header>
         <main>
             <div class="body-text">
-                <h1 style="text-align: center;">RITCC Auctioning System</h1>
+                <h1 style="text-align: center;">Road Infrastructure Tax Credit Certificate
+                    Auctionining System</h1>
                 <p>Hi <span>{{ $updated['name'] }}</span>,</p>
                 {{-- Profie --}}
                 @if ($updated['type'] == 'changePassword')

@@ -1,5 +1,4 @@
 <div class="header header-one">
-
     <a href="javascript:void(0);" id="toggle_btn">
         <span class="toggle-bars">
             <span class="bar-icons"></span>
@@ -12,7 +11,10 @@
     <a class="mobile_btn" id="mobile_btn">
         <i class="fas fa-bars"></i>
     </a>
-
+    {{-- <marquee behavior="" direction="">
+        <h2 class="text-center text-uppercase" style="color:#1D326C;">Road Infrastructure Tax Credit Certificate (RITCC)
+            Auctionining System</h2>
+    </marquee> --}}
     <ul class="nav nav-tabs user-menu">
         <li class="nav-item dropdown">
             <a href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">

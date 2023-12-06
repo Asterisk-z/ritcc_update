@@ -27,7 +27,8 @@
                             <img class="img-fluid logo-dark mb-2" src="{{ asset('assets/img/FMDQLogo.png') }}"
                                 alt="Logo">
                             <h1></h1>
-                            <p class="account-subtitle">Login to <b>Road Infrastructure Tax Credit Certificate</b></p>
+                            <p class="account-subtitle">Login to <b>Road Infrastructure Tax Credit Certificate
+                                    Auctionining System Portal</b></p>
                             <form action="{{ route('signIn') }}" method="POST" autocomplete="on">
                                 @csrf
                                 <div class="form-group">
