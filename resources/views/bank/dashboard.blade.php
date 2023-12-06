@@ -2,7 +2,7 @@
 @section('title','RITCC Bank Dashboard')
 
 @section('content')
-<div class="page-wrapper">
+<div class="page-wrapper" style="display: none;">
     <div class="content container-fluid">
         <div class="row">
             <div class="col-xl-3 col-sm-6 col-12">
@@ -27,7 +27,7 @@
                     <div class="card-body">
                         <div class="dash-widget-header">
                             <span class="dash-widget-icon bg-2">
-                                <i class=   "fas fa-users"></i>
+                                <i class="fas fa-users"></i>
                             </span>
                             <div class="dash-count">
                                 <div class="dash-title">Close Auctions</div>
@@ -76,4 +76,11 @@
         </div>
     </div>
 </div>
+@if (auth()->user()->type == 'auctioneer')
+@include('fmdq.auction.dashboard')
+@endif
+@if (auth()->user()->type == 'bidder')
+@include('fmdq.trade.dashboard')
+@endif
+
 @endsection

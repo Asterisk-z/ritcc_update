@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\FMDQ;
 
 use App\Http\Controllers\Controller;
-use App\Mail\FMDQ\ApprovedMail;
 use App\Mail\FMDQ\CreateMail;
 use App\Mail\FMDQ\RejectedMail;
 use App\Models\ActivityLog;
@@ -112,6 +111,7 @@ class CertificateManagementController extends Controller
             'auctioneer' => 'bail|required',
             'securityType' => 'bail|required',
             'securityCode' => 'bail|required',
+            'description' => 'bail|required',
             'isinNumber' => 'bail|required',
             'issueDate' => 'bail|required',
             'transactionFee' => 'bail|required',
@@ -127,6 +127,7 @@ class CertificateManagementController extends Controller
         $securityType = $request->input('securityType');
         $securityCode = $request->input('securityCode');
         $isinNumber = $request->input('isinNumber');
+        $description = $request->input('description');
         $transactionFee = $request->input('transactionFee');
         $offerAmount = $request->input('offerAmount');
         $validationStatus = $request->input('validationStatus');
@@ -144,6 +145,7 @@ class CertificateManagementController extends Controller
         $certificate->securityCode = $securityCode;
         $certificate->isinNumber = $isinNumber;
         $certificate->issuerCode = $auctioneer->user_inst->code;
+        $certificate->description = $description;
         $certificate->issueDate = $issueDate;
         $certificate->transactionSettlementFeeRate = $transactionFee;
         $certificate->offerAmount = $offerAmount;
@@ -276,7 +278,7 @@ class CertificateManagementController extends Controller
         $rejected = ([
             'name' => $approver->firstName,
             'type' => 'rejectCreateCertificate',
-            'reason' => $reason
+            'reason' => $reason,
         ]);
         Mail::to($security->createdBy)->send(new RejectedMail($rejected));
         //
@@ -293,6 +295,7 @@ class CertificateManagementController extends Controller
             'security_ref' => 'bail|required|exists:tblSecurity,id',
             'auctioneer' => 'bail|required',
             'securityType' => 'bail|required',
+            'description' => 'bail|required',
             'securityCode' => 'bail|required',
             'isinNumber' => 'bail|required',
             'issueDate' => 'bail|required',
@@ -308,6 +311,7 @@ class CertificateManagementController extends Controller
         $auctioneerID = $request->input('auctioneer');
         $securityRef = $request->input('security_ref');
         $securityType = $request->input('securityType');
+        $description = $request->input('description');
         $securityCode = $request->input('securityCode');
         $isinNumber = $request->input('isinNumber');
         $transactionFee = $request->input('transactionFee');
@@ -333,6 +337,7 @@ class CertificateManagementController extends Controller
         $certificate['securityCode'] = $securityCode;
         $certificate['isinNumber'] = $isinNumber;
         $certificate['issuerCode'] = $auctioneer->user_inst->code;
+        $certificate['description'] = $description;
         $certificate['issueDate'] = $issueDate;
         $certificate['transactionSettlementFeeRate'] = $transactionFee;
         $certificate['offerAmount'] = $offerAmount;
@@ -408,6 +413,7 @@ class CertificateManagementController extends Controller
 
         $security->securityCode = $modifyData->securityCode;
         $security->auctioneerRef = $modifyData->auctioneerRef;
+        $security->description = $modifyData->description;
         $security->offerAmount = $modifyData->offerAmount;
         $security->isinNumber = $modifyData->isinNumber;
         $security->issueDate = $modifyData->issueDate;

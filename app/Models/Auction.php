@@ -18,6 +18,6 @@ class Auction extends Model
     }
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'id', 'auctionRef');
+        return $this->hasMany(Transaction::class, 'auctionRef', 'id');
     }
 }
