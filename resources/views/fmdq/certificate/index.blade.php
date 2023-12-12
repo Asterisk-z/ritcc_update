@@ -11,31 +11,37 @@
         <div class="page-header">
             <div class="content-page-header">
 
-                <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal" data-bs-target="#standard-modal"><i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add
+                <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal"
+                    data-bs-target="#standard-modal"><i class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add
                     Certificate</button>
                 {{-- modal --}}
-                <div id="standard-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                <div id="standard-modal" class="modal fade" tabindex="-1" role="dialog"
+                    aria-labelledby="standard-modalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h4 class="modal-title" id="standard-modalLabel">Add Certificate</h4>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('inputter.certificate.mgt.create') }}" method="POST" id="myForm" class="needs-validation" novalidate>
+                            <form action="{{ route('inputter.certificate.mgt.create') }}" method="POST" id="create"
+                                class="needs-validation" novalidate>
                                 @csrf
                                 <div class="modal-body">
                                     <div class="form-row row">
                                         {{-- code --}}
                                         <div class="col-md-12 mb-3">
                                             <label for="validationCustom01">Security Description</label>
-                                            <input type="text" name="description" class="form-control" id="validationCustom01" required>
+                                            <input type="text" name="description" class="form-control"
+                                                id="validationCustom01" required>
                                             <div class="invalid-feedback">
                                                 This field is required
                                             </div>
                                         </div>
                                         <div class="col-md-12 mb-3">
                                             <label for="validationCustom01">Auctioner</label>
-                                            <select name="auctioneer" id="validationCustom01" class="form-control" required>
+                                            <select name="auctioneer" id="validationCustom01" class="form-control"
+                                                required>
                                                 <option value="">--Select--</option>
                                                 @foreach ($auctioneers as $auctioneer)
                                                 <option value="{{ $auctioneer->id }}">{{ $auctioneer->email ." |
@@ -50,7 +56,8 @@
 
                                         <div class="col-md-6 mb-3">
                                             <label for="validationCustom01">Security Type</label>
-                                            <select name="securityType" id="validationCustom01" class="form-control" required>
+                                            <select name="securityType" id="validationCustom01" class="form-control"
+                                                required>
                                                 <option value="">--Select--</option>
                                                 @foreach ($securityTypes as $securityType)
                                                 <option value="{{ $securityType->securityTypeCode }}">{{
@@ -65,7 +72,8 @@
 
                                         <div class="col-md-6 mb-3">
                                             <label for="validationCustom01">Security Code</label>
-                                            <input type="text" name="securityCode" class="form-control" id="validationCustom01" required>
+                                            <input type="text" name="securityCode" class="form-control"
+                                                id="validationCustom01" required>
                                             <div class="invalid-feedback">
                                                 This field is required
                                             </div>
@@ -73,7 +81,8 @@
                                         {{-- --}}
                                         <div class="col-md-6 mb-3">
                                             <label for="validationCustom01">ISIN Number</label>
-                                            <input type="number" name="isinNumber" class="form-control" id="validationCustom01" required>
+                                            <input type="number" name="isinNumber" class="form-control"
+                                                id="validationCustom01" required>
                                             <div class="invalid-feedback">
                                                 This field is required
                                             </div>
@@ -81,7 +90,8 @@
                                         {{-- --}}
                                         <div class="col-md-6 mb-3">
                                             <label for="validationCustom01">Issue Date</label>
-                                            <input type="date" name="issueDate" class="form-control" id="validationCustom01" required>
+                                            <input type="date" name="issueDate" class="form-control"
+                                                id="validationCustom01" required>
                                             <div class="invalid-feedback">
                                                 This field is required
                                             </div>
@@ -89,7 +99,8 @@
 
                                         <div class="col-md-6 mb-3">
                                             <label for="validationCustom01">Transaction And Settlement Fee Rate</label>
-                                            <input type="number" name="transactionFee" class="form-control" id="validationCustom01" required>
+                                            <input type="number" name="transactionFee" class="form-control"
+                                                id="validationCustom01" required>
                                             <div class="invalid-feedback">
                                                 This field is required
                                             </div>
@@ -97,7 +108,8 @@
 
                                         <div class="col-md-6 mb-3">
                                             <label for="validationCustom01">Offer Amount (₦‘mm)</label>
-                                            <input type="number" name="offerAmount" class="form-control" id="validationCustom01" required>
+                                            <input type="number" name="offerAmount" class="form-control"
+                                                id="validationCustom01" required>
                                             <div class="invalid-feedback">
                                                 This field is required
                                             </div>
@@ -107,7 +119,8 @@
 
                                         <div class="col-md-6 mb-3">
                                             <label for="validationCustom01">Security Valudation Status</label>
-                                            <select name="validationStatus" id="validationCustom01" class="form-control" required>
+                                            <select name="validationStatus" id="validationCustom01" class="form-control"
+                                                required>
                                                 <option value="">--Select--</option>
                                                 <option value="1">Available</option>
                                                 <option value="0">Unavailable</option>
@@ -122,7 +135,8 @@
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Create Certificate</button>
                                     &nbsp;&nbsp;&nbsp;
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
                                 </div>
                             </form>
                         </div>
@@ -171,31 +185,41 @@
                                         <td><span class="badge bg-3">Pending Approval</span></td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul>
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#view{{ $security->id }}" href=""><i class="far fa-edit me-2"></i>View</a>
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#view{{ $security->id }}" href=""><i
+                                                                    class="far fa-edit me-2"></i>View</a>
 
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit{{ $security->id }}" href=""><i class="far fa-edit me-2"></i>Edit</a>
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#edit{{ $security->id }}" href=""><i
+                                                                    class="far fa-edit me-2"></i>Edit</a>
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#delete{{ $security->id }}" href=""><i class="far fa-trash-alt me-2"></i>Delete</a>
+                                                            <a class="dropdown-item" class="dropdown-item"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#delete{{ $security->id }}" href=""><i
+                                                                    class="far fa-trash-alt me-2"></i>Delete</a>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </td>
                                         {{-- view modal --}}
-                                        <div id="view{{ $security->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="view{{ $security->id }}" class="modal fade" tabindex="-1" role="dialog"
+                                            aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         {{-- <h4 class="modal-title" id="standard-modalLabel">View
                                                         </h4> --}}
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
 
                                                     <div class="modal-body">
@@ -236,30 +260,38 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-secondary btn-lg"
+                                                            data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         {{-- edit --}}
-                                        <div id="edit{{ $security->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="edit{{ $security->id }}" class="modal fade" tabindex="-1" role="dialog"
+                                            aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="standard-modalLabel">Update
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('inputter.certificate.mgt.update') }}" method="POST" class="needs-validation" id="update" novalidate>
+                                                    <form action="{{ route('inputter.certificate.mgt.update') }}"
+                                                        method="POST" class="needs-validation" novalidate>
                                                         @csrf
-                                                        <input type='hidden' name='security_ref' value="{{ $security->id }}" />
+                                                        <input type='hidden' name='security_ref'
+                                                            value="{{ $security->id }}" />
                                                         <div class="modal-body">
                                                             <div class="form-row row">
                                                                 {{-- code --}}
 
                                                                 <div class="col-md-12 mb-3">
-                                                                    <label for="validationCustom01">Security Description</label>
-                                                                    <input type="text" name="description" class="form-control" id="validationCustom01" value="{{ $security->description }}" required>
+                                                                    <label for="validationCustom01">Security
+                                                                        Description</label>
+                                                                    <input type="text" name="description"
+                                                                        class="form-control" id="validationCustom01"
+                                                                        value="{{ $security->description }}" required>
 
                                                                     <div class="invalid-feedback">
                                                                         This field is required
@@ -268,7 +300,8 @@
 
                                                                 <div class="col-md-12 mb-3">
                                                                     <label for="validationCustom01">Auctioner</label>
-                                                                    <select name="auctioneer" id="validationCustom01" class="form-control" required>
+                                                                    <select name="auctioneer" id="validationCustom01"
+                                                                        class="form-control" required>
                                                                         <option value="">--Select--</option>
                                                                         @foreach ($auctioneers as $auctioneer)
                                                                         <option value="{{ $auctioneer->id }}" {{
@@ -288,10 +321,13 @@
                                                                 <div class="col-md-6 mb-3">
                                                                     <label for="validationCustom01">Security
                                                                         Type</label>
-                                                                    <select name="securityType" id="validationCustom01" class="form-control" required>
+                                                                    <select name="securityType" id="validationCustom01"
+                                                                        class="form-control" required>
                                                                         <option value="">--Select--</option>
                                                                         @foreach ($securityTypes as $securityType)
-                                                                        <option value="{{ $securityType->securityTypeCode }}" {{ ($security->securityType ==
+                                                                        <option
+                                                                            value="{{ $securityType->securityTypeCode }}"
+                                                                            {{ ($security->securityType ==
                                                                             $securityType->securityTypeCode) ?
                                                                             'selected' : '' }}>{{
                                                                             $securityType->description }}</option>
@@ -306,7 +342,9 @@
                                                                 <div class="col-md-6 mb-3">
                                                                     <label for="validationCustom01">Security
                                                                         Code</label>
-                                                                    <input type="text" name="securityCode" class="form-control" id="validationCustom01" value="{{ $security->securityCode }}" required>
+                                                                    <input type="text" name="securityCode"
+                                                                        class="form-control" id="validationCustom01"
+                                                                        value="{{ $security->securityCode }}" required>
 
                                                                     <div class="invalid-feedback">
                                                                         This field is required
@@ -315,7 +353,9 @@
                                                                 {{-- --}}
                                                                 <div class="col-md-6 mb-3">
                                                                     <label for="validationCustom01">ISIN Number</label>
-                                                                    <input type="number" name="isinNumber" class="form-control" id="validationCustom01" value="{{ $security->isinNumber }}" required>
+                                                                    <input type="number" name="isinNumber"
+                                                                        class="form-control" id="validationCustom01"
+                                                                        value="{{ $security->isinNumber }}" required>
                                                                     <div class="invalid-feedback">
                                                                         This field is required
                                                                     </div>
@@ -323,7 +363,9 @@
                                                                 {{-- --}}
                                                                 <div class="col-md-6 mb-3">
                                                                     <label for="validationCustom01">Issue Date</label>
-                                                                    <input type="date" name="issueDate" class="form-control" id="validationCustom01" value="{{ $security->issueDate }}" required>
+                                                                    <input type="date" name="issueDate"
+                                                                        class="form-control" id="validationCustom01"
+                                                                        value="{{ $security->issueDate }}" required>
 
                                                                     <div class="invalid-feedback">
                                                                         This field is required
@@ -333,7 +375,10 @@
                                                                 <div class="col-md-6 mb-3">
                                                                     <label for="validationCustom01">Transaction And
                                                                         Settlement Fee Rate</label>
-                                                                    <input type="number" name="transactionFee" class="form-control" id="validationCustom01" value="{{ $security->transactionSettlementFeeRate }}" required>
+                                                                    <input type="number" name="transactionFee"
+                                                                        class="form-control" id="validationCustom01"
+                                                                        value="{{ $security->transactionSettlementFeeRate }}"
+                                                                        required>
                                                                     <div class="invalid-feedback">
                                                                         This field is required
                                                                     </div>
@@ -342,7 +387,9 @@
                                                                 <div class="col-md-6 mb-3">
                                                                     <label for="validationCustom01">Offer Amount
                                                                         (₦‘mm)</label>
-                                                                    <input type="number" name="offerAmount" class="form-control" id="validationCustom01" value="{{ $security->offerAmount }}" required>
+                                                                    <input type="number" name="offerAmount"
+                                                                        class="form-control" id="validationCustom01"
+                                                                        value="{{ $security->offerAmount }}" required>
                                                                     <div class="invalid-feedback">
                                                                         This field is required
                                                                     </div>
@@ -353,7 +400,9 @@
                                                                 <div class="col-md-6 mb-3">
                                                                     <label for="validationCustom01">Security Valudation
                                                                         Status</label>
-                                                                    <select name="validationStatus" id="validationCustom01" class="form-control" required>
+                                                                    <select name="validationStatus"
+                                                                        id="validationCustom01" class="form-control"
+                                                                        required>
                                                                         <option value="">--Select--</option>
                                                                         <option value="1">Available</option>
                                                                         <option value="0">Unavailable</option>
@@ -368,41 +417,48 @@
 
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary" id="updateButton">Update Security</button>
+                                                            <button type="submit" class="btn btn-primary"
+                                                                id="updateButton">Update Security</button>
                                                             &nbsp;&nbsp;&nbsp;
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
                                         {{-- delete --}}
-                                        <div id="delete{{ $security->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="delete{{ $security->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="standard-modalLabel">Delete
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('inputter.certificate.mgt.delete') }}" method="POST" class="needs-validation" id="myForm" novalidate>
+                                                    <form action="{{ route('inputter.certificate.mgt.delete') }}"
+                                                        method="POST" class="needs-validation" novalidate>
                                                         @csrf
-                                                        <input type='hidden' name='security_ref' value="{{ $security->id }}" />
+                                                        <input type='hidden' name='security_ref'
+                                                            value="{{ $security->id }}" />
                                                         <div class="modal-body">
                                                             <p>Are you sure you want to delete this security?</p>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary" id="updateButton">Delete
+                                                            <button type="submit" class="btn btn-primary"
+                                                                id="updateButton">Delete
                                                                 Certficate</button>
                                                             &nbsp;&nbsp;&nbsp;
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </tr>
-                                    {{ 'No information available yet' }}
                                     @endforeach
                                 </tbody>
                             </table>

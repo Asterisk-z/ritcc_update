@@ -27,14 +27,62 @@
     src="https://cdn.datatables.net/v/dt/jq-3.7.0/jszip-3.10.1/dt-1.13.6/af-2.6.0/b-2.4.2/b-colvis-2.4.2/b-html5-2.4.2/b-print-2.4.2/cr-1.7.0/date-1.5.1/fc-4.3.0/fh-3.4.0/kt-2.10.0/r-2.5.0/rg-1.4.1/rr-1.4.1/sc-2.2.0/sb-1.6.0/sp-2.2.0/sl-1.7.0/sr-1.3.0/datatables.min.js">
 </script>
 
-<script>
+{{-- <script>
     function changeText(btn) {
     btn.innerText = 'Please wait...'; // Change the button text to indicate submission
     btn.disabled = true; // Disable the button to prevent multiple submissions
        btn.form.submit(); // Submit the form
    return true;
     }
+</script> --}}
+{{-- --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('create');
+        const form = document.getElementById('update');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Check if the form is valid
+            if (form.checkValidity()) {
+                // Show SweetAlert confirmation
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Are you sure you want to submit?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#1D326C',
+                    cancelButtonColor: '#969698',
+                    confirmButtonText: 'Yes, go ahead',
+                    cancelButtonText: 'No, cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // If user confirms, disable the activate button
+                        // loadingButton.disabled = true;
+
+                        // Show message indicating activation in progress
+                        Swal.fire({
+                            title: 'Please wait',
+                            text: 'Activating attestation...',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            showConfirmButton: false
+                        });
+
+                        // Simulate activation process (replace with actual logic)
+                        setTimeout(function() {
+                            // Upon successful activation, redirect or perform other actions
+                          form.submit();
+                            // window.location.href = '/success'; // Replace '/success' with your success route
+                        }); // Replace 3000 with the duration of your activation process in milliseconds
+                    }
+                });
+            }
+        });
+    });
 </script>
+
 
 <script>
     $(function() {
@@ -157,54 +205,5 @@
         //         });
         //     }
         // });
-    });
-</script>
-
-{{-- --}}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('myForm');
-        // const loadingButton = document.getElementById('loadingButton'); // Replace with your button ID
-
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            // Check if the form is valid
-            if (form.checkValidity()) {
-                // Show SweetAlert confirmation
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'Are you sure you want to submit?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#1D326C',
-                    cancelButtonColor: '#969698',
-                    confirmButtonText: 'Yes, go ahead',
-                    cancelButtonText: 'No, cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // If user confirms, disable the activate button
-                        // loadingButton.disabled = true;
-
-                        // Show message indicating activation in progress
-                        Swal.fire({
-                            title: 'Please wait',
-                            text: 'Activating attestation...',
-                            icon: 'info',
-                            allowOutsideClick: false,
-                            allowEscapeKey: false,
-                            showConfirmButton: false
-                        });
-
-                        // Simulate activation process (replace with actual logic)
-                        setTimeout(function() {
-                            // Upon successful activation, redirect or perform other actions
-                          form.submit();
-                            // window.location.href = '/success'; // Replace '/success' with your success route
-                        }); // Replace 3000 with the duration of your activation process in milliseconds
-                    }
-                });
-            }
-        });
     });
 </script>

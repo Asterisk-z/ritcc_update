@@ -11,14 +11,11 @@
         {{-- --}}
         <div class="page-header">
             <div class="content-page-header">
-
-                <button type="button" class="btn btn-primary mt-1" style="background-color: transparent; border: transparent;"></button>
-
-
+                <button type="button" class="btn btn-primary mt-1"
+                    style="background-color: transparent; border: transparent;"></button>
                 <div class="list-btn">
                     @include('fmdq.certificate.buttons')
                 </div>
-
             </div>
         </div>
         {{-- --}}
@@ -71,15 +68,20 @@
                                                 : 'Pending Delete' }}</span></td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul>
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#view{{ $certificate->id }}" href=""><i class="far fa-edit me-2"></i>View</a>
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#view{{ $certificate->id }}" href=""><i
+                                                                    class="far fa-edit me-2"></i>View</a>
                                                         </li>
                                                         @if ($certificate->modifyingFlag)
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#viewUpdate{{ $certificate->id }}" href=""><i class="far fa-edit me-2"></i>View Update</a>
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#viewUpdate{{ $certificate->id }}"
+                                                                href=""><i class="far fa-edit me-2"></i>View Update</a>
                                                         </li>
                                                         @endif
 
@@ -88,22 +90,32 @@
 
                                                         @if ($certificate->modifyingFlag)
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveUpdate{{ $certificate->id }}" href=""><i class="fa fa-check me-2"></i>Approve
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#approveUpdate{{ $certificate->id }}"
+                                                                href=""><i class="fa fa-check me-2"></i>Approve
                                                                 Update</a>
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#rejectUpdate{{ $certificate->id }}" href=""><i class="fa fa-times me-2"></i>Reject
+                                                            <a class="dropdown-item" class="dropdown-item"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#rejectUpdate{{ $certificate->id }}"
+                                                                href=""><i class="fa fa-times me-2"></i>Reject
                                                                 Update</a>
                                                         </li>
                                                         @endif
 
                                                         @if ($certificate->deletingFlag)
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveDelete{{ $certificate->id }}" href=""><i class="fa fa-check me-2"></i>Approve
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#approveDelete{{ $certificate->id }}"
+                                                                href=""><i class="fa fa-check me-2"></i>Approve
                                                                 Delete</a>
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#rejectDelete{{ $certificate->id }}" href=""><i class="fa fa-times me-2"></i>Reject
+                                                            <a class="dropdown-item" class="dropdown-item"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#rejectDelete{{ $certificate->id }}"
+                                                                href=""><i class="fa fa-times me-2"></i>Reject
                                                                 Delete</a>
                                                         </li>
                                                         @endif
@@ -115,18 +127,21 @@
                                         </td>
 
                                         @if ($certificate->modifyingFlag)
-                                        <div id="viewUpdate{{ $certificate->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="viewUpdate{{ $certificate->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="standard-modalLabel">View Updating
                                                             Data
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="text-center">
-                                                            <h6>Security Description : <strong>{{ $updateCertificate->description
+                                                            <h6>Security Description : <strong>{{
+                                                                    $updateCertificate->description
                                                                     }}</strong></h6>
                                                             <br>
                                                             <h6>Security Code : <strong>{{
@@ -154,105 +169,132 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-secondary btn-lg"
+                                                            data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         @endif
 
-                                        <div id="approveUpdate{{ $certificate->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="approveUpdate{{ $certificate->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="standard-modalLabel">Approve
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('firs.certificate.mgt.approve.update') }}" method="POST" class="needs-validation" id="update" novalidate>
+                                                    <form action="{{ route('firs.certificate.mgt.approve.update') }}"
+                                                        method="POST" class="needs-validation" id="update" novalidate>
                                                         @csrf
-                                                        <input type='hidden' name='security_ref' value="{{ $certificate->id }}" />
+                                                        <input type='hidden' name='security_ref'
+                                                            value="{{ $certificate->id }}" />
                                                         <div class="modal-body">
                                                             <h6>Are you sure you want to approve this update?</h6>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary" id="updateButton">Approve</button>
+                                                            <button type="submit" class="btn btn-primary"
+                                                                id="updateButton">Approve</button>
                                                             &nbsp;&nbsp;&nbsp;
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div id="rejectUpdate{{ $certificate->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="rejectUpdate{{ $certificate->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="standard-modalLabel">Reject
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('firs.certificate.mgt.reject.update') }}" method="POST" class="needs-validation" id="myForm" novalidate>
+                                                    <form action="{{ route('firs.certificate.mgt.reject.update') }}"
+                                                        method="POST" class="needs-validation" id="myForm" novalidate>
                                                         @csrf
-                                                        <input type='hidden' name='security_ref' value="{{ $certificate->id }}" />
+                                                        <input type='hidden' name='security_ref'
+                                                            value="{{ $certificate->id }}" />
                                                         <div class="modal-body">
                                                             <label for="">Reason for Rejection</label>
-                                                            <input type="text" name="reason" class="form-control" required>
+                                                            <input type="text" name="reason" class="form-control"
+                                                                required>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary" id="updateButton">Reject</button>
+                                                            <button type="submit" class="btn btn-primary"
+                                                                id="updateButton">Reject</button>
                                                             &nbsp;&nbsp;&nbsp;
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div id="approveDelete{{ $certificate->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="approveDelete{{ $certificate->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="standard-modalLabel">Approve Delete
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('firs.certificate.mgt.approve.delete') }}" method="POST" class="needs-validation" id="update" novalidate>
+                                                    <form action="{{ route('firs.certificate.mgt.approve.delete') }}"
+                                                        method="POST" class="needs-validation" id="update" novalidate>
                                                         @csrf
-                                                        <input type='hidden' name='security_ref' value="{{ $certificate->id }}" />
+                                                        <input type='hidden' name='security_ref'
+                                                            value="{{ $certificate->id }}" />
                                                         <div class="modal-body">
                                                             <h6>Are you sure you want to approve this delete?</h6>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary" id="updateButton">Approve</button>
+                                                            <button type="submit" class="btn btn-primary"
+                                                                id="updateButton">Approve</button>
                                                             &nbsp;&nbsp;&nbsp;
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div id="rejectDelete{{ $certificate->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="rejectDelete{{ $certificate->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="standard-modalLabel">Reject Delete
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('firs.certificate.mgt.reject.delete') }}" method="POST" class="needs-validation" id="myForm" novalidate>
+                                                    <form action="{{ route('firs.certificate.mgt.reject.delete') }}"
+                                                        method="POST" class="needs-validation" id="myForm" novalidate>
                                                         @csrf
-                                                        <input type='hidden' name='security_ref' value="{{ $certificate->id }}" />
+                                                        <input type='hidden' name='security_ref'
+                                                            value="{{ $certificate->id }}" />
                                                         <div class="modal-body">
                                                             <label for="">Reason for Rejection</label>
-                                                            <input type="text" name="reason" class="form-control" required>
+                                                            <input type="text" name="reason" class="form-control"
+                                                                required>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary" id="updateButton">Reject</button>
+                                                            <button type="submit" class="btn btn-primary"
+                                                                id="updateButton">Reject</button>
                                                             &nbsp;&nbsp;&nbsp;
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -278,19 +320,27 @@
                                         @endif
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul>
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#view{{ $certificate->id }}" href=""><i class="far fa-edit me-2"></i>View</a>
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#view{{ $certificate->id }}" href=""><i
+                                                                    class="far fa-edit me-2"></i>View</a>
                                                         </li>
                                                         @if (auth()->user()->type == 'firs' ||
                                                         auth()->user()->type == 'super')
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approve{{ $certificate->id }}" href=""><i class="fa fa-check me-2"></i>Approve </a>
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#approve{{ $certificate->id }}"
+                                                                href=""><i class="fa fa-check me-2"></i>Approve </a>
                                                         </li>
                                                         <li>
-                                                            <a class="dropdown-item" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#reject{{ $certificate->id }}" href=""><i class="fa fa-times me-2"></i>Reject</a>
+                                                            <a class="dropdown-item" class="dropdown-item"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#reject{{ $certificate->id }}"
+                                                                href=""><i class="fa fa-times me-2"></i>Reject</a>
                                                         </li>
                                                         @endif
                                                     </ul>
@@ -298,49 +348,62 @@
                                             </div>
                                         </td>
                                         {{-- approve --}}
-                                        <div id="approve{{ $certificate->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="approve{{ $certificate->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="standard-modalLabel">Approve
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('firs.certificate.mgt.approve.create') }}" method="POST" class="needs-validation" id="update" novalidate>
+                                                    <form action="{{ route('firs.certificate.mgt.approve.create') }}"
+                                                        method="POST" class="needs-validation" id="update" novalidate>
                                                         @csrf
-                                                        <input type='hidden' name='security_ref' value="{{ $certificate->id }}" />
+                                                        <input type='hidden' name='security_ref'
+                                                            value="{{ $certificate->id }}" />
                                                         <div class="modal-body">
                                                             <h6>Are you sure you want to approve this Auction?</h6>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary" id="updateButton">Approve</button>
+                                                            <button type="submit" class="btn btn-primary"
+                                                                id="updateButton">Approve</button>
                                                             &nbsp;&nbsp;&nbsp;
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
                                         {{-- reject --}}
-                                        <div id="reject{{ $certificate->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="reject{{ $certificate->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="standard-modalLabel">Reject
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('firs.certificate.mgt.reject.create') }}" method="POST" class="needs-validation" id="myForm" novalidate>
+                                                    <form action="{{ route('firs.certificate.mgt.reject.create') }}"
+                                                        method="POST" class="needs-validation" id="myForm" novalidate>
                                                         @csrf
-                                                        <input type='hidden' name='security_ref' value="{{ $certificate->id }}" />
+                                                        <input type='hidden' name='security_ref'
+                                                            value="{{ $certificate->id }}" />
                                                         <div class="modal-body">
                                                             <label for="">Reason for Rejection</label>
-                                                            <input type="text" name="reason" class="form-control" required>
+                                                            <input type="text" name="reason" class="form-control"
+                                                                required>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary" id="updateButton">Reject</button>
+                                                            <button type="submit" class="btn btn-primary"
+                                                                id="updateButton">Reject</button>
                                                             &nbsp;&nbsp;&nbsp;
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -351,18 +414,21 @@
                                         @endif
 
 
-                                        <div id="view{{ $certificate->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="view{{ $certificate->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="standard-modalLabel">View
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
 
                                                     <div class="modal-body">
                                                         <div class="text-center">
-                                                            <h6>Security Description : <strong>{{ $certificate->description
+                                                            <h6>Security Description : <strong>{{
+                                                                    $certificate->description
                                                                     }}</strong></h6>
                                                             <br>
                                                             <h6>Security Code : <strong>{{ $certificate->securityCode
@@ -390,7 +456,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-secondary btn-lg"
+                                                            data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
