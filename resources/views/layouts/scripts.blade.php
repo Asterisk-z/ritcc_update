@@ -1,23 +1,5 @@
-{{-- <script src="{{ asset('assets/js/jquery-3.7.0.min.js') }}"></script> --}}
-{{-- <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script> --}}
-{{-- <script src="{{ asset('assets/plugins/datatables/datatables.min.js') }}"></script> --}}
-{{-- <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/moment/moment.min.js') }}"></script>
-<script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script> --}}
-{{-- <script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script> --}}
-{{-- <script src="https://cdn.jsdelivr.net/npm/datatables@1.10.18/media/js/jquery.dataTables.min.js"></script> --}}
-{{-- <script src="{{ asset('assets/js/feather.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js">
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
---}}
 <script src="{{ asset('assets/js/script.js') }}"></script>
 <script src="{{ asset('assets/js/form-validation.js') }}"></script>
-{{-- <script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script> --}}
-{{-- <script src="{{ asset('assets/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script> --}}
-{{-- <script src="{{ asset('assets/js/jquery-3.7.0.min.js') }}"></script> --}}
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -36,13 +18,12 @@
     }
 </script> --}}
 {{-- --}}
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('create');
-        const form = document.getElementById('update');
+        // const form = document.getElementById('update');
         form.addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent default form submission
-
             // Check if the form is valid
             if (form.checkValidity()) {
                 // Show SweetAlert confirmation
@@ -57,19 +38,16 @@
                     cancelButtonText: 'No, cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // If user confirms, disable the activate button
-                        // loadingButton.disabled = true;
-
                         // Show message indicating activation in progress
                         Swal.fire({
-                            title: 'Please wait',
-                            text: 'Activating attestation...',
+                            // title: 'Please wait',
+                            // text: 'Activating attestation...',
+                            text: 'Please wait...',
                             icon: 'info',
                             allowOutsideClick: false,
                             allowEscapeKey: false,
                             showConfirmButton: false
                         });
-
                         // Simulate activation process (replace with actual logic)
                         setTimeout(function() {
                             // Upon successful activation, redirect or perform other actions
@@ -81,9 +59,49 @@
             }
         });
     });
+</script> --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const forms = document.querySelectorAll('.confirmation');
+
+        forms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+                // Check if the form is valid
+                if (form.checkValidity()) {
+                    // Show SweetAlert confirmation
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'Are you sure you want to submit?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#1D326C',
+                        cancelButtonColor: '#969698',
+                        confirmButtonText: 'Yes, go ahead',
+                        cancelButtonText: 'No, cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Show message indicating action in progress
+                            Swal.fire({
+                                text: 'Please wait...',
+                                icon: 'info',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                showConfirmButton: false
+                            });
+                            // Simulate action process (replace with actual logic)
+                            setTimeout(function() {
+                                form.submit(); // Submit the form
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
 </script>
 
-
+{{-- --}}
 <script>
     $(function() {
 		// Initialize DataTable for elements with class 'datatable'
@@ -143,9 +161,6 @@
         //
         var packageSelect = document.getElementById("packageSelect");
         var accountNumber = document.getElementById("accountNumber");
-        //
-        // const form = document.getElementById('myForm');
-
         // Add an event listener to the package select element
                 packageSelect.addEventListener("change", function() {
                 var selectedPackageId = packageSelect.value;
@@ -155,55 +170,15 @@
                 "12") {
                 // Display the RTGS Account Number field
                 accountNumber.style.display = "block";
+                accountNumber.setAttribute("required", true);
                 // Hide the FMDQ Account Number field
                 FMDQ.style.display = "none";
                 } else {
                 // Hide the FMDQ Account Number field
                 // FMDQ.style.display = "none";
                 accountNumber.style.display = "none";
+                accountNumber.removeAttribute("required");
                 }
                 });
-
-		// //
-		// form.addEventListener('submit', function(event) {
-		// 	event.preventDefault(); // Prevent default form submission
-
-        //     // Check if the form is valid
-        //     if (form.checkValidity()) {
-        //         // Show SweetAlert confirmation
-        //         Swal.fire({
-        //             title: 'Are you sure?',
-        //             text: 'Are you sure you want to submit?',
-        //             icon: 'question',
-        //             showCancelButton: true,
-        //             confirmButtonColor: '#1D326C',
-        //             cancelButtonColor: '#969698',
-        //             confirmButtonText: 'Yes, go ahead',
-        //             cancelButtonText: 'No, cancel'
-        //         }).then((result) => {
-        //             if (result.isConfirmed) {
-        //                 // If user confirms, disable the activate button
-        //                 // loadingButton.disabled = true;
-
-        //                 // Show message indicating activation in progress
-        //                 Swal.fire({
-        //                     title: 'Please wait.....',
-        //                     // text: 'Activating attestation...',
-        //                     icon: 'info',
-        //                     allowOutsideClick: false,
-        //                     allowEscapeKey: false,
-        //                     showConfirmButton: false
-        //                 });
-        //                 form.submit();
-        //                 // // Simulate activation process (replace with actual logic)
-        //                 // setTimeout(function() {
-        //                 //     // Upon successful activation, redirect or perform other actions
-        //                 //   form.submit();
-        //                 //     // window.location.href = '/success'; // Replace '/success' with your success route
-        //                 // }, 3000); // Replace 3000 with the duration of your activation process in milliseconds
-        //             }
-        //         });
-        //     }
-        // });
-    });
+	    });
 </script>

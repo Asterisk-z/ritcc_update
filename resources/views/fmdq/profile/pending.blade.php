@@ -98,8 +98,8 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('inputter.profile.create') }}" method="POST" id="myForm"
-                                class="needs-validation" novalidate>
+                            <form action="{{ route('inputter.profile.create') }}" method="POST"
+                                class="needs-validation confirmation" novalidate>
                                 @csrf
                                 <div class="modal-body">
                                     <div class="form-row row">
@@ -199,33 +199,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {{-- <div id="accountNumber" style="display: none;">
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label for="role">RTGS Account
-                                                        Number</label>
-                                                    <input type="number" class="form-control" min="0" name="RTGS"
-                                                        placeholder="Leave empty if profile is an FMDQ Profile"
-                                                        required>
-                                                    <div class="invalid-feedback">
-                                                        This field is required
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label for="role">FMDQ Depository
-                                                        Custodian Account Number</label>
-                                                    <input type="number" class="form-control" min="0"
-                                                        placeholder="Leave empty if profile is an FMDQ Profile"
-                                                        name="FMDQ" required>
-                                                    <div class="invalid-feedback">
-                                                        This field is required
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> --}}
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -467,12 +440,51 @@
                                                     </div>
                                                     <form
                                                         action="{{ route('authoriser.profile.approveCreate',$profile->id) }}"
-                                                        method="POST" class="needs-validation" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
                                                             <h6 class="text-center">Are you sure you want to approve
                                                                 this
                                                                 profile?</h6>
+                                                            <div class="card-text">
+                                                                <h6>NAME: <strong>{{ $profile->firstName.'
+                                                                        '.$profile->lastName }}</strong></h6>
+                                                                <br>
+                                                                <h6>CONTACT EMAIL: <strong>{{ $profile->email
+                                                                        }}</strong>
+                                                                </h6>
+                                                                <br>
+                                                                <h6>CONTACT PHONE NUMBER: <strong>{{ $profile->mobile ??
+                                                                        'No
+                                                                        information available'
+                                                                        }}</strong>
+                                                                </h6>
+                                                                <br>
+                                                                <h6>PACKAGE: <strong>{{ $profile->package->Name ?? 'No
+                                                                        information available'
+                                                                        }}</strong>
+                                                                </h6>
+                                                                <br>
+                                                                <h6>INSTIUTION: <strong>{{
+                                                                        $profile->institution->institutionName ?? 'No
+                                                                        information available'
+                                                                        }}</strong>
+                                                                </h6>
+                                                                <br>
+                                                                <h6>CREATED BY: <strong>{{
+                                                                        $profile->inputter ?? 'No
+                                                                        information available'
+                                                                        }}</strong>
+                                                                </h6>
+                                                                <br>
+                                                                <h6>CREATED DATE: <strong>{{
+                                                                        date('F d, Y',strtotime( $profile->inputDate))
+                                                                        ??
+                                                                        'No
+                                                                        information available'
+                                                                        }}</strong>
+                                                                </h6>
+                                                            </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-primary"
@@ -532,16 +544,56 @@
                                                     </div>
                                                     <form
                                                         action="{{ route('authoriser.profile.approveDelete',$profile->id) }}"
-                                                        method="POST" class="needs-validation" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
-                                                            <h6 class="text-center">Are you sure you want to approve
-                                                                this
-                                                                profile?</h6>
+                                                            <h6 class="text-center text-uppercase">Are you sure you want
+                                                                to approve the
+                                                                deactivation of this profile?</h6>
+                                                            <hr>
+                                                            <div class="card-text">
+                                                                <h6>NAME: <strong>{{ $profile->firstName.'
+                                                                        '.$profile->lastName }}</strong></h6>
+                                                                <br>
+                                                                <h6>CONTACT EMAIL: <strong>{{ $profile->email
+                                                                        }}</strong>
+                                                                </h6>
+                                                                <br>
+                                                                <h6>CONTACT PHONE NUMBER: <strong>{{ $profile->mobile ??
+                                                                        'No
+                                                                        information available'
+                                                                        }}</strong>
+                                                                </h6>
+                                                                <br>
+                                                                <h6>PACKAGE: <strong>{{ $profile->package->Name ?? 'No
+                                                                        information available'
+                                                                        }}</strong>
+                                                                </h6>
+                                                                <br>
+                                                                <h6>INSTIUTION: <strong>{{
+                                                                        $profile->institution->institutionName ?? 'No
+                                                                        information available'
+                                                                        }}</strong>
+                                                                </h6>
+                                                                <br>
+                                                                <h6>CREATED BY: <strong>{{
+                                                                        $profile->inputter ?? 'No
+                                                                        information available'
+                                                                        }}</strong>
+                                                                </h6>
+                                                                <br>
+                                                                <h6>CREATED DATE: <strong>{{
+                                                                        date('F d, Y',strtotime( $profile->inputDate))
+                                                                        ??
+                                                                        'No
+                                                                        information available'
+                                                                        }}</strong>
+                                                                </h6>
+                                                            </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"
-                                                                onclick="changeText(this);">Approve</button>
+                                                            <button type="submit"
+                                                                class="btn btn-primary">Approve</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
@@ -563,7 +615,7 @@
                                                     </div>
                                                     <form
                                                         action="{{ route('authoriser.profile.rejectCreate',$profile->id) }}"
-                                                        method="POST" class="needs-validation" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
                                                             <h6 class="text-center">Are you sure you want to reject

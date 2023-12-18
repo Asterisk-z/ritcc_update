@@ -23,8 +23,8 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-                                    <form action="{{ route('createPackage') }}" method="POST" id="myForm"
-                                        class="needs-validation" novalidate>
+                                    <form action="{{ route('createPackage') }}" method="POST"
+                                        class="needs-validation confirmation" novalidate>
                                         @csrf
                                         <div class="modal-body">
                                             <div class="form-row row">
@@ -105,7 +105,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('updatePackage',$package->ID) }}"
-                                                        method="POST" class="needs-validation" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
                                                             <div class="form-row row">
@@ -123,8 +123,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary">Update
-                                                                Package</button>
+                                                            <button type="submit"
+                                                                class="btn btn-primary">Update</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>

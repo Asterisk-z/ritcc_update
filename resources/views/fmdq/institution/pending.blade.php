@@ -403,55 +403,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {{-- --}}
-                                        {{-- <div id="viewUpdate{{ $institution->ID }}" class="modal fade" tabindex="-1"
-                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title" id="standard-modalLabel">View
-                                                        </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="text-center">
-                                                            <h6>Institution Code : <strong>{{
-                                                                    $institution->code
-                                                                    }}</strong></h6>
-                                                            <br><br>
-                                                            <h6>Institution Name: <strong>{{
-                                                                    $institution->institutionName
-                                                                    }}</strong></h6>
-                                                            <br><br>
-                                                            <h6>Institution Address: <strong>{{ $institution->address
-                                                                    }}</strong></h6>
-                                                            <br><br>
-                                                            <h6>Institution Email: <strong>{{
-                                                                    $institution->institutionEmail
-                                                                    }}</strong></h6>
-                                                            <br><br>
-                                                            <h6>Chief Dealer Email: <strong>{{
-                                                                    $institution->chiefDealerEmail
-                                                                    }}</strong></h6>
-                                                            <br><br>
-                                                            <h6>Inputter: <strong>{{
-                                                                    $institution->createdBy
-                                                                    }}</strong></h6>
-                                                            <br><br>
-                                                            <h6>Created Date: <strong>{{ date('F d,
-                                                                    Y
-                                                                    h:m:s',strtotime($institution->createdDate))}}</strong>
-                                                            </h6>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary btn-lg"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> --}}
                                         {{-- approve --}}
                                         <div id="approve{{ $institution->ID }}" class="modal fade" tabindex="-1"
                                             role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
@@ -464,16 +415,17 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form
-                                                        action="{{ route('institution.approveCreate',$institution->ID) }}"
-                                                        method="POST" class="needs-validation" id="update" novalidate>
+                                                        action="{{ route('authoriser.institution.approveCreate',$institution->ID) }}"
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
-                                                            <h6>Are you sure you want to approve this
-                                                                institution?</h6>
+                                                            <h4>Are you sure you want to approve this
+                                                                institution <strong>{{ $institution->institutionName
+                                                                    }}</strong>?</h4>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Approve</button>
+                                                            <button type="submit"
+                                                                class="btn btn-primary">Approve</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
@@ -494,8 +446,8 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form
-                                                        action="{{ route('institution.rejectCreate',$institution->ID) }}"
-                                                        method="POST" class="needs-validation" id="myForm" novalidate>
+                                                        action="{{ route('authoriser.institution.rejectCreate',$institution->ID) }}"
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
                                                             <label for="">Reason for Rejection</label>
@@ -503,8 +455,8 @@
                                                                 required>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Reject</button>
+                                                            <button type="submit"
+                                                                class="btn btn-primary btn-lg">Reject</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
@@ -525,15 +477,15 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form
-                                                        action="{{ route('institution.approveUpdate',$institution->ID) }}"
-                                                        method="POST" class="needs-validation" id="update" novalidate>
+                                                        action="{{ route('authoriser.institution.approveUpdate',$institution->ID) }}"
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
-                                                            <h6>Are you sure you want to approve this update?</h6>
+                                                            <h5>Are you sure you want to approve this update?</h5>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Approve</button>
+                                                            <button type="submit"
+                                                                class="btn btn-primary">Approve</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
@@ -554,8 +506,8 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form
-                                                        action="{{ route('institution.rejectUpdate',$institution->ID) }}"
-                                                        method="POST" class="needs-validation" id="myForm" novalidate>
+                                                        action="{{ route('authoriser.institution.rejectUpdate',$institution->ID) }}"
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
                                                             <label for="">Reason for Rejection</label>
@@ -563,8 +515,8 @@
                                                                 required>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Reject</button>
+                                                            <button type="submit"
+                                                                class="btn btn-primary">Reject</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
@@ -585,11 +537,11 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form
-                                                        action="{{ route('institution.approveDelete',$institution->ID) }}"
-                                                        method="POST" class="needs-validation" novalidate>
+                                                        action="{{ route('authoriser.institution.approveDelete',$institution->ID) }}"
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
-                                                        <div class="modal-body">
-                                                            <h6>Are you sure you want to approve this delete?</h6>
+                                                        <div class="modal-body text-center">
+                                                            <h5>Are you sure you want to approve this delete?</h5>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-primary"
@@ -614,8 +566,8 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form
-                                                        action="{{ route('institution.rejectDelete',$institution->ID) }}"
-                                                        method="POST" class="needs-validation" novalidate>
+                                                        action="{{ route('authoriser.institution.rejectDelete',$institution->ID) }}"
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
                                                             <label for="">Reason for Rejection</label>
@@ -623,8 +575,8 @@
                                                                 required>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Reject</button>
+                                                            <button type="submit"
+                                                                class="btn btn-primary">Reject</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>

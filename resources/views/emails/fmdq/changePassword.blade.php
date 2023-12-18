@@ -143,8 +143,7 @@
                 </p> --}}
                 @endif
                 <p>
-                    <a href="{{ route('login') }}" class="btn btn-primary"
-                        style="background-color: #1D326C; color:#FFF;">Login to RITCC Portal</a>
+                <p>Kindly click on this <a href="{{ route('login') }}"><strong>link</strong></a> to proceed.</p>
                 </p>
             </div>
         </main>

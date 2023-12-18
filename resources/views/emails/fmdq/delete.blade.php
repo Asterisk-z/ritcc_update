@@ -131,32 +131,32 @@
             <div class="body-text">
                 <h1 style="text-align: center;">Road Infrastructure Tax Credit Certificate
                     Auctionining System</h1>
-                <p>Dear <span>{{ $delete['authoriser'] }}</span>,</p>
+
                 {{-- Profie --}}
                 @if ($delete['type'] == 'profile')
+                <p>Dear <span>{{ $delete['authoriser'] }}</span>,</p>
                 <p>A request to deactivate <strong>{{ $delete['profile'] }}</strong> has been created.<br>
                     Reason: <strong>{{$delete['reason'] }}</strong>
                     <br>
                     Kindly approve.
                 </p>
                 @endif
+                {{-- --}}
+                @if ($delete['type'] == 'approve_delete')
+                <p>Dear <span>{{ $delete['inputter'] }}</span>,</p>
+                <p>Your request to deactivate <strong>{{ $delete['name'] }}</strong> has been approved.</p>
+                @endif
 
-                @if ($delete['type']=== 'institution')
-                <p>A new institution has been deleted. Please approve</p>
+                @if ($delete['type']=== 'delete_institution')
+                <p>Dear <span>{{ $delete['name'] }}</span>,</p>
+                <p>A request to delete an institution has been created. Kindly approve</p>
                 @endif
 
                 @if ($delete['type']=== 'certificate')
                 <p>A new certificate has been deleted. Please approve</p>
                 @endif
 
-
-
-                {{--
-                <p>Deadline: <strong>{{ date('F d, Y', strtotime($activate['deadline'])) }}</strong></p> --}}
-                <p>
-                    <a href="{{ route('login') }}" class="btn btn-primary"
-                        style="background-color: #1D326C; color:#FFF;">Login to RITCC Portal To Approve</a>
-                </p>
+                <p>Kindly click on this <a href="{{ route('login') }}"><strong>link</strong></a> to proceed.</p>
             </div>
         </main>
         <footer>

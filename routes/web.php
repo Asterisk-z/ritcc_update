@@ -163,7 +163,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/security-type', [SecurityTypeController::class, 'index'])->name('securityType');
         Route::post('/create-security-type', [SecurityTypeController::class, 'store'])->name('storeSecurityType');
         Route::post('/update-security-type', [SecurityTypeController::class, 'update'])->name('updateSecurityType');
-        Route::post('/delete-security-type', [SecurityTypeController::class, 'delete'])->name('deleteSecurityType');
+        Route::post('/delete-security-type', [SecurityTypeController::class, 'destroy'])->name('deleteSecurityType');
     });
 
     // authoriser

@@ -189,7 +189,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         //
         $profile = Profile::findOrFail($id);
-        $updateStatus = Profile::where('id', $id)->update(['status' => 4, 'deactivateReason' => $request->reason, 'modifiedBy' => $user->email, 'modifiedDate' => now()]);
+        $updateStatus = Profile::where('id', $id)->update(['status' => 4, 'deactivateReason' => $request->reason, 'deactivateRequestedBy' => $user->email, 'deactivatedRequestDate' => now()]);
         if ($updateStatus) {
             // log activity
             $activity = new ActivityLog();
@@ -286,7 +286,7 @@ class ProfileController extends Controller
     }
 
     // approve delete
-    public function approveDelete(Request $request, $id)
+    public function approveDelete($id)
     {
         $user = Auth::user();
         //
@@ -302,18 +302,20 @@ class ProfileController extends Controller
         $dump->institution = $profile->Institution;
         $dump->password = $profile->password;
         $dump->reason = $profile->deactivatingReason;
-        $dump->inputter = $profile->inputter;
-        $dump->confirmedBy = $profile->authoriser;
+        $dump->createdBy = $profile->inputter;
         $dump->createdDate = $profile->inputDate;
-        $dump->deletedBy = $profile->deactivateInputter;
+        $dump->approvedBy = $profile->authoriser;
+        $dump->approvedDate = $profile->authoriserDate;
+        $dump->deleteRequestedBy = $profile->deactivateRequestedBy;
         $dump->deleteApprovedBy = $user->email;
-        $dump->deleteDate = now();
+        $dump->deleteApprovedDate = now();
+        $dump->profileRef = $profile->id;
         $approveDelete = $dump->save();
         //
         if ($approveDelete) {
             $delete = Profile::where('id', $id)->delete();
         }
-
+        //
         if ($delete) {
             // log activity
             $activity = new ActivityLog();
@@ -326,14 +328,13 @@ class ProfileController extends Controller
         }
         if ($log) {
             // mail
-            // $approver = Profile::where('email', $authoriser)->first();
-            // $update = ([
-            //     'name' => $dump->firstName . ' ' . $profile->lastName,
-            //     'type' => 'approve_delete',
-            //     'previous' => $previous->institutionName,
-
-            // ]);
-            // Mail::to($approver->email)->send(new UpdateMail($update));
+            $inputter = Profile::where('email', $dump->deleteRequestedBy)->first();
+            $delete = ([
+                'inputter' => $inputter->firstName,
+                'name' => $dump->firstName . ' ' . $dump->lastName,
+                'type' => 'approve_delete',
+            ]);
+            Mail::to($user->email)->send(new DeleteMail($delete));
 
             return redirect()->back()->with('success', "Profile delete has been approved.");
         }
@@ -345,7 +346,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         //
         $profile = Profile::findOrFail($id);
-        $rejectDelete = Profile::where('id', $id)->update(['status' => 2, 'deactivatedRejectReason' => $request->reason, 'modifiedApprovedBy' => $user->email, 'modifiedApprovedDate' => now()]);
+        $rejectDelete = Profile::where('id', $id)->update(['status' => 1, 'deactivatedRejectReason' => $request->reason, 'deactivateApprovedBy' => $user->email, 'deactivateApprovedDate' => now()]);
         if ($rejectDelete) {
             // log activity2
             $activity = new ActivityLog();

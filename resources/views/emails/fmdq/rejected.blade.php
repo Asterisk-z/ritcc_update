@@ -131,12 +131,12 @@
             <div class="body-text">
                 <h1 style="text-align: center;">Road Infrastructure Tax Credit Certificate
                     Auctionining System</h1>
-                <p>Dear <span>{{ $rejected['name'] }}</span>,</p>
+
                 {{-- Profie --}}
                 @if ($rejected['type'] == 'profile')
+                <p>Dear <span>{{ $rejected['name'] }}</span>,</p>
                 <p>The request to approve this profile has been rejected because <strong>{{
                         $rejected['reason']}}</strong>.</p>
-
                 @endif
                 {{-- --}}
                 @if ($rejected['type'] === 'rejected_delete')
@@ -144,11 +144,24 @@
                     <br><br>
                     Reason: <strong>{{$rejected['reason']}}</strong>.
                 </p>
-
                 @endif
-
-                @if ($rejected['type']=== 'institution')
-                <p>A new institution has been rejected. Please approve</p>
+                {{-- reject create institution --}}
+                @if ($rejected['type']=== 'reject_new_institution')
+                <p>Dear <span>{{ $rejected['name'] }}</span>,</p>
+                <p>Your request to create a institution has been rejected.</p>
+                <p>Reason: <strong>{{ $rejected['reason'] }}</strong></p>
+                @endif
+                {{-- reject update institution --}}
+                @if ($rejected['type'] === 'reject_update_institution')
+                <p>Dear <span>{{ $rejected['name'] }}</span>,</p>
+                <p>Your request to update an institution has been rejected.</p>
+                <p>Reason: <strong>{{ $rejected['reason'] }}</strong></p>
+                @endif
+                {{-- reject delete institution --}}
+                @if ($rejected['type'] === 'reject_delete_institution')
+                <p>Dear <span>{{ $rejected['name'] }}</span>,</p>
+                <p>Your request to delete an institution has been rejected.</p>
+                <p>Reason: <strong>{{ $rejected['reason'] }}</strong></p>
                 @endif
 
                 @if ($rejected['type']=== 'rejectCreateCertificate')
@@ -156,13 +169,9 @@
                 Reason: <strong>{{$rejected['reason'] }}.</strong>
                 @endif
 
-                <p>Kindly click on this <a href="{{ route('login') }}">link</a> to proceed.</p>
+                <p>Kindly click on this <a href="{{ route('login') }}"><strong>link</strong></a> to proceed.</p>
 
-                <p>
-                    Thank You,
-                    <br>
-                    FMDQ Securities Exchange
-                </p>
+                <p>Thank You,<br> FMDQ Securities Exchange</p>
 
             </div>
         </main>

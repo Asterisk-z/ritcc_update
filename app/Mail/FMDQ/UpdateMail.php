@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Mail\Inputter;
+namespace App\Mail\FMDQ;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class UpdateMail extends Mailable
+class UpdateMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -31,8 +31,8 @@ class UpdateMail extends Mailable
     public function build()
     {
         return $this->subject('RITCC Auctioning System')
-            ->from('no-reply@fmdqgroup.com', 'FMDQ RITCC Auctioning System')
-            ->view('emails.inputter.update-institution')
+            ->from('no-reply@fmdqgroup.com', 'RITCC Auctioning System')
+            ->view('emails.fmdq.update')
             ->with(['update' => $this->update]);
     }
 }

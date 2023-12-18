@@ -44,14 +44,14 @@ class SecurityTypeController extends Controller
         $user = Auth::user();
         //
         $validated = $request->validate([
-            'code' => 'bail|unique:tblSecurityType',
+            'securityTypeCode' => 'unique:tblSecurityType',
         ], [
-            'code.unique' => 'This security code has already been registered.',
+            'securityTypeCode.unique' => 'This security code has already been registered.',
         ]);
         //
         if ($validated) {
             $type = new SecurityType();
-            $type->securityTypeCode = $request->code;
+            $type->securityTypeCode = $request->securityTypeCode;
             $type->description = $request->description;
             $create = $type->save();
             //
@@ -103,9 +103,28 @@ class SecurityTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+        $user = Auth::user();
+        $id = $request->id;
+        $type = SecurityType::findOrFail($id);
+        $type->securityTypeCode = $request->securityTypeCode;
+        $type->description = $request->description;
+        $update = $type->save();
         //
+        if ($update) {
+            // log activity
+            $activity = new ActivityLog();
+            $activity->date = now();
+            $activity->app = 'RITCC';
+            $activity->type = 'Update Security Type';
+            $activity->activity = $user->email . ' updated a security type.';
+            $activity->username = $user->email;
+            $log = $activity->save();
+        }
+        if ($log) {
+            return redirect()->back()->with('success', "Security type updated.");
+        }
     }
 
     /**
@@ -114,8 +133,26 @@ class SecurityTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         //
+        $user = Auth::user();
+        $id = $request->id;
+        $type = SecurityType::findOrFail($id);
+        $delete = $type->delete();
+        //
+        if ($delete) {
+            // log activity
+            $activity = new ActivityLog();
+            $activity->date = now();
+            $activity->app = 'RITCC';
+            $activity->type = 'Delete Security Type';
+            $activity->activity = $user->email . ' deleted an security type .';
+            $activity->username = $user->email;
+            $log = $activity->save();
+        }
+        if ($log) {
+            return redirect()->back()->with('success', "Security type deleted.");
+        }
     }
 }

@@ -131,10 +131,11 @@
             <div class="body-text">
                 <h1 style="text-align: center;">Road Infrastructure Tax Credit Certificate
                     Auctionining System</h1>
-                <p>Dear <span>{{ $approved['name'] }}</span>,</p>
+
                 {{-- Profie --}}
                 @if ($approved['type'] == 'profile')
-                <p>Your account has been successfully created;<br>Your login details are as follows:</p>
+                <p>Dear <span>{{ $approved['name'] }}</span>,</p>
+                <p>Your account has been successfully created.</p>
                 <p>These are your login credentials:
                     <br><br>
                     Email address: <strong>{{ $approved['email'] }}</strong>
@@ -142,20 +143,33 @@
                     Password: <strong>{{ $approved['password'] }}</strong>
                 </p>
                 @endif
-
+                {{-- create new institution --}}
                 @if ($approved['type']=== 'institution')
+                <p>Dear <span>{{ $approved['name'] }}</span>,</p>
                 <p>A new institution has been approved. Please approve</p>
                 @endif
+                {{-- approved new institution --}}
+                @if ($approved['type']=== 'new_institution')
+                <p>Dear <span>{{ $approved['name'] }}</span>,</p>
+                <p>Your request to create <strong>{{ $approved['institution'] }}</strong> has been approved.</p>
+                @endif
+                {{-- approved update institution --}}
+                @if ($approved['type']=== 'approve_new_institution')
+                <p>Dear <span>{{ $approved['name'] }}</span>,</p>
+                <p>Your request to update <strong>{{ $approved['institution'] }}</strong> has been approved.</p>
+                @endif
+                {{-- approved delete institution --}}
+                @if ($approved['type']=== 'approve_delete_institution')
+                <p>Dear <span>{{ $approved['name'] }}</span>,</p>
+                <p>Your request to delete an institution has been approved.</p>
+                @endif
 
+                {{-- --}}
                 @if ($approved['type']=== 'certificate')
                 <p>A new certificate has been approved. Please approve</p>
                 @endif
-                {{-- <p>
-                    <a href="" class="btn btn-primary" style="background-color: #1D326C; color:#FFF;">Login to RITCC
-                        Portal</a>
-                </p> --}}
-                <p>Kindly click on this <a href="{{ route('login') }}"><strong>link</strong></a> to proceed.</p>
 
+                <p>Kindly click on this <a href="{{ route('login') }}"><strong>link</strong></a> to proceed.</p>
                 <p>Thank You,<br>FMDQ Securities Exchange</p>
             </div>
         </main>

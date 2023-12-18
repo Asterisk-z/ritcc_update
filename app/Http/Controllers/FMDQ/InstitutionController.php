@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers\FMDQ;
 
+use App\Helpers\MailContents;
 use App\Http\Controllers\Controller;
+use App\Mail\FMDQ\ApprovedMail;
+use App\Mail\FMDQ\CreateMail;
+use App\Mail\FMDQ\DeleteMail;
+use App\Mail\FMDQ\RejectedMail;
+use App\Mail\FMDQ\UpdateMail;
 use App\Models\ActivityLog;
 use App\Models\Institution;
 use App\Models\InstitutionTemp;
 use App\Models\Profile;
+use App\Notifications\InfoNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
 class InstitutionController extends Controller
 {
@@ -101,7 +110,7 @@ class InstitutionController extends Controller
             $address = $request->input('address');
             $institutionEmail = $request->input('institutionEmail');
             $chiefDealerEmail = $request->input('chiefDealerEmail');
-            $authoriser = $request->input('authoriser');
+            // $authoriser = $request->input('authoriser');
             $inputter = $user->email;
             // You can now proceed with saving the other form data to your database or perform any other actions
             $institutions = new Institution();
@@ -111,10 +120,12 @@ class InstitutionController extends Controller
             $institutions->institutionEmail = $institutionEmail;
             $institutions->chiefDealerEmail = $chiefDealerEmail;
             $institutions->createdBy = $inputter;
-            $institutions->approvedBy = $authoriser;
+            $institutions->approvedBy = $request->authoriser;
             $institutions->status = 0;
             $institutions->createdDate = now();
             $create = $institutions->save();
+
+            //
             if ($create) {
                 // log activity
                 $activity = new ActivityLog();
@@ -126,12 +137,13 @@ class InstitutionController extends Controller
                 $log = $activity->save();
             }
             if ($log) {
-                // // mail
-                // $approver = Profile::where('email', $authoriser)->first();
-                // $new = ([
-                //     'name' => $approver->FirstName,
-                // ]);
-                // Mail::to($authoriser)->send(new CreateInstitutionMail($new));
+                // mail
+                $authoriser = Profile::where('email', $request->authoriser)->first();
+                $new = ([
+                    'name' => $authoriser->firstName,
+                    'type' => 'create_institution',
+                ]);
+                Mail::to($authoriser)->send(new CreateMail($new));
 
                 return redirect()->back()->with('success', "Institution has been sent for approval.");
             }
@@ -145,7 +157,6 @@ class InstitutionController extends Controller
     public function update(Request $request, $id)
     {
         $user = Auth::user();
-        // dd($request->institutionEmail);
         $validated = $request->validate([
             'code' => 'bail|unique:tblInstitutionTemp',
             'email' => 'bail|email|unique:tblInstitutionTemp',
@@ -190,14 +201,15 @@ class InstitutionController extends Controller
             }
             if ($log) {
                 // mail
-                // $approver = Profile::where('email', $authoriser)->first();
-                // $update = ([
-                //     'name' => $approver->FirstName,
-                //     'type' => 'institution',
-                //     'previous' => $previous->institutionName,
+                $approver = Profile::where('email', $authoriser)->first();
+                //
+                $update = ([
+                    'name' => $approver->firstName,
+                    'type' => 'update_institution',
+                    'previous' => $previous->institutionName,
 
-                // ]);
-                // Mail::to($approver->email)->send(new UpdateMail($update));
+                ]);
+                Mail::to($approver->email)->send(new UpdateMail($update));
 
                 return redirect()->back()->with('success', "Institution update has been sent for approval.");
             }
@@ -226,15 +238,14 @@ class InstitutionController extends Controller
         }
         if ($log) {
             // mail
-            // $approver = Profile::where('email', $authoriser)->first();
-            // $update = ([
-            //     'name' => $approver->FirstName,
-            //     'type' => 'institution',
-            //     'previous' => $previous->institutionName,
+            $approver = Profile::where('email', $request->authoriser)->first();
+            $delete = ([
+                'name' => $approver->firstName,
+                'type' => 'delete_institution',
+                'previous' => $previous->institutionName,
 
-            // ]);
-            // Mail::to($approver->email)->send(new UpdateMail($update));
-
+            ]);
+            Mail::to($approver->email)->send(new DeleteMail($delete));
             return redirect()->back()->with('success', "Institution delete has been sent for approval.");
         }
     }
@@ -244,7 +255,7 @@ class InstitutionController extends Controller
     {
         $user = Auth::user();
         //
-        $previous = Institution::findOrFail($id);
+        $institution = Institution::find($id);
         $approveCreate = Institution::where('ID', $id)->update(['status' => 1, 'approvedDate' => now(), 'approvedBy' => $user->email]);
         if ($approveCreate) {
             // log activity
@@ -252,20 +263,20 @@ class InstitutionController extends Controller
             $activity->date = now();
             $activity->app = 'RITCC';
             $activity->type = 'Approve Institution';
-            $activity->activity = $user->email . ' approve institution: ' . $previous->institutionName . '.';
+            $activity->activity = $user->email . ' approve institution: ' . $institution->institutionName . '.';
             $activity->username = $user->email;
             $log = $activity->save();
         }
         if ($log) {
             // mail
-            // $approver = Profile::where('email', $authoriser)->first();
-            // $update = ([
-            //     'name' => $approver->FirstName,
-            //     'type' => 'institution',
-            //     'previous' => $previous->institutionName,
+            $inputter = Profile::where('email', $institution->createdBy)->first();
+            $approve = ([
+                'name' => $inputter->firstName,
+                'type' => 'new_institution',
+                'institution' => $institution->institutionName,
 
-            // ]);
-            // Mail::to($approver->email)->send(new UpdateMail($update));
+            ]);
+            Mail::to($inputter->createdBy)->send(new ApprovedMail($approve));
 
             return redirect()->back()->with('success', "Institution has been approved.");
         }
@@ -283,20 +294,21 @@ class InstitutionController extends Controller
             $activity->date = now();
             $activity->app = 'RITCC';
             $activity->type = 'Reject Institution';
-            $activity->activity = $user->email . ' approved institution: ' . $institution->institutionName . '.';
+            $activity->activity = $user->email . ' rejected a new institution: ' . $institution->institutionName . '.';
             $activity->username = $user->email;
             $log = $activity->save();
         }
         if ($log) {
             // mail
-            // $approver = Profile::where('email', $authoriser)->first();
-            // $update = ([
-            //     'name' => $approver->FirstName,
-            //     'type' => 'institution',
-            //     'previous' => $previous->institutionName,
+            $inputter = Profile::where('email', $institution->createdBy)->first();
+            $update = ([
+                'name' => $inputter->firstName,
+                'type' => 'reject_new_institution',
+                'reason' => $request->reason,
+                'previous' => $institution->institutionName,
 
-            // ]);
-            // Mail::to($approver->email)->send(new UpdateMail($update));
+            ]);
+            Mail::to($institution->createdBy)->send(new RejectedMail($update));
 
             return redirect()->back()->with('success', "Institution has been rejected.");
         }
@@ -327,14 +339,14 @@ class InstitutionController extends Controller
         }
         if ($log) {
             // mail
-            // $approver = Profile::where('email', $authoriser)->first();
-            // $update = ([
-            //     'name' => $approver->FirstName,
-            //     'type' => 'institution',
-            //     'previous' => $previous->institutionName,
+            $approver = Profile::where('email', $temp->modifyingBy)->first();
+            $approved = ([
+                'name' => $approver->firstName,
+                'type' => 'approve_update_institution',
+                // 'previous' => $previous->institutionName,
 
-            // ]);
-            // Mail::to($approver->email)->send(new UpdateMail($update));
+            ]);
+            Mail::to($temp->modifyingBy)->send(new ApprovedMail($approved));
 
             return redirect()->back()->with('success', "Institution update has been approved.");
         }
@@ -360,15 +372,15 @@ class InstitutionController extends Controller
         }
         if ($log) {
             // mail
-            // $approver = Profile::where('email', $authoriser)->first();
-            // $update = ([
-            //     'name' => $approver->FirstName,
-            //     'type' => 'institution',
-            //     'previous' => $previous->institutionName,
+            $inputter = Profile::where('email', $temp->modifyingBy)->first();
+            $rejected = ([
+                'name' => $inputter->FirstName,
+                'type' => 'reject_update_institution',
+                'reason' => $request->reason,
+                // 'previous' => $previous->institutionName,
 
-            // ]);
-            // Mail::to($approver->email)->send(new UpdateMail($update));
-
+            ]);
+            Mail::to($temp->modifyingBy)->send(new RejectedMail($rejected));
             return redirect()->back()->with('success', "Institution update has been rejected.");
         }
     }
@@ -411,14 +423,14 @@ class InstitutionController extends Controller
         }
         if ($log) {
             // mail
-            // $approver = Profile::where('email', $authoriser)->first();
-            // $update = ([
-            //     'name' => $approver->FirstName,
-            //     'type' => 'institution',
-            //     'previous' => $previous->institutionName,
+            $approver = Profile::where('email', $institution->deletingBy)->first();
+            $approved = ([
+                'name' => $approver->firstName,
+                'type' => 'approve_delete_institution',
+                // 'previous' => $previous->institutionName,
 
-            // ]);
-            // Mail::to($approver->email)->send(new UpdateMail($update));
+            ]);
+            Mail::to($approver->email)->send(new ApprovedMail($approved));
 
             return redirect()->back()->with('success', "Institution delete has been approved.");
         }
@@ -444,14 +456,15 @@ class InstitutionController extends Controller
         }
         if ($log) {
             // mail
-            // $approver = Profile::where('email', $authoriser)->first();
-            // $update = ([
-            //     'name' => $approver->FirstName,
-            //     'type' => 'institution',
-            //     'previous' => $previous->institutionName,
+            $approver = Profile::where('email', $institution->deletingBy)->first();
+            $rejected = ([
+                'name' => $approver->firstName,
+                'type' => 'reject_delete_institution',
+                'reason' => $request->reason
+                // 'previous' => $previous->institutionName,
 
-            // ]);
-            // Mail::to($approver->email)->send(new UpdateMail($update));
+            ]);
+            Mail::to($approver->email)->send(new RejectedMail($rejected));
 
             return redirect()->back()->with('success', "Institution delete has been rejected.");
         }

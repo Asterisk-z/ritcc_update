@@ -131,22 +131,21 @@
             <div class="body-text">
                 <h1 style="text-align: center;">Road Infrastructure Tax Credit Certificate
                     Auctionining System</h1>
-                <>Dear <span>{{ $create['authoriser'] }}</span>,<br><br>
-                    {{-- Profie --}}
-                    @if ($create['type'] == 'profile')
+                <p>Dear <span>{{ $create['name'] }}</span>,</p>
+                {{-- Profie --}}
+                @if ($create['type'] == 'profile')
+                A new profile has been created. Kindly approve
+                @endif
 
-                    A new profile has been created. Kindly approve
-                    @endif
+                @if ($create['type']=== 'create_institution')
+                A new institution has been created. Kindly approve
+                @endif
 
-                    @if ($create['type']=== 'institution')
-                    A new institution has been created. Kindly approve
-                    @endif
+                @if ($create['type']=== 'certificate')
+                A new certificate has been created.<br>Kindly approve
+                @endif
 
-                    @if ($create['type']=== 'certificate')
-                    A new certificate has been created.<br>Kindly approve
-                    @endif
-
-                    <p>Kindly click on this <a href="{{ route('login') }}"><strong>link</strong></a> to proceed.</p>
+                <p>Kindly click on this <a href="{{ route('login') }}"><strong>link</strong></a> to proceed.</p>
             </div>
         </main>
         <footer>

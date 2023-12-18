@@ -97,8 +97,8 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('inputter.institution.create') }}" method="POST" id="myForm"
-                                class="needs-validation" novalidate>
+                            <form action="{{ route('inputter.institution.create') }}" method="POST"
+                                class="needs-validation confirmation" novalidate>
                                 @csrf
                                 <div class="modal-body">
                                     <div class="form-row row">
@@ -410,8 +410,9 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('institution.update',$institution->ID) }}"
-                                                        method="POST" class="needs-validation" id="update" novalidate>
+                                                    <form
+                                                        action="{{ route('inputter.institution.update',$institution->ID) }}"
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
                                                             <div class="form-row row">
@@ -513,8 +514,9 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('institution.delete',$institution->ID) }}"
-                                                        method="POST" class="needs-validation" id="myForm" novalidate>
+                                                    <form
+                                                        action="{{ route('inputter.institution.delete',$institution->ID) }}"
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <div class="modal-body">
                                                             <label for="">Reason</label>

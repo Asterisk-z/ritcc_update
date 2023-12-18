@@ -23,15 +23,15 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-                                    <form action="{{ route('storeSecurityType') }}" method="POST" id="myForm"
-                                        class="needs-validation" novalidate>
+                                    <form action="{{ route('storeSecurityType') }}" method="POST" id="create"
+                                        class="needs-validation confirmation" novalidate>
                                         @csrf
                                         <div class="modal-body">
                                             <div class="form-row row">
                                                 {{-- --}}
                                                 <div class="col-lg-12 mb-3">
                                                     <label for="validationCustom01">Code</label>
-                                                    <input type="text" name="code" class="form-control"
+                                                    <input type="text" name="securityTypeCode" class="form-control"
                                                         id="validationCustom01" required>
                                                     <div class="invalid-feedback">
                                                         This field is required
@@ -116,16 +116,17 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('updateSecurityType') }}" method="POST"
-                                                        class="needs-validation" id="myForm" novalidate>
+                                                        class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         {{-- --}}
                                                         <input type="hidden" value="{{ $type->id }}" name="id">
                                                         <div class="modal-body">
                                                             <div class="form-row row">
                                                                 {{-- --}}
+                                                                <input type="hidden" name="id" value="{{ $type->id }}">
                                                                 <div class="col-lg-12 mb-3">
                                                                     <label for="validationCustom01">Code</label>
-                                                                    <input type="text" name="code"
+                                                                    <input type="text" name="securityTypeCode"
                                                                         value="{{ $type->securityTypeCode }}"
                                                                         class="form-control" id="validationCustom01"
                                                                         required>
@@ -136,7 +137,7 @@
                                                                 {{-- --}}
                                                                 <div class="col-lg-12 mb-3">
                                                                     <label for="validationCustom01">Description</label>
-                                                                    <input type="date" name="description"
+                                                                    <input type="type" name="description"
                                                                         value="{{ $type->description }}"
                                                                         class="form-control" id="validationCustom01"
                                                                         required>
@@ -147,8 +148,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary">Update
-                                                                type</button>
+                                                            <button type="submit"
+                                                                class="btn btn-primary">Update</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
@@ -170,7 +171,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('deleteSecurityType') }}" method="POST"
-                                                        class="needs-validation" novalidate>
+                                                        class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         {{-- --}}
                                                         <input type="hidden" value="{{ $type->id }}" name="id">
