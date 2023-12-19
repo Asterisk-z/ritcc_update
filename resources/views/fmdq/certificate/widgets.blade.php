@@ -1,6 +1,6 @@
         <div class="row">
             {{-- all --}}
-            <div class="col-xl-4 col-sm-3 col-12">
+            <div class="col-xl-3 col-sm-3 col-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="dash-widget-header">
@@ -18,7 +18,7 @@
                 </div>
             </div>
             {{-- pending --}}
-            <div class="col-xl-4 col-sm-3 col-12">
+            <div class="col-xl-3 col-sm-3 col-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="dash-widget-header">
@@ -36,7 +36,7 @@
                 </div>
             </div>
             {{-- approved --}}
-            <div class="col-xl-4 col-sm-3 col-12">
+            <div class="col-xl-3 col-sm-3 col-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="dash-widget-header">
@@ -54,7 +54,7 @@
                 </div>
             </div>
             {{-- rejected --}}
-            <div class="col-xl-4 col-sm-3 col-12">
+            <div class="col-xl-3 col-sm-3 col-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="dash-widget-header">
@@ -71,40 +71,5 @@
                     </div>
                 </div>
             </div>
-            {{-- rejected --}}
-            <div class="col-xl-4 col-sm-3 col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="dash-widget-header">
-                            <span class="dash-widget-icon bg-2">
-                                <i class="fas fa-users"></i>
-                            </span>
-                            <div class="dash-count">
-                                <div class="dash-title">Running Securities</div>
-                                <div class="dash-counts">
-                                    <p>{{ $rejected }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{-- rejected --}}
-            <div class="col-xl-4 col-sm-3 col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="dash-widget-header">
-                            <span class="dash-widget-icon bg-2">
-                                <i class="fas fa-users"></i>
-                            </span>
-                            <div class="dash-count">
-                                <div class="dash-title">Closed Securities</div>
-                                <div class="dash-counts">
-                                    <p>{{ $rejected }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
