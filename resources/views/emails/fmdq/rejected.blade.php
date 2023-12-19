@@ -130,10 +130,10 @@
         <main>
             <div class="body-text">
                 <h1 style="text-align: center;">Road Infrastructure Tax Credit Certificate
-                    Auctionining System</h1>
+                    Auctioning System</h1>
 
                 {{-- Profie --}}
-                @if ($rejected['type'] == 'profile')
+                @if ($rejected['type'] == 'reject_create_profile')
                 <p>Dear <span>{{ $rejected['name'] }}</span>,</p>
                 <p>The request to approve this profile has been rejected because <strong>{{
                         $rejected['reason']}}</strong>.</p>

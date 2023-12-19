@@ -29,20 +29,25 @@ class LoginController extends Controller
     public function updatePassword(Request $request)
     {
         $user = Auth::user();
+        $default = Hash::make($request->default);
+        $current = $user->defaultPassword;
+        $new = $request->password;
         //
-        // $user = Profile::where('email', $request->email)->first();
+        $user = Profile::where('email', $request->email)->first();
+        if (Hash::check($default, $current)) {
+            // dd($default . ' is not equals to ' . $current);
+            return redirect()->back()->with('error', "The entered password does not match your default or current password.");
+        }
+        //
+        if (Hash::check($new, $current)) {
+            return redirect()->back()->with('error', "You cannot use your default password. Kindly update your password");
+        }
         //
         $validated = $request->validate([
             'password' => [
                 'required',
                 'string',
-                // function ($attribute, $value, $fail) use ($user) {
-                //     // Check if the entered password matches either the defaultPassword or current password
-                //     if (!Hash::check($value, $user->defaultPassword) && !Hash::check($value, $user->password)) {
-                //         $fail('The entered password does not match your default or current password.');
-                //     }
-                // },
-                // 'confirmed', // If using password confirmation field, like 'password_confirmation'
+                'confirmed', // If using password confirmation field, like 'password_confirmation'
                 'min:6',
                 'different:email', // Ensure password is different from the username
                 'regex:/[a-z]/', // At least one lowercase letter
@@ -55,7 +60,6 @@ class LoginController extends Controller
             $email = $request->email;
             $password = Hash::make($request->password);
             $passwordStatus = 1;
-
             //
             $profileUpdated = Profile::where('id', $user->id)->update(['password' => $password, 'passwordStatus' => $passwordStatus]);
             //
@@ -74,9 +78,7 @@ class LoginController extends Controller
                 // Mail
                 $updated = ([
                     'name' => $user->firstName,
-                    'type' => 'changePassword',
-                    // 'email' => $user->email,
-                    // 'password' => $uniqueString
+                    'type' => 'change_password',
 
                 ]);
                 Mail::to($user->email)->send(new PasswordUpdatedMail($updated));
@@ -123,7 +125,6 @@ class LoginController extends Controller
         elseif (auth()->user()->type == 'firs') {
             return redirect()->route('firs.certificate.mgt.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
-
     }
 
     //

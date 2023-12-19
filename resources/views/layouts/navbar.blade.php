@@ -7,13 +7,24 @@
             <span class="bar-icons"></span>
         </span>
     </a>
-
+    <div class="top-nav-search">
+        <marquee>
+            <h4 class="text-center text-uppercase" style="color:#1D326C; font-size: 24px;line-height: 30px;">Road
+                Infrastructure Tax
+                Credit Certificate
+                (RITCC)
+                Auctioning System</h4>
+        </marquee>
+    </div>
+    {{-- --}}
     <a class="mobile_btn" id="mobile_btn">
         <i class="fas fa-bars"></i>
     </a>
-    {{-- <marquee behavior="" direction="">
-        <h2 class="text-center text-uppercase" style="color:#1D326C;">Road Infrastructure Tax Credit Certificate (RITCC)
-            Auctionining System</h2>
+
+    {{-- <marquee>
+        <h6 class="text-center text-uppercase" style="color:#1D326C;">Road Infrastructure Tax Credit Certificate
+            (RITCC)
+            Auctionining System</h6>
     </marquee> --}}
     <ul class="nav nav-tabs user-menu">
         <li class="nav-item dropdown">

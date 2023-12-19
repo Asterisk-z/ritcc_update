@@ -24,41 +24,43 @@
                 <div class="loginbox">
                     <div class="login-right">
                         <div class="login-right-wrap">
+                            <div class="">
+                                <p style="color: red"><strong>Password must contain at least six characters</strong>
+                                </p>
+                                <p style="color: red"><strong>Password must be different from username</strong></p>
+                                <p style="color: red"><strong>Password must contain at least one number
+                                        (0-9)</strong></p>
+                                <p style="color: red"><strong>Password must contain at least one lowercase
+                                        letter (a-z)</strong></p>
+                                <p style="color: red"><strong>Password must contain at least one uppercase
+                                        letter (A-Z)</strong></p>
+                            </div>
                             <h1>Update Password</h1>
-                            <p style="color: red"><strong>Password must contain at least six characters</strong>
-                            </p>
-                            <p style="color: red"><strong>Password must be different from username</strong></p>
-                            <p style="color: red"><strong>Password must contain at least one number
-                                    (0-9)</strong></p>
-                            <p style="color: red"><strong>Password must contain at least one lowercase
-                                    letter (a-z)</strong></p>
-                            <p style="color: red"><strong>Password must contain at least one uppercase
-                                    letter (A-Z)</strong></p>
                             {{-- <h4 class="account-subtitle">Change Your Password</h4> --}}
-                            <form action="{{ route('updatePassword') }}" method="POST" autocomplete="on">
+                            <form action="{{ route('updatePassword') }}" class="needs-validation confirmation"
+                                method="POST" novalidate>
                                 @csrf
                                 <div class="form-group">
                                     <input type="hidden" name="email" value="{{ auth()->user()->email }}">
                                     <label class="form-control-label">Default Password</label>
-                                    <input type="text" name="default" class="form-control" required>
+                                    <input type="password" name="default" class="form-control" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-control-label">New Password</label>
                                     <div class="pass-group">
-                                        <input type="text" name="password" class="form-control pass-input" required>
+                                        <input type="password" name="password" class="form-control pass-input" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-control-label">Confirm New Password</label>
                                     <div class="pass-group">
-                                        <input type="text" name="password_confirmation" class="form-control pass-input"
-                                            required>
+                                        <input type="password" name="password_confirmation"
+                                            class="form-control pass-input" required>
                                     </div>
                                 </div>
 
-                                <button class="btn btn-lg btn-block btn-primary w-100" type="submit"
-                                    onclick="changeText(this);">Change
-                                    Paasword</button>
+                                <button class="btn btn-lg btn-block btn-primary w-100" type="submit">Change
+                                    Password</button>
                             </form>
                         </div>
                     </div>
@@ -98,6 +100,47 @@
     			confirmButtonColor: "#23346A",
     		});
     	@endif
+    </script>
+    {{-- --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('.confirmation');
+
+            forms.forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent default form submission
+                    // Check if the form is valid
+                    if (form.checkValidity()) {
+                        // Show SweetAlert confirmation
+                        Swal.fire({
+                            title: 'Are you sure?',
+                            text: 'Are you sure you want to submit?',
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonColor: '#1D326C',
+                            cancelButtonColor: '#969698',
+                            confirmButtonText: 'Yes, go ahead',
+                            cancelButtonText: 'No, cancel'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Show message indicating action in progress
+                                Swal.fire({
+                                    text: 'Please wait...',
+                                    icon: 'info',
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                    showConfirmButton: false
+                                });
+                                // Simulate action process (replace with actual logic)
+                                setTimeout(function() {
+                                    form.submit(); // Submit the form
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        });
     </script>
 </body>
 

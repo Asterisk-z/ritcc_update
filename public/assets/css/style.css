@@ -10433,7 +10433,8 @@ body[data-layout-mode=dark] .alertify .ajs-header {
 }
 
 .bg-1 {
-    background-color: #1D326C
+    background-color: #1D326C;
+    color: #fff
 }
 
 .bg-1 i {
@@ -10553,11 +10554,13 @@ body[data-layout-mode=dark] .alertify .ajs-header {
 }
 
 .bg-info-blue {
-    background: #1D326C
+    background: #1D326C;
+    color: #fff
 }
 
 .bg-primary-light {
-    background: #1D326C
+    background: #1D326C;
+    color: #fff
 }
 
 .bg-warning-light {

@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Bank\BankDashboardController;
 use App\Http\Controllers\FMDQ\AuctionManagementController;
 use App\Http\Controllers\FMDQ\CertificateManagementController;
+use App\Http\Controllers\FMDQ\DashboardController;
 use App\Http\Controllers\FMDQ\InstitutionController;
 use App\Http\Controllers\FMDQ\IQXController;
 use App\Http\Controllers\FMDQ\ProfileController;
@@ -39,11 +40,13 @@ Route::get('/change-password', [LoginController::class, 'changePassword'])->name
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/update-password', [LoginController::class, 'updatePassword'])->name('updatePassword');
+    // // all logs
+    // Route::get('/all-activities', DashboardController::class, 'allLogs')->name('allLogs');
+    // //
+    // Route::get('/user-activities', DashboardController::class, 'userLogs')->name('userLogs');
     //
     Route::middleware(['isSuperUser'])->group(function () {
 
-        Route::get('/iqx-dashboard', [IQXController::class, 'index'])->name('iqx.dashboard');
-        Route::get('/activity-logs', [IQXController::class, 'activityLog'])->name('iqx.logs');
         // profile
         Route::get('/profile-management', [ProfileController::class, 'index'])->name('profile.index');
         Route::get('/profile-management/pending', [ProfileController::class, 'pending'])->name('profile.pending');

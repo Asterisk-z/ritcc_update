@@ -106,25 +106,29 @@
     $(function() {
 		// Initialize DataTable for elements with class 'datatable'
 		$("#example1").DataTable({
-		  "responsive": false,
+		  "responsive": true,
 		  "lengthChange": false,
-		  "autoWidth": false,
-		  "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+		  "autoWidth": true,
+          "paging": true,
+          "searching": true,
+          "ordering": true,
+          "info": true,
+		//   "buttons": ["copy", "csv", "excel", "pdf", "print"]
 		}).buttons().container().appendTo('.col-md-12:eq(0)');
 
 		// Check if #example2 already has DataTable initialized
-		if (!$.fn.DataTable.isDataTable('#example2')) {
-			// If not initialized, then initialize DataTable
-			$('#example2').DataTable({
-				"paging": true,
-				"lengthChange": false,
-				"searching": true,
-				"ordering": false,
-				"info": true,
-				"autoWidth": true,
-				"responsive": true
-			});
-		}
+		// if (!$.fn.DataTable.isDataTable('#example2')) {
+		// 	// If not initialized, then initialize DataTable
+		// 	$('#example2').DataTable({
+		// 		"paging": true,
+		// 		"lengthChange": false,
+		// 		"searching": true,
+		// 		"ordering": false,
+		// 		"info": true,
+		// 		"autoWidth": true,
+		// 		"responsive": true
+		// 	});
+		// }
 	});
 </script>
 

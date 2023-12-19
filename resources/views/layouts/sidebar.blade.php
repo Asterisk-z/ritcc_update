@@ -1,10 +1,10 @@
 <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <div class="sidebar-logo">
-            <a href="{{ route('iqx.dashboard') }}">
+            <a href="#">
                 <img src="{{ asset('assets/img/FMDQLogo.png') }}" class="img-fluid logo" alt>
             </a>
-            <a href="{{ route('iqx.dashboard') }}">
+            <a href="#">
                 <img src="{{ asset('assets/img/FMDQLogo.png') }}" class="img-fluid logo-small" alt>
             </a>
         </div>
@@ -76,7 +76,8 @@
                 </li>
 
                 <li class="mb-3">
-                    <a href="{{ route('authoriser.auction.mgt.dashboard') }}"><i class="fa fa-bullseye"></i> <span>Auction Management</span></a>
+                    <a href="{{ route('authoriser.auction.mgt.dashboard') }}"><i class="fa fa-bullseye"></i>
+                        <span>Auction Management</span></a>
                 </li>
 
 
@@ -113,10 +114,6 @@
                             Settings</span></a>
                 </li>
 
-
-
-
-
                 @elseif (auth()->user()->type === 'firs')
                 <br><br>
                 <li class="mb-3">
@@ -138,15 +135,13 @@
                     </a>
                 </li>
                 <li class="mb-3">
-                    <a href="{{ route('auction.mgt.allocation') }}"><i class="fa-solid fa-key"></i> <span> Auction Allocation</span></a>
+                    <a href="{{ route('auction.mgt.allocation') }}"><i class="fa-solid fa-key"></i> <span> Auction
+                            Allocation</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="{{ route('auction.mgt.results') }}"><i class="fa-solid fa-key"></i> <span> Auction Results</span></a>
+                    <a href="{{ route('auction.mgt.results') }}"><i class="fa-solid fa-key"></i> <span> Auction
+                            Results</span></a>
                 </li>
-
-
-
-
 
                 @elseif (auth()->user()->type === 'bidder' )
                 <li class="mb-3">
@@ -160,12 +155,16 @@
 
                 </li>
                 <li class="mb-3">
-                    <a href="{{ route('trade.mgt.dashboard', 'result') }}"><i class="fa-solid fa-key"></i> <span>Allocated Trade</span></a>
+                    <a href="{{ route('trade.mgt.dashboard', 'result') }}"><i class="fa-solid fa-key"></i>
+                        <span>Allocated Trade</span></a>
 
                 </li>
-
                 @endif
+                {{-- <li class="mb-3">
+                    <a href="{{ route('userLogs') }}"><i class="fa fa-bullseye"></i>
+                        <span>User Logs</span></a>
 
+                </li> --}}
             </ul>
 
         </div>

@@ -29,7 +29,8 @@
                             <h1></h1>
                             <p class="account-subtitle">Login to <b>Road Infrastructure Tax Credit Certificate
                                     Auctionining System Portal</b></p>
-                            <form action="{{ route('signIn') }}" method="POST" autocomplete="on">
+                            <form action="{{ route('signIn') }}" method="POST" autocomplete="on"
+                                class="needs-validation confirmation" novalidate>
                                 @csrf
                                 <div class="form-group">
                                     <label class="form-control-label">Email Address</label>
@@ -67,30 +68,58 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         @if ($errors->any())
-Swal.fire({
-icon: 'error',
-title: 'Validation Error',
-html: `{!! implode("<br>", $errors->all()) !!}`,
-showConfirmButton: true,
-confirmButtonColor: "#23346A",
-});
- @elseif (session('success'))
-Swal.fire({
-icon: 'success',
-title: 'Success',
-text: '{{ session('success') }}',
-showConfirmButton: true,
-confirmButtonColor: "#23346A",
-});
-@elseif (session('info'))
-Swal.fire({
-icon: 'info',
-// title: 'Informa',
-text: '{{ session('info') }}',
-showConfirmButton: true,
-confirmButtonColor: "#23346A",
-});
-@endif
+        Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        html: `{!! implode("<br>", $errors->all()) !!}`,
+        showConfirmButton: true,
+        confirmButtonColor: "#23346A",
+        });
+        @elseif (session('success'))
+        Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: '{{ session('success') }}',
+        showConfirmButton: true,
+        confirmButtonColor: "#23346A",
+        });
+        @elseif (session('info'))
+        Swal.fire({
+        icon: 'info',
+        // title: 'Informa',
+        text: '{{ session('info') }}',
+        showConfirmButton: true,
+        confirmButtonColor: "#23346A",
+        });
+        @endif
+    </script>
+    {{-- --}}
+    {{-- --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+                const forms = document.querySelectorAll('.confirmation');
+
+                forms.forEach(form => {
+                    form.addEventListener('submit', function(event) {
+                        event.preventDefault(); // Prevent default form submission
+                        // Check if the form is valid
+                        if (form.checkValidity()) {
+                            // Show SweetAlert confirmation
+                                Swal.fire({
+                                text: 'Please wait...',
+                                icon: 'info',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                showConfirmButton: false
+                                });
+                                // Simulate action process (replace with actual logic)
+                                setTimeout(function() {
+                                form.submit(); // Submit the form
+                                });
+                        }
+                    });
+                });
+            });
     </script>
 </body>
 

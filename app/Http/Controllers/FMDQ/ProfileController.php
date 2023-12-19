@@ -169,7 +169,7 @@ class ProfileController extends Controller
                 // mail
                 $approver = Profile::where('email', $authoriser)->first();
                 $create = ([
-                    'authoriser' => $approver->firstName,
+                    'name' => $approver->firstName,
                     'type' => 'profile',
                     // 'profileName' => $firstName . ' ' . $lastName,
                 ]);
@@ -273,10 +273,11 @@ class ProfileController extends Controller
             $log = $activity->save();
         }
         if ($log) {
+            $inputter = Profile::where('email', $profile->inputter)->first();
             // mail
             $rejected = ([
-                'name' => $user->firstName,
-                'type' => 'profile',
+                'name' => $inputter->firstName,
+                'type' => 'reject_create_profile',
                 'reason' => $request->reason
 
             ]);

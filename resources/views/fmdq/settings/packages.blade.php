@@ -53,7 +53,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="datatable table table-stripped" id="example2">
+                            <table class="datatable table table-stripped" id="example1">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
