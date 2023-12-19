@@ -15,7 +15,6 @@ class Security extends Model
 
     public function auctioneer()
     {
-        return $this->hasOne(Profile::class, 'id', 'auctioneerRef');
+        return $this->belongsTo(Profile::class, 'auctioneerRef', 'id');
     }
-
 }

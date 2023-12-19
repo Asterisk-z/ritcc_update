@@ -155,12 +155,11 @@
                 <div class="card-table">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="datatable table table-center table-stripped table-bordered" id="example2">
+                            <table class="datatable table table-center table-stripped table-bordered" id="example1">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
                                         <th>Security Code</th>
-                                        <th>Auctioneer</th>
                                         <th>ISIN Number</th>
                                         <th>Isser Code</th>
                                         <th>Offer Amount</th>
@@ -177,7 +176,6 @@
                                     <tr>
                                         <td>{{ $i++; }}</td>
                                         <td>{{ $security->securityCode }}</td>
-                                        <td>{{ $security->auctioneer->email }}</td>
                                         <td>{{ $security->isinNumber }}</td>
                                         <td>{{ $security->issuerCode }}</td>
                                         <td>{{ $security->offerAmount }}</td>
@@ -235,10 +233,13 @@
                                                                     }}</strong></h6>
                                                             <br>
                                                             <h6>Auctioneer Email : <strong>{{
-                                                                    $security->auctioneer->email }}</strong></h6>
+                                                                    $security->auctioneer->email ?? 'No Auctioneer
+                                                                    Assigned' }}</strong></h6>
                                                             <br>
                                                             <h6>Institution : <strong>{{
-                                                                    $security->auctioneer->user_inst->institutionName
+                                                                    $security->auctioneer->user_inst->institutionName ??
+                                                                    'No Auctioneer
+                                                                    Assigned'
                                                                     }}</strong></h6>
                                                             <br>
                                                             <h6>Security ISIN NUmber : <strong>{{ $security->isinNumber
