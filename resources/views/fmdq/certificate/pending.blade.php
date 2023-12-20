@@ -5,7 +5,7 @@
 <div class="page-wrapper">
     <div class="content container-fluid">
         {{-- cards --}}
-        @include('fmdq.certificate.widgets')
+        @include('fmdq.certificate.cards')
 
         {{-- tables --}}
         {{-- --}}
@@ -24,12 +24,12 @@
                 <div class="card-table">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="datatable table table-center table-stripped table-bordered" id="example2">
+                            <table class="datatable table table-center table-stripped table-bordered" id="example1">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
                                         <th>Security Code</th>
-                                        <th>Auctioneer</th>
+                                        {{-- <th>Auctioneer</th> --}}
                                         <th>ISIN Number</th>
                                         <th>Isser Code</th>
                                         <th>Offer Amount</th>
@@ -53,8 +53,8 @@
                                         @endphp
                                         <td>{{ $certificate->modifyingFlag ? $updateCertificate->securityCode :
                                             $certificate->securityCode }}</td>
-                                        <td>{{ $certificate->modifyingFlag ? $updateCertificate->auctioneerEmail :
-                                            $certificate->auctioneer->email }}</td>
+                                        {{-- <td>{{ $certificate->modifyingFlag ? $updateCertificate->auctioneerEmail :
+                                            $certificate->auctioneer->email ?? '' }}</td> --}}
                                         <td>{{ $certificate->modifyingFlag ? $updateCertificate->isinNumber :
                                             $certificate->isinNumber }}</td>
                                         <td>{{ $certificate->modifyingFlag ? $updateCertificate->issuerCode :
@@ -301,12 +301,11 @@
                                             </div>
                                         </div>
 
-
-
                                         @else
 
                                         <td>{{ $certificate->securityCode }}</td>
-                                        <td>{{ $certificate->auctioneer->email }}</td>
+                                        {{-- <td>{{ $certificate->auctioneer->email ?? 'No Auctioneer Assigned'}}</td>
+                                        --}}
                                         <td>{{ $certificate->isinNumber }}</td>
                                         <td>{{ $certificate->issuerCode }}</td>
                                         <td>{{ $certificate->offerAmount }}</td>
