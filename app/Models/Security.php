@@ -13,6 +13,8 @@ class Security extends Model
     public $guarded = [];
     public $timestamps = false;
 
+    public $with = ['auctioneer'];
+
     public function auctioneer()
     {
         return $this->belongsTo(Profile::class, 'auctioneerRef', 'id');

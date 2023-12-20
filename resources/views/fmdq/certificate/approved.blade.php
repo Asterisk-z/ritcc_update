@@ -40,29 +40,24 @@
                                         <td><span class="badge bg-1">Approved</span></td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul>
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal"
-                                                                data-bs-target="#view{{ $certificate->id }}" href=""><i
-                                                                    class="far fa-edit me-2"></i>View</a>
+                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#view{{ $certificate->id }}" href=""><i class="far fa-edit me-2"></i>View</a>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </td>
 
-                                        <div id="view{{ $certificate->id }}" class="modal fade" tabindex="-1"
-                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="view{{ $certificate->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="standard-modalLabel">View
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
 
                                                     <div class="modal-body">
@@ -74,7 +69,7 @@
                                                                     }}</strong></h6>
                                                             <br>
                                                             <h6>Auctioneer Email : <strong>{{
-                                                                    $certificate->auctioneer->email }}</strong></h6>
+                                                                    $certificate->auctioneer ? $certificate->auctioneer->email : ""}}</strong></h6>
                                                             <br>
                                                             <h6>Security ISIN NUmber : <strong>{{
                                                                     $certificate->isinNumber }}</strong></h6>
@@ -92,8 +87,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary btn-lg"
-                                                            data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
