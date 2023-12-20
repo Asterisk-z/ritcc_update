@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Mail\FMDQ\ResetPasswordMail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -51,5 +52,10 @@ class Profile extends Authenticatable
     public function user_inst()
     {
         return $this->hasOne(Institution::class, 'id', 'Institution');
+    }
+
+    public function sendPasswordResetEmail($token)
+    {
+        $this->notify(new \App\Notifications\ResetPasswordNotification($token));
     }
 }

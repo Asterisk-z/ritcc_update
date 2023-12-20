@@ -43,13 +43,13 @@
                                         {{-- <i class="bi bi-eye-slash"></i> --}}
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <div class="row">
                                         <div class="col-12">
                                             <a class="forgot-link" href="forgot-password.html">Forgot Password ?</a>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <button class="btn btn-lg btn-block btn-primary w-100" type="submit"
                                     onclick="changeText(this);">Login</button>
                             </form>
