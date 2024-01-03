@@ -50,7 +50,7 @@
                             Management</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="#"><i class="fa-solid fa-key"></i> <span> Settlement</span></a>
+                    <a href="{{ route('settlement') }}"><i class="fa-solid fa-key"></i> <span> Settlement</span></a>
                 </li>
                 <li class="mb-3">
                     <a href="{{ route('iqx.logs') }}"><i class="fa fa-bullseye"></i> <span> Activity Logs</span></a>
@@ -107,7 +107,7 @@
                             Management</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="#"><i class="fa fa-bullseye"></i> <span> Settlement</span></a>
+                    <a href="{{ route('settlement') }}"><i class="fa fa-bullseye"></i> <span> Settlement</span></a>
                 </li>
                 <li class="mb-3">
                     <a href="{{ route('system.settings') }}"><i class="fa fa-bullseye"></i> <span>System
@@ -162,7 +162,7 @@
                 @endif
                 {{-- <li class="mb-3">
                     <a href="{{ route('userLogs') }}"><i class="fa fa-bullseye"></i>
-                        <span>User Logs</span></a>
+                <span>User Logs</span></a>
 
                 </li> --}}
             </ul>

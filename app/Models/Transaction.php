@@ -13,7 +13,13 @@ class Transaction extends Model
     public $guarded = [];
     public $timestamps = false;
 
-    public function auction() {
+    public function auction()
+    {
         return $this->hasOne(Auction::class, 'id', 'auctionRef');
+    }
+
+    public function bidder_obj()
+    {
+        return $this->hasOne(Profile::class, 'id', 'bidderRef');
     }
 }

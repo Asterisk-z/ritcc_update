@@ -4,13 +4,12 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Bank\BankDashboardController;
 use App\Http\Controllers\FMDQ\AuctionManagementController;
 use App\Http\Controllers\FMDQ\CertificateManagementController;
-use App\Http\Controllers\FMDQ\DashboardController;
 use App\Http\Controllers\FMDQ\InstitutionController;
-use App\Http\Controllers\FMDQ\IQXController;
 use App\Http\Controllers\FMDQ\ProfileController;
 use App\Http\Controllers\FMDQ\SystemController;
 use App\Http\Controllers\FMDQ\TradeManagementController;
 use App\Http\Controllers\SecurityTypeController;
+use App\Http\Controllers\SettlementController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -251,5 +250,9 @@ Route::middleware(['auth'])->group(function () {
     // auctioneer
 
     // bidder
+
+    Route::get('settlement', [SettlementController::class, 'index'])->name('settlement');
+    Route::get('settlement/bids/{id}', [SettlementController::class, 'bidder'])->name('settlement.bidder');
+    Route::get('settlement/bids/{id}/settle', [SettlementController::class, 'settle'])->name('settlement.bid.settle');
 
 });
