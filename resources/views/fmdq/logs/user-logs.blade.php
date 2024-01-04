@@ -10,11 +10,10 @@
                 <div class="card-table">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="datatable table table-stripped" id="example2">
+                            <table class="datatable table table-stripped" id="example1">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
-                                        <th>User</th>
                                         <th>Type</th>
                                         <th>Description</th>
                                         <th>Date</th>
@@ -27,7 +26,6 @@
                                     @forelse ($logs as $log)
                                     <tr>
                                         <td>{{ $i++; }}</td>
-                                        <td>{{ $log->username }}</td>
                                         <td>{{ $log->type }}</td>
                                         <td>{{ $log->activity }}</td>
                                         <td>{{ date('F d, Y',strtotime($log->date))}}</td>

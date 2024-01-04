@@ -133,7 +133,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12 mb-3">
+                        {{-- <div class="col-md-12 mb-3">
                             <label for="validationCustom01">Authoriser <span class="text-danger">*</span></label>
                             <select name="authoriser" class="form-control" required>
                                 <option value="">--Select--</option>
@@ -146,7 +146,7 @@
                             <div class="invalid-feedback">
                                 This field is required
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -158,21 +158,35 @@
         </div>
     </div>
 </div>
-{{-- approve --}}
+{{-- approve create --}}
 <div id="approve{{ $profile->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                {{-- <h4 class="modal-title" id="standard-modalLabel">Approve
-                </h4> --}}
+                <h4 class="modal-title" id="standard-modalLabel">Are you sure you want to approve this profile?
+                </h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ route('authoriser.profile.approveCreate',$profile->id) }}" method="POST"
                 class="needs-validation confirmation" novalidate>
                 @csrf
                 <div class="modal-body">
-                    <h5 class="text-center">Are you sure you want to approve this profile?</h5>
+                    {{-- <h4 class="text-center">Are you sure you want to approve this profile?</h4>
+                    <br> --}}
+                    <div class="text-black">
+                        <h5 class="text-uppercase">Details</h5>
+                        <br><br>
+                        <h6 class="text-uppercase">Name: <strong>{{ $profile->firstName.' '.$profile->lastName
+                                }}</strong></h6>
+                        <br>
+                        <h6 class="text-uppercase">Institutiton: <strong>{{ $profile->institution->institutionName
+                                }}</strong></h6>
+                        <br>
+                        <h6 class="text-uppercase">Package: <strong>{{ $profile->package->Name }}</strong></h6>
+                        <br>
+                        <h6 class="text-uppercase">Inputter: <strong>{{ $profile->inputter }}</strong></h6>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Approve</button>
@@ -183,7 +197,7 @@
         </div>
     </div>
 </div>
-{{-- reject --}}
+{{-- reject create --}}
 <div id="reject{{ $profile->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">

@@ -26,6 +26,7 @@ class DashboardController extends Controller
     // user logs
     public function userLogs()
     {
+        $user = auth()->user();
         $logs = ActivityLog::where('username', auth()->user()->email)->orderBy('date', 'DESC')->get();
         return view('fmdq.logs.user-logs', compact('user', 'logs'));
     }

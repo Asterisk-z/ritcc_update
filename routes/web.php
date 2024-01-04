@@ -42,7 +42,7 @@ Route::middleware(['auth'])->group(function () {
     // // all logs
     // Route::get('/all-activities', DashboardController::class, 'allLogs')->name('allLogs');
     // //
-    // Route::get('/user-activities', DashboardController::class, 'userLogs')->name('userLogs');
+    Route::get('/my-activities', [DashboardController::class, 'userLogs'])->name('myLogs');
     //
     Route::middleware(['isSuperUser'])->group(function () {
 

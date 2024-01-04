@@ -188,7 +188,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('firs.certificate.mgt.approve.update') }}"
-                                                        method="POST" class="needs-validation" id="update" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='security_ref'
                                                             value="{{ $certificate->id }}" />
@@ -218,7 +218,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('firs.certificate.mgt.reject.update') }}"
-                                                        method="POST" class="needs-validation" id="myForm" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='security_ref'
                                                             value="{{ $certificate->id }}" />
@@ -250,7 +250,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('firs.certificate.mgt.approve.delete') }}"
-                                                        method="POST" class="needs-validation" id="update" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='security_ref'
                                                             value="{{ $certificate->id }}" />
@@ -280,7 +280,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('firs.certificate.mgt.reject.delete') }}"
-                                                        method="POST" class="needs-validation" id="myForm" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='security_ref'
                                                             value="{{ $certificate->id }}" />
@@ -358,12 +358,12 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('firs.certificate.mgt.approve.create') }}"
-                                                        method="POST" class="needs-validation" id="update" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='security_ref'
                                                             value="{{ $certificate->id }}" />
                                                         <div class="modal-body">
-                                                            <h6>Are you sure you want to approve this Auction?</h6>
+                                                            <h6>Are you sure you want to approve this Certificate?</h6>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-primary"
@@ -388,7 +388,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('firs.certificate.mgt.reject.create') }}"
-                                                        method="POST" class="needs-validation" id="myForm" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='security_ref'
                                                             value="{{ $certificate->id }}" />
