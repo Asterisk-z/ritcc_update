@@ -34,6 +34,7 @@ class SettlementController extends Controller
             return back()->withErrors($validated);
         }
 
+
         dd($request->all());
 
     }

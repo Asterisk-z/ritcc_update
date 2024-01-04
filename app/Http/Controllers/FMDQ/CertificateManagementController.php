@@ -24,11 +24,13 @@ class CertificateManagementController extends Controller
     {
         $page = 'All Certificate';
         // $securities = Security::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
-        $securities = Security::with('auctioneer')->orderBy('createdDate', 'DESC')->get();
+
+        $securities = Security::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
         $all = Security::count();
         $approved = Security::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
-        $pending = Security::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();
+        $pending = Security::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
         $rejected = Security::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
+
         $auctioneers = Profile::where('status', '1')->where('type', 'auctioneer')->get();
         $securityTypes = SecurityType::orderBy('securityTypeCode', 'DESC')->get();
         return view('fmdq.certificate.index', compact('auctioneers', 'securities', 'securityTypes', 'all', 'pending', 'approved', 'rejected', 'page'));
