@@ -4,8 +4,6 @@ namespace App\Http\Controllers\FMDQ;
 
 use App\Helpers\MailContents;
 use App\Http\Controllers\Controller;
-use App\Mail\FMDQ\CreateMail;
-use App\Mail\FMDQ\RejectedMail;
 use App\Models\ActivityLog;
 use App\Models\Profile;
 use App\Models\Security;
@@ -13,7 +11,6 @@ use App\Models\SecurityType;
 use App\Notifications\InfoNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 
 class CertificateManagementController extends Controller
@@ -28,7 +25,7 @@ class CertificateManagementController extends Controller
         $page = 'All Certificate';
         // $securities = Security::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
 
-        $securities = Security::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
+        $securities = Security::where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
         $all = Security::count();
         $approved = Security::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
         $pending = Security::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();

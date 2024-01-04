@@ -21,11 +21,12 @@ class AuctionManagementController extends Controller
     {
         $page = 'All Auctions';
         $securities = Security::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->orderBy('CreatedDate', 'DESC')->get();
-        $auctions = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
+
+        $auctions = Auction::orderBy('createdDate', 'DESC')->get();
         $all = Auction::count();
-        $approved = Auction::count();
-        $pending = Auction::where('status', '0')->orWhere('status', '3')->orWhere('status', '4')->count();
-        $rejected = Auction::where('status', '2')->count();
+        $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+        $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
+        $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
 
         return view('fmdq.auction.index', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
     }
