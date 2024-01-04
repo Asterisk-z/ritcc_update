@@ -76,7 +76,7 @@
                                     </div>
                                 </div>
                                 {{-- --}}
-                                <div class="col-md-6 mb-3">
+                                {{-- <div class="col-md-6 mb-3">
                                     <label for="validationCustom01">Authoriser</label>
                                     <select name="authoriser" id="validationCustom01" class="form-control" required>
                                         <option value="">--Select--</option>
@@ -89,7 +89,7 @@
                                     <div class="invalid-feedback">
                                         This field is required
                                     </div>
-                                </div>
+                                </div> --}}
                                 {{-- --}}
                                 <div id="accountNumber" style="display: none;">
                                     <div class="col-12">

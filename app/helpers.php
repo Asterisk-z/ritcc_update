@@ -1,21 +1,18 @@
 <?php
 
-use App\Helpers\ResponseStatusCodes;
 use App\Models\ActivityLog;
-use App\Models\Audit;
-use PHPOpenSourceSaver\JWTAuth\JWTGuard;
-use Symfony\Component\HttpFoundation\Response;
-
+use Illuminate\Support\Facades\Request;
 
 if (!function_exists('logAction')) {
-    function logAction($username, $type, $activity)
+    function logAction($email, $type, $activity)
     {
         ActivityLog::create([
-            'username' => $username,
+            'date' => now(),
             'app' => 'RITCC',
+            'username' => $email,
             'type' => $type,
             'activity' => $activity,
-            'date' => now(),
+            'IP' => Request::ip(),
         ]);
     }
 }

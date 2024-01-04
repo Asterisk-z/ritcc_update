@@ -67,11 +67,11 @@
                 @elseif (auth()->user()->type === 'authoriser')
                 <br>
                 <li class="mb-3">
-                    <a href="{{ route('authoriser.profile.index') }}"><i class="fas fa-users"></i><span> Profile
+                    <a href="{{ route('authoriser.profile.index') }}"><i class="fas fa-bullseye"></i><span> Profile
                             Management</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="{{ route('authoriser.institution.index') }}"><i class="fas fa-building"></i><span>
+                    <a href="{{ route('authoriser.institution.index') }}"><i class="fas fa-bullseye"></i><span>
                             Institution Management</span></a>
                 </li>
 
@@ -93,12 +93,13 @@
                             Management</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="{{ route('inputter.institution.index') }}"><i class="fas fa-building"></i><span>
+                    <a href="{{ route('inputter.institution.index') }}"><i class="fas fa-bullseye"></i><span>
                             Institution
                             Management</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="{{ route('inputter.certificate.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span>
+                    <a href="{{ route('inputter.certificate.mgt.dashboard') }}"><i class="fa-solid fa-bullseye"></i>
+                        <span>
                             Certificate Management</span></a>
                 </li>
                 <li class="mb-3">
@@ -117,7 +118,7 @@
                 @elseif (auth()->user()->type === 'firs')
                 <br><br>
                 <li class="mb-3">
-                    <a href="{{ route('firs.certificate.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span>
+                    <a href="{{ route('firs.certificate.mgt.dashboard') }}"><i class="fa-solid fa-bullseye"></i> <span>
                             Certificate Management</span></a>
                 </li>
 
@@ -160,11 +161,11 @@
 
                 </li>
                 @endif
-                {{-- <li class="mb-3">
-                    <a href="{{ route('userLogs') }}"><i class="fa fa-bullseye"></i>
-                        <span>User Logs</span></a>
+                <li class="mb-3">
+                    <a href="{{ route('myLogs') }}"><i class="fa fa-bullseye"></i>
+                        <span>My Activity Logs</span></a>
 
-                </li> --}}
+                </li>
             </ul>
 
         </div>

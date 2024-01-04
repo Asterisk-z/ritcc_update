@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FMDQ;
 
+use App\Helpers\MailContents;
 use App\Http\Controllers\Controller;
 use App\Mail\FMDQ\ApprovedMail;
 use App\Mail\FMDQ\CreateMail;
@@ -12,21 +13,17 @@ use App\Models\Institution;
 use App\Models\Package;
 use App\Models\Profile;
 use App\Models\ProfileTemp;
+use App\Notifications\InfoNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
 use function PHPUnit\Framework\assertNotTrue;
 
 class ProfileController extends Controller
 {
-    //
-    // public function __construct()
-    // {
-    //     $this->middleware(['auth']);
-    // }
-
     //
     public function index()
     {
@@ -45,6 +42,7 @@ class ProfileController extends Controller
         // dd($uniqueString);
         return view('fmdq.profile.index', compact('user', 'profiles', 'all', 'pending', 'approved', 'rejected', 'authorisers', 'packages', 'institutions'));
     }
+
     //
     public function pending()
     {
@@ -105,6 +103,8 @@ class ProfileController extends Controller
         //
         $validated = $request->validate([
             'email' => 'bail|required|email|unique:tblProfile',
+            'fmdqNumber' => 'nullable|integer|min:1|unique:tblProfile',
+            'rtgsNumber' => 'nullable|integer|min:1|unique:tblProfile',
         ]);
 
         if ($validated) {
@@ -113,14 +113,9 @@ class ProfileController extends Controller
             $firstName = $request->input('firstName');
             $lastName = $request->input('lastName');
             $institution = $request->input('institution');
-            $authoriser = $request->input('authoriser');
             $inputter = $user->email;
             $fmdqNumber = $request->input('FMDQ');
             $rtgsNumber = $request->input('RTGS');
-            // default password
-            // $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            // $uniqueString = substr(str_shuffle($characters), 0, 7);
-            // $defaultPassword = Hash::make($uniqueString);
             // type
             if ($package === '1') {
                 $type = 'super';
@@ -149,7 +144,6 @@ class ProfileController extends Controller
             // $profile->approvedBy = $authoriser;
             $profile->status = $status;
             $profile->passwordStatus = $passwordStatus;
-            // $profile->defaultPassword = $defaultPassword;
             $profile->type = $type;
             $profile->fmdqNumber = $fmdqNumber;
             $profile->rtgsNumber = $rtgsNumber;
@@ -157,26 +151,20 @@ class ProfileController extends Controller
             $create = $profile->save();
             if ($create) {
                 // log activity
-                $activity = new ActivityLog();
-                $activity->date = now();
-                $activity->app = 'RITCC';
-                $activity->type = 'Create Profile';
-                $activity->activity = $user->email . ' created a profile named: ' . $firstName . ' ' . $lastName . ' for approval.';
-                $activity->username = $user->email;
-                $log = $activity->save();
-            }
-            if ($log) {
+                $logMessage = $user->email . ' created a new profile : ' . $request->firstName . ' ' . $request->lastName;
+                logAction($user->email, 'Create Profile', $logMessage, $request->ip());
                 // mail
-                $approver = Profile::where('email', $authoriser)->first();
-                $create = ([
-                    'name' => $approver->firstName,
-                    'type' => 'profile',
-                    // 'profileName' => $firstName . ' ' . $lastName,
-                ]);
-                Mail::to($authoriser)->send(new CreateMail($create));
+                $authorisers = Profile::where('type', 'authoriser')->where('status', '1')->get();
+                $institutionName = Institution::where('ID', $institution)->first('institutionName');
+                $packageName = Package::where('ID', $package)->first('Name');
+                $profileName = $firstName . ' ' . $lastName;
+                Notification::send(
+                    $authorisers,
+                    new InfoNotification(MailContents::createProfileMessage($profileName, $institutionName->institutionName, $packageName->Name), MailContents::createProfileSubject())
+                );
+                //
                 return redirect()->back()->with('success', "Profile has been sent for approval.");
             }
-            // Redirect or display a success message
         } else {
             // If there are validation errors, you can return to the form with the errors
             return back()->withErrors($validated);
@@ -188,31 +176,24 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         //
-        $profile = Profile::findOrFail($id);
-        $updateStatus = Profile::where('id', $id)->update(['status' => 4, 'deactivateReason' => $request->reason, 'deactivateRequestedBy' => $user->email, 'deactivatedRequestDate' => now()]);
+        $profile = Profile::find($id);
+        $reason = $request->reason;
+        $updateStatus = Profile::where('id', $id)->update(['status' => 4, 'deactivateReason' => $reason, 'deactivateRequestedBy' => $user->email, 'deactivatedRequestDate' => now()]);
         if ($updateStatus) {
             // log activity
-            $activity = new ActivityLog();
-            $activity->date = now();
-            $activity->app = 'RITCC';
-            $activity->type = 'Request to Deactivate Profile';
-            $activity->activity = $user->email . ' made a request to deactivate profile: ' . $profile->firstName . ' ' . $profile->lastName . ' and sent it for approval.';
-            $activity->username = $user->email;
-            $log = $activity->save();
-        }
-        if ($log) {
+            $logMessage = $user->email . ' deactivated profile: ' . $profile->firstName . ' ' . $profile->lastName . ' and sent it for approval.';
+            logAction($user->email, 'Deactivate Profile', $logMessage, $request->ip());
             // mail
-            $authoriser = Profile::where('email', $request->authoriser)->first();
-            $delete = ([
-                'authoriser' => $authoriser->firstName,
-                'type' => 'profile',
-                'reason' => $request->reason,
-                'profile' => $profile->firstName . ' ' . $profile->lastName,
+            $authorisers = Profile::where('type', 'authoriser')->where('status', '1')->get();
+            $institutionName = Institution::where('ID', $profile->Institution)->first('institutionName');
+            $packageName = Package::where('ID', $profile->Package)->first('Name');
+            $profileName = $profile->firstName . ' ' . $profile->lastName;
 
-            ]);
-
-            Mail::to($authoriser->email)->send(new DeleteMail($delete));
-
+            Notification::send(
+                $authorisers,
+                new InfoNotification(MailContents::deactivateProfileMessage($profileName, $institutionName->institutionName, $packageName->Name, $reason), MailContents::deactivateProfileSubject())
+            );
+            //
             return redirect()->back()->with('success', "Profile has been sent for deactivation.");
         }
     }
@@ -222,35 +203,25 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         // default password
-        $characters = '!@#$%^&*0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@$&()_';
         $uniqueString = substr(str_shuffle($characters), 0, 8);
         $defaultPassword = Hash::make($uniqueString);
         //
-        $profile = Profile::findOrFail($id);
+        $profile = Profile::find($id);
         // $approver = Profile::where('email', $authoriser)->first();
         $approveCreate = Profile::where('id', $id)->update(['status' => 1, 'defaultPassword' => $defaultPassword, 'password' => $defaultPassword, 'passwordStatus' => false, 'authoriserDate' => now(), 'authoriser' => $user->email]);
         //
         if ($approveCreate) {
             // log activity
-            $activity = new ActivityLog();
-            $activity->date = now();
-            $activity->app = 'RITCC';
-            $activity->type = 'Approve New Profile';
-            $activity->activity = $user->email . ' approved a new profile: ' . $profile->firstName . ' ' . $profile->lastName . '.';
-            $activity->username = $user->email;
-            $log = $activity->save();
-        }
-        if ($log) {
-            // mail
-            $approved = ([
-                'name' => $profile->firstName,
-                'type' => 'profile',
-                'email' => $profile->email,
-                'password' => $uniqueString
-
-            ]);
-            Mail::to($profile->email)->send(new ApprovedMail($approved));
-
+            $profileEmail = Profile::where('email', $profile->email)->first();
+            $logMessage = $user->email . ' approved new profile:  ' . $profile->firstName . ' ' . $profile->lastName;
+            logAction($user->email, 'Approve New Profile', $logMessage);
+            //
+            Notification::send(
+                $profileEmail,
+                new InfoNotification(MailContents::approveProfileCreateMessage($profile->email, $uniqueString), MailContents::approveProfileCreateSubject())
+            );
+            //
             return redirect()->back()->with('success', "New Profile has been approved.");
         }
     }
@@ -260,28 +231,23 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         //
-        $profile = Profile::findOrFail($id);
-        $rejectCreate = Profile::where('id', $id)->update(['status' => 2, 'rejectReason' => $request->reason, 'authoriser' => $user->email, 'authoriserDate' => now()]);
+        $profile = Profile::find($id);
+        $inputter = Profile::where('email', $profile->inputter)->first();
+        $reason = $request->reason;
+        $rejectCreate = Profile::where('id', $id)->update(['status' => 2, 'rejectReason' => $reason, 'authoriser' => $user->email, 'authoriserDate' => now()]);
         if ($rejectCreate) {
             // log activity
-            $activity = new ActivityLog();
-            $activity->date = now();
-            $activity->app = 'RITCC';
-            $activity->type = 'Reject New Profile';
-            $activity->activity = $user->email . ' rejected a new profile: ' . $profile->firstName . ' ' . $profile->lastName . '.';
-            $activity->username = $user->email;
-            $log = $activity->save();
-        }
-        if ($log) {
-            $inputter = Profile::where('email', $profile->inputter)->first();
-            // mail
-            $rejected = ([
-                'name' => $inputter->firstName,
-                'type' => 'reject_create_profile',
-                'reason' => $request->reason
-
-            ]);
-            Mail::to($profile->inputter)->send(new RejectedMail($rejected));
+            $logMessage = $user->email . ' rejected a new profile: ' . $profile->firstName . ' ' . $profile->lastName;
+            logAction($user->email, 'Reject New Profile', $logMessage);
+            //
+            $inputterEmail = Profile::where('email', $profile->email)->first();
+            $institutionName = Institution::where('ID', $profile->Institution)->first('institutionName');
+            $packageName = Package::where('ID', $profile->Package)->first('Name');
+            $profileName = $profile->firstName . ' ' . $profile->lastName;
+            Notification::send(
+                $inputter,
+                new InfoNotification(MailContents::rejectProfileCreateMessage($profileName, $institutionName->institutionName, $packageName->Name, $reason), MailContents::rejectProfileCreateSubject())
+            );
             return redirect()->back()->with('success', "New Profile has been rejected.");
         }
     }

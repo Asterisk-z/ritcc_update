@@ -4,106 +4,168 @@ namespace App\Helpers;
 
 class MailContents
 {
-    public static function signupMailSubject(): string
+    public static function createProfileSubject(): string
     {
-        return "Registration Successful";
+        return "New Profile Created";
     }
 
-    public static function signupMail($email, $date): string
+    public static function createProfileMessage($profileName, $institutionName, $packageName): string
     {
-        return "<p>Your account has been successfully created. Below are your login details:</p>
+        return "<p>A new profile has been created. Kindly approve.</p>
 
         <ul>
-            <li><strong>Username:</strong> {$email}</li>
-            <li><strong>Account Creation Date:</strong> {$date}</li>
-        </ul>";
+            <li><strong>Name:</strong> {$profileName}</li>
+            <li><strong>Institution:</strong> {$institutionName}</li>
+             <li><strong>Package:</strong> {$packageName}</li>
+        </ul>
+        ";
     }
 
-    public static function complaintSubmitSubject(): string
+    public static function deactivateProfileSubject(): string
     {
-        return "New Complaint Logged";
+        return "Profile Deactivated";
     }
 
-    public static function complaintSubmitMail($name, $institution, $body): string
+    public static function deactivateProfileMessage($profileName, $institutionName, $packageName, $reason): string
     {
-        return "<p>You have a new complaint, details below:</p>
+        return "<p>A profile has been deactivated.</p>
+           <ul>
+            <li><strong>Name:</strong> {$profileName}</li>
+            <li><strong>Institution:</strong> {$institutionName}</li>
+            <li><strong>Package:</strong> {$packageName}</li>
+            <li><strong>Reason:</strong> {$reason}</li>
+        </ul>
+        ";
+    }
 
+    public static function approveProfileCreateSubject(): string
+    {
+        return "Profile Approved";
+    }
+
+    public static function approveProfileCreateMessage($email, $password): string
+    {
+        return "<p>Your account has been successfully created. These are your login credentials:</p>
+           <ul>
+            <li><strong>Email:</strong> {$email}</li>
+            <li><strong>Password:</strong> {$password}</li>
+        </ul>
+        ";
+    }
+
+    public static function rejectProfileCreateSubject(): string
+    {
+        return "Profile Rejected";
+    }
+
+    public static function rejectProfileCreateMessage($profileName, $institutionName, $packageName, $reason): string
+    {
+        return "<p>This profile has been rejected.</p>
+           <ul>
+            <li><strong>Name:</strong> {$profileName}</li>
+            <li><strong>Institution:</strong> {$institutionName}</li>
+            <li><strong>Package:</strong> {$packageName}</li>
+            <li><strong>Reason:</strong> {$reason}</li>
+        </ul>
+        ";
+    }
+
+    public static function createCertificateSubject(): string
+    {
+        return "New Certificate Created";
+    }
+
+    public static function createCertificateMessage(): string
+    {
+        return "<p>A new certificate has been created. Kindly approve.</p>";
+    }
+
+    public static function approveCertificateCreateSubject(): string
+    {
+        return "Certificate Approved";
+    }
+
+    public static function approveCertificateCreateMessage(): string
+    {
+        return "<p>Certificate has been approved.</p>";
+    }
+
+    public static function rejectCertificateCreateSubject(): string
+    {
+        return "Certificate Rejected";
+    }
+
+    public static function rejectCertificateCreateMessage($reason): string
+    {
+        return "<p>Certificate has been approved.</p>
+                <p>Reason:<strong>{$reason}</strong></p>";
+    }
+
+    public static function updateCertificateSubject(): string
+    {
+        return "Certificate Update";
+    }
+
+    public static function updateCertificateMessage(): string
+    {
+        return "<p>Certificate has been updated. Kindly approve.</p>";
+    }
+
+    public static function approveCertificateUpdateSubject(): string
+    {
+        return "Certificate Update Approved";
+    }
+
+    public static function approveCertificateUpdateMessage(): string
+    {
+        return "<p>Certificate update has been approved.</p>";
+    }
+
+    public static function rejectCertificateUpdateSubject(): string
+    {
+        return "Certificate Update Rejected";
+    }
+
+    public static function rejectCertificateUpdateMessage($reason): string
+    {
+        return "<p>Certificate has been rejected
         <ul>
-            <li><strong>Name:</strong> {$name}</li>
-            <li><strong>Institution:</strong> {$institution}</li>
-            <li><strong>Body:</strong> {$body}</li>
-        </ul>";
+        <il>Reason:<strong>{$reason}</strong></il>
+        </ul>
+        </p>";
     }
 
-    public static function complaintCommentSubject(): string
+    public static function deleteCertificateSubject(): string
     {
-        return "New Comment on Complaint";
+        return "Certificate Delete";
     }
 
-    public static function complaintCommentMail($comment, $status): string
+    public static function deleteCertificateMessage(): string
     {
-        return "<p>You have a new comment on the complaint you made:</p>
+        return "<p>Certificate has been deleted. Kindly approve.</p>";
+    }
 
+    public static function approveCertificateDeleteSubject(): string
+    {
+        return "Certificate Delete Approved";
+    }
+
+    public static function approveCertificateDeleteMessage(): string
+    {
+        return "<p>Certificate delete has been approved.</p>";
+    }
+
+    public static function rejectCertificateDeleteSubject(): string
+    {
+        return "Certificate Delete Rejected";
+    }
+
+    public static function rejectCertificateDeleteMessage($reason): string
+    {
+        return "<p>Certificate has been rejected
         <ul>
-            <li><strong>Status:</strong> {$status}</li>
-            <li><strong>Comment:</strong> {$comment}</li>
-        </ul>";
-    }
-
-    public static function complaintStatusSubject(): string
-    {
-        return "Complaint Status update";
-    }
-
-    public static function complaintStatusMail($status): string
-    {
-        return "<p>The status of a complaint you logged has just been updated:</p>
-
-        <ul>
-            <li><strong>Status:</strong> {$status}</li>
-        </ul>";
-    }
-
-    public static function newMembershipSignupSubject(): string
-    {
-        return "New Membership Signup";
-    }
-
-    public static function newMembershipSignupMail($name, $category): string
-    {
-        return "<p>A new applicant has successfully signed up on the MROIS portal:</p>
-
-        <ul>
-            <li><strong>Name:</strong> {$name}</li>
-            <li><strong>Category:</strong> {$category}</li>
-        </ul>";
-    }
-
-    public static function newInstitutionSubject(): string
-    {
-        return "New Institution Created";
-    }
-
-    public static function newInstitutionCreated(): string
-    {
-        return "<p>There is a new message from the RITCC:</p>
-
-        <ul>
-            <p><strong>A new institution has been created. Kindly approve.</li>
-        </ul>";
-    }
-
-    public static function newApprovedInstitutionSubject(): string
-    {
-        return "New Institution Approved";
-    }
-
-    public static function newApprovedInstitutionCreated(): string
-    {
-        return "<p>There is a new message from the RITCC:</p>
-
-        <ul>
-            <p><strong>Your request to approve a new institution has been approved.</li>
-        </ul>";
+        <il>Reason:<strong>{$reason}</strong></il>
+        </ul>
+        </p>";
     }
 }

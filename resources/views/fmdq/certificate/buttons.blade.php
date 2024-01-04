@@ -15,7 +15,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="{{ route('inputter.certificate.mgt.create') }}" method="POST" id="create"
-                        class="needs-validation" novalidate>
+                        class="needs-validation confirmation" novalidate>
                         @csrf
                         <div class="modal-body">
                             <div class="form-row row">

@@ -47,33 +47,8 @@
                                         @elseif($security->rejectionFlag == 1)
                                         <td><span class="badge bg-2">Rejected</span></td>
                                         @endif
-                                        <td class="d-flex align-items-center">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <ul>
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal"
-                                                                data-bs-target="#view{{ $security->id }}" href=""><i
-                                                                    class="far fa-edit me-2"></i>View</a>
+                                        @include('fmdq.certificate.actions')
 
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal"
-                                                                data-bs-target="#edit{{ $security->id }}" href=""><i
-                                                                    class="far fa-edit me-2"></i>Edit</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" class="dropdown-item"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#delete{{ $security->id }}" href=""><i
-                                                                    class="far fa-trash-alt me-2"></i>Delete</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </td>
                                         {{-- view modal --}}
                                         <div id="view{{ $security->id }}" class="modal fade" tabindex="-1" role="dialog"
                                             aria-labelledby="standard-modalLabel" aria-hidden="true">
@@ -145,7 +120,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('inputter.certificate.mgt.update') }}"
-                                                        method="POST" class="needs-validation" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='security_ref'
                                                             value="{{ $security->id }}" />
@@ -284,8 +259,8 @@
 
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Update Security</button>
+                                                            <button type="submit"
+                                                                class="btn btn-primary">Update</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>

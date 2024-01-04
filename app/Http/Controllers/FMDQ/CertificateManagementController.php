@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\FMDQ;
 
+use App\Helpers\MailContents;
 use App\Http\Controllers\Controller;
 use App\Mail\FMDQ\CreateMail;
 use App\Mail\FMDQ\RejectedMail;
@@ -9,9 +10,11 @@ use App\Models\ActivityLog;
 use App\Models\Profile;
 use App\Models\Security;
 use App\Models\SecurityType;
+use App\Notifications\InfoNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
 class CertificateManagementController extends Controller
 {
@@ -164,23 +167,17 @@ class CertificateManagementController extends Controller
         if (!$create_action) {
             return redirect()->back()->with('error', "Fail to create certificate.");
         }
-
-        $activity = new ActivityLog();
-        $activity->date = now();
-        $activity->app = 'RITCC';
-        $activity->type = 'Create Certificate';
-        $activity->activity = auth()->user()->email . ' created a certificate ';
-        $activity->username = auth()->user()->email;
-        $activity->save();
-        // mail
+        // log activity
+        $user = auth()->user();
+        $logMessage = $user->email . ' created a certificate.';
+        logAction($user->email, 'Create Certificate', $logMessage);
+        //
         $authorisers = Profile::where('status', '1')->where('type', 'firs')->get();
-        foreach ($authorisers as $authoriser) {
-            $create = ([
-                'authoriser' => $authoriser->firstName,
-                'type' => 'certificate',
-            ]);
-            Mail::to($authoriser)->send(new CreateMail($create));
-        }
+        Notification::send(
+            $authorisers,
+            new InfoNotification(MailContents::createCertificateMessage(), MailContents::createCertificateSubject())
+        );
+
         return redirect()->back()->with('success', "Certificate has been sent for approval.");
     }
     /**
@@ -204,7 +201,7 @@ class CertificateManagementController extends Controller
         $security = Security::where('id', $security_ref)->where('rejectionFlag', 0)->where('approveFlag', 0)->first();
 
         if (!$security) {
-            return redirect()->back()->with('error', "Fail to Approve Security.");
+            return redirect()->back()->with('error', "Fail to Approve Certificate.");
         }
 
         $security->approveFlag = 1;
@@ -214,20 +211,21 @@ class CertificateManagementController extends Controller
         $security->rejectionFlag = 0;
         $security->rejectionNote = null;
         $security->rejectionDate = null;
-
         $approve_action = $security->save();
 
         if (!$approve_action) {
-            return redirect()->back()->with('error', "Fail to approve Security.");
+            return redirect()->back()->with('error', "Fail to approve Certificate.");
         }
-
-        $activity = new ActivityLog();
-        $activity->date = now();
-        $activity->app = 'RITCC';
-        $activity->type = 'Approve Security';
-        $activity->activity = auth()->user()->email . ' approve Security';
-        $activity->username = auth()->user()->email;
-        $activity->save();
+        // log activity
+        $user = auth()->user();
+        $logMessage = $user->email . ' approved a certificate.';
+        logAction($user->email, 'Approve Certificate', $logMessage);
+        //
+        $inputter = Profile::where('email', $security->createdBy)->get();
+        Notification::send(
+            $inputter,
+            new InfoNotification(MailContents::approveCertificateCreateMessage(), MailContents::approveCertificateCreateSubject())
+        );
 
         return redirect()->back()->with('success', "Security Approved Successfully.");
     }
@@ -259,35 +257,28 @@ class CertificateManagementController extends Controller
         $security->approveFlag = 0;
         $security->approvedBy = null;
         $security->approvedDate = null;
-
         $security->rejectedBy = auth()->user()->email;
         $security->rejectionFlag = 1;
         $security->rejectionNote = $reason;
         $security->rejectionDate = now();
-
         $reject_action = $security->save();
 
         if (!$reject_action) {
             return redirect()->back()->with('error', "Fail to reject Security.");
         }
 
-        $activity = new ActivityLog();
-        $activity->date = now();
-        $activity->app = 'RITCC';
-        $activity->type = 'Reject Security';
-        $activity->activity = auth()->user()->email . ' rejected Security';
-        $activity->username = auth()->user()->email;
-        $activity->save();
+        // log activity
+        $user = auth()->user();
+        $logMessage = $user->email . ' rejected a certificate.';
+        logAction($user->email, 'Reject Certificate', $logMessage);
         //
-        $approver = Profile::where('email', $security->createdBy)->first();
-        $rejected = ([
-            'name' => $approver->firstName,
-            'type' => 'rejectCreateCertificate',
-            'reason' => $reason,
-        ]);
-        Mail::to($security->createdBy)->send(new RejectedMail($rejected));
+        $inputter = Profile::where('email', $security->createdBy)->get();
+        Notification::send(
+            $inputter,
+            new InfoNotification(MailContents::rejectCertificateCreateMessage($reason), MailContents::rejectCertificateCreateSubject())
+        );
         //
-        return redirect()->back()->with('success', "Security Rejected Successfully.");
+        return redirect()->back()->with('success', "Certificate Rejected Successfully.");
     }
     /**
      * Show the form for creating a new resource.
@@ -365,16 +356,18 @@ class CertificateManagementController extends Controller
         if (!$update_action) {
             return redirect()->back()->with('error', "Fail to update Security.");
         }
+        // log activity
+        $user = auth()->user();
+        $logMessage = $user->email . ' sent certificate update for approval.';
+        logAction($user->email, 'Update Certificate', $logMessage);
+        //
+        $authorisers = Profile::where('status', '1')->where('type', 'firs')->get();
+        Notification::send(
+            $authorisers,
+            new InfoNotification(MailContents::updateCertificateMessage(), MailContents::updateCertificateSubject())
+        );
 
-        $activity = new ActivityLog();
-        $activity->date = now();
-        $activity->app = 'RITCC';
-        $activity->type = 'Updating Security';
-        $activity->activity = auth()->user()->email . ' Send Auction Update for approval';
-        $activity->username = auth()->user()->email;
-        $activity->save();
-
-        return redirect()->back()->with('success', "Security has been sent for approval.");
+        return redirect()->back()->with('success', "Certificate has been sent for approval.");
     }
     /**
      * Show the form for creating a new resource.
@@ -400,7 +393,6 @@ class CertificateManagementController extends Controller
         }
 
         $modifyData = json_decode($security->modifyingData);
-
         $security->approveFlag = 0;
         $security->approvedBy = null;
         $security->approvedDate = null;
@@ -434,16 +426,18 @@ class CertificateManagementController extends Controller
         if (!$approve_action) {
             return redirect()->back()->with('error', "Fail to approve Security.");
         }
+        // log activity
+        $user = auth()->user();
+        $logMessage = $user->email . ' approved certificate update.';
+        logAction($user->email, 'Approve Certificate Update', $logMessage);
+        //
+        $inputter = Profile::where('email', $security->createdBy)->get();
+        Notification::send(
+            $inputter,
+            new InfoNotification(MailContents::approveCertificateUpdateMessage(), MailContents::approveCertificateUpdateSubject())
+        );
 
-        $activity = new ActivityLog();
-        $activity->date = now();
-        $activity->app = 'RITCC';
-        $activity->type = 'Approve Security';
-        $activity->activity = auth()->user()->email . ' approve Auction for Security';
-        $activity->username = auth()->user()->email;
-        $activity->save();
-
-        return redirect()->back()->with('success', "Security Approved Successfully.");
+        return redirect()->back()->with('success', "Certificate Update Has Been Approved.");
     }
     /**
      * Show the form for creating a new resource.
