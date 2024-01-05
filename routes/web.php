@@ -39,6 +39,7 @@ Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPassw
 Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('submit.forgotPassword');
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('get.resetPassword');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('post.resetPassword');
+Route::get('execute-commands', [SystemController::class, 'executeCommands'])->name('executeCommands');
 
 
 Route::middleware(['auth'])->group(function () {

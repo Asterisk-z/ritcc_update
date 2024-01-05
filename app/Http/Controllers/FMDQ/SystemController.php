@@ -8,6 +8,7 @@ use App\Models\AuctionWindows;
 use App\Models\Package;
 use App\Models\PublicHoliday;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 
 class SystemController extends Controller
@@ -294,5 +295,20 @@ class SystemController extends Controller
         if ($log) {
             return redirect()->back()->with('success', "Auction Window deleted.");
         }
+    }
+
+    //
+    public function executeCommands()
+    {
+        // Execute the desired commands using Artisan and exec
+        // Artisan::call('migrate');
+        // Artisan::call('db:seed');
+        // Artisan::call('queue:restart');
+        Artisan::call('optimize:clear');
+        Artisan::call('view:clear');
+        Artisan::call('config:cache');
+        Artisan::call('config:clear');
+
+        return redirect()->route('login')->with('success', "Command Executed Successfully.");
     }
 }

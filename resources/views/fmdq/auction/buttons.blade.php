@@ -97,12 +97,5 @@
             </div>
         </div>
     </div>
-    @else
-    <button type="button" class="btn btn-primary mt-1"
-        style="background-color: transparent; border: transparent;"></button>
     @endif
-
-    <div class="list-btn">
-        @include('fmdq.auction.buttons')
-    </div>
 </div>
