@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','RITCC log Management')
+@section('title','RITCC All Activities')
 
 @section('content')
 <div class="page-wrapper">
@@ -24,7 +24,7 @@
                                     @php
                                     $i = 1;
                                     @endphp
-                                    @forelse ($logs as $log)
+                                    @foreach ($logs as $log)
                                     <tr>
                                         <td>{{ $i++; }}</td>
                                         <td>{{ $log->username }}</td>
@@ -32,9 +32,7 @@
                                         <td>{{ $log->activity }}</td>
                                         <td>{{ date('F d, Y',strtotime($log->date))}}</td>
                                     </tr>
-                                    @empty
-                                    {{ 'No information available yet' }}
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
