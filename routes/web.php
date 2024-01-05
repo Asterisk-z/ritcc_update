@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Bank\BankDashboardController;
 use App\Http\Controllers\FMDQ\AuctionManagementController;
 use App\Http\Controllers\FMDQ\CertificateManagementController;
+use App\Http\Controllers\FMDQ\DashboardController;
 use App\Http\Controllers\FMDQ\InstitutionController;
 use App\Http\Controllers\FMDQ\ProfileController;
 use App\Http\Controllers\FMDQ\SystemController;
@@ -254,5 +255,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settlement', [SettlementController::class, 'index'])->name('settlement');
     Route::get('settlement/bids/{id}', [SettlementController::class, 'bidder'])->name('settlement.bidder');
     Route::get('settlement/bids/{id}/settle', [SettlementController::class, 'settle'])->name('settlement.bid.settle');
-
 });
