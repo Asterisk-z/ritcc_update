@@ -267,4 +267,25 @@ class MailContents
         </ul>
         </p>";
     }
+
+    public static function forgotPasswordSubject(): string
+    {
+        return "Forgot Password";
+    }
+
+    public static function forgotPasswordMessage($link): string
+    {
+        return "<p>Kindly use the link below to reset your password:</p>
+        <a href='{$link}'>Reset Password</a>";
+    }
+
+    public static function resetPasswordSubject(): string
+    {
+        return "Reset Password";
+    }
+
+    public static function resetPasswordMessage(): string
+    {
+        return "<p>Your password reset was successful.</p>";
+    }
 }

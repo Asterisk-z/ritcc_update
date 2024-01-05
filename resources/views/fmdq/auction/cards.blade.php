@@ -23,7 +23,7 @@
                 <h6><a href="{{ route('inputter.auction.mgt.dashboard') }}" class="text-uppercase"> View
                         More <i class="fa fa-arrow-circle-right"></i></a></h6>
                 @elseif (auth()->user()->type ==='authoriser')
-                <h6><a href="{{ route('authoriser.authoriser.mgt.dashboard') }}" class="text-uppercase">View More <i
+                <h6><a href="{{ route('authoriser.auction.mgt.dashboard') }}" class="text-uppercase">View More <i
                             class="fa fa-arrow-circle-right"></i></a></h6>
                 @endif
             </div>
