@@ -168,4 +168,103 @@ class MailContents
         </ul>
         </p>";
     }
+
+    public static function createInstitutionSubject(): string
+    {
+        return "New Institution Created";
+    }
+
+    public static function createInstitutionMessage(): string
+    {
+        return "<p>A new certificate has been created. Kindly approve.</p>";
+    }
+
+    public static function approveInstitutionCreateSubject(): string
+    {
+        return "Institution Approved";
+    }
+
+    public static function approveInstitutionCreateMessage(): string
+    {
+        return "<p>Institution has been approved.</p>";
+    }
+
+    public static function rejectInstitutionCreateSubject(): string
+    {
+        return "Institution Rejected";
+    }
+
+    public static function rejectInstitutionCreateMessage($reason): string
+    {
+        return "<p>Institution has been approved.</p>
+                <p>Reason:<strong>{$reason}</strong></p>";
+    }
+
+    public static function updateInstitutionSubject(): string
+    {
+        return "Institution Update";
+    }
+
+    public static function updateInstitutionMessage(): string
+    {
+        return "<p>Institution has been updated. Kindly approve.</p>";
+    }
+
+    public static function approveInstitutionUpdateSubject(): string
+    {
+        return "Institution Update Approved";
+    }
+
+    public static function approveInstitutionUpdateMessage(): string
+    {
+        return "<p>Institution update has been approved.</p>";
+    }
+
+    public static function rejectInstitutionUpdateSubject(): string
+    {
+        return "Institution Update Rejected";
+    }
+
+    public static function rejectInstitutionUpdateMessage($reason): string
+    {
+        return "<p>Institution update has been rejected.
+        <ul>
+        <il>Reason:<strong>{$reason}</strong></il>
+        </ul>
+        </p>";
+    }
+
+    public static function deleteInstitutionSubject(): string
+    {
+        return "Institution Delete";
+    }
+
+    public static function deleteInstitutionMessage(): string
+    {
+        return "<p>Institution has been deleted. Kindly approve.</p>";
+    }
+
+    public static function approveInstitutionDeleteSubject(): string
+    {
+        return "Institution Delete Approved";
+    }
+
+    public static function approveInstitutionDeleteMessage(): string
+    {
+        return "<p>Institution delete has been approved.</p>";
+    }
+
+    public static function rejectInstitutionDeleteSubject(): string
+    {
+        return "Institution Delete Rejected";
+    }
+
+    public static function rejectInstitutionDeleteMessage($reason): string
+    {
+        return "<p>Institution has been rejected
+        <ul>
+        <il>Reason:<strong>{$reason}</strong></il>
+        </ul>
+        </p>";
+    }
 }
