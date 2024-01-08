@@ -16,9 +16,8 @@ class MailContents
         <ul>
             <li><strong>Name:</strong> {$profileName}</li>
             <li><strong>Institution:</strong> {$institutionName}</li>
-             <li><strong>Package:</strong> {$packageName}</li>
-        </ul>
-        ";
+             <li><strong>Role:</strong> {$packageName}</li>
+        </ul>";
     }
 
     public static function deactivateProfileSubject(): string
@@ -32,7 +31,7 @@ class MailContents
            <ul>
             <li><strong>Name:</strong> {$profileName}</li>
             <li><strong>Institution:</strong> {$institutionName}</li>
-            <li><strong>Package:</strong> {$packageName}</li>
+            <li><strong>Role:</strong> {$packageName}</li>
             <li><strong>Reason:</strong> {$reason}</li>
         </ul>
         ";
@@ -47,7 +46,7 @@ class MailContents
     {
         return "<p>Your account has been successfully created. These are your login credentials:</p>
            <ul>
-            <li><strong>Email:</strong> {$email}</li>
+            <li><strong>Registration ID:</strong> {$email}</li>
             <li><strong>Password:</strong> {$password}</li>
         </ul>
         ";
@@ -64,7 +63,7 @@ class MailContents
            <ul>
             <li><strong>Name:</strong> {$profileName}</li>
             <li><strong>Institution:</strong> {$institutionName}</li>
-            <li><strong>Package:</strong> {$packageName}</li>
+            <li><strong>Role:</strong> {$packageName}</li>
             <li><strong>Reason:</strong> {$reason}</li>
         </ul>
         ";

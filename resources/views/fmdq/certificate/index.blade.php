@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','RITCC Certificate Management')
+@section('title','RITCC Security Management')
 
 @section('content')
 <div class="page-wrapper">

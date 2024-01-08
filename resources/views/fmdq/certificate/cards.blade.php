@@ -9,7 +9,7 @@
                     </span>
                     <div class="dash-count">
                         <div class="dash-title">
-                            <h5>All<br>Certificates</h5>
+                            <h5>All<br>Securities</h5>
                         </div>
                         <div class="dash-counts">
                             <h5>{{ $all }}</h5>
@@ -39,7 +39,7 @@
                     </span>
                     <div class="dash-count">
                         <div class="dash-title">
-                            <h5>Pending Certificates</h5>
+                            <h5>Pending Securities</h5>
                         </div>
                         <div class="dash-counts">
                             <h5>{{ $pending }}</h5>
@@ -69,7 +69,7 @@
                     </span>
                     <div class="dash-count">
                         <div class="dash-title">
-                            <h5 class="text-white">Approved Certificates</h5>
+                            <h5 class="text-white">Approved Securities</h5>
                         </div>
                         <div class="dash-counts">
                             <h5 class="text-white">{{ $approved }}</h5>
@@ -100,7 +100,7 @@
                     </span>
                     <div class="dash-count">
                         <div class="dash-title">
-                            <h5>Rejected Certificates</h5>
+                            <h5>Rejected Securities</h5>
                         </div>
                         <div class="dash-counts">
                             <h5>{{ $rejected }}</h5>

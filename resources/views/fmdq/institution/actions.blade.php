@@ -51,7 +51,7 @@
                             $institution->address
                             }}</strong></h6>
                     <br><br>
-                    <h6>Institution Email: <strong class="text-uppercase">{{
+                    <h6>Email Address: <strong class="text-uppercase">{{
                             $institution->institutionEmail
                             }}</strong></h6>
                     <br><br>
@@ -147,8 +147,7 @@
                         </div>
                         {{-- code --}}
                         <div class="col-md-6 mb-3">
-                            <label for="validationCustom01">Institution
-                                Email</label>
+                            <label for="validationCustom01">Email Address</label>
                             <input type="email" name="institutionEmail" class="form-control" id="validationCustom01"
                                 value="{{ $institution->institutionEmail }}" required>
                             <div class="invalid-feedback">
@@ -165,22 +164,21 @@
                                 This field is required
                             </div>
                         </div>
-                        {{-- <div class="col-md-12 mb-3">
+                        {{-- --}}
+                        <div class="col-md-12 mb-3">
                             <label for="validationCustom01">Authoriser</label>
                             <select name="authoriser" id="validationCustom01" class="form-control" required>
                                 <option value="">--Select--</option>
-                                @forelse ($authorisers as $authoriser)
+                                @foreach ($authorisers as $authoriser)
                                 <option value="{{ $authoriser->email }}">{{
                                     $authoriser->firstName.'
                                     '.$authoriser->lastName }}</option>
-                                @empty
-
-                                @endforelse
+                                @endforeach
                             </select>
                             <div class="invalid-feedback">
                                 This field is required
                             </div>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -209,18 +207,15 @@
                     <label for="">Reason</label>
                     <input type="text" name="reason" class="form-control" required>
                     {{-- --}}
-                    {{-- <label for="">Authoriser</label>
+                    <label for="">Authoriser</label>
                     <select name="authoriser" id="validationCustom01" class="form-control" required>
                         <option value="">--Select--</option>
-                        @forelse ($authorisers as $authoriser)
+                        @foreach ($authorisers as $authoriser)
                         <option value="{{ $authoriser->email }}">{{
                             $authoriser->firstName.'
                             '.$authoriser->lastName }}</option>
-                        @empty
-                        <option value="">{{ 'No options available yet' }}
-                        </option>
-                        @endforelse
-                    </select> --}}
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="modal-footer">

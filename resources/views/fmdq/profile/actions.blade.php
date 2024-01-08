@@ -81,7 +81,7 @@
                             }}</strong>
                     </h6>
                     <br>
-                    <h6>PACKAGE: <strong>{{ $profile->package->Name ?? 'No
+                    <h6>ROLE: <strong>{{ $profile->package->Name ?? 'No
                             information available'
                             }}</strong>
                     </h6>
@@ -133,7 +133,7 @@
                             </div>
                         </div>
 
-                        {{-- <div class="col-md-12 mb-3">
+                        <div class="col-md-12 mb-3">
                             <label for="validationCustom01">Authoriser <span class="text-danger">*</span></label>
                             <select name="authoriser" class="form-control" required>
                                 <option value="">--Select--</option>
@@ -146,7 +146,7 @@
                             <div class="invalid-feedback">
                                 This field is required
                             </div>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -175,17 +175,21 @@
                     {{-- <h4 class="text-center">Are you sure you want to approve this profile?</h4>
                     <br> --}}
                     <div class="text-black">
-                        <h5 class="text-uppercase">Details</h5>
-                        <br><br>
-                        <h6 class="text-uppercase">Name: <strong>{{ $profile->firstName.' '.$profile->lastName
+                        <h5>Details</h5>
+                        <br>
+                        <h6>NAME: <strong>{{ $profile->firstName.' '.$profile->lastName
                                 }}</strong></h6>
                         <br>
-                        <h6 class="text-uppercase">Institutiton: <strong>{{ $profile->institution->institutionName
+                        <h6>EMAIL ADDRESS: <strong>{{ $profile->email}}</strong></h6>
+                        <br>
+                        <h6>PHONE NUMBER: <strong>{{ $profile->mobile}}</strong></h6>
+                        <br>
+                        <h6>INSTITUTION: <strong>{{ $profile->institution->institutionName
                                 }}</strong></h6>
                         <br>
-                        <h6 class="text-uppercase">Package: <strong>{{ $profile->package->Name }}</strong></h6>
+                        <h6>ROLE: <strong>{{ $profile->package->Name }}</strong></h6>
                         <br>
-                        <h6 class="text-uppercase">Inputter: <strong>{{ $profile->inputter }}</strong></h6>
+                        <h6>Inputter: <strong>{{ $profile->inputter }}</strong></h6>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 </head>
 
-<body>
+<body class="login">
 
     <div class="main-wrapper login-body">
         <div class="login-wrapper">

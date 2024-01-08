@@ -97,11 +97,8 @@ class InstitutionController extends Controller
         //
         $validated = $request->validate([
             'code' => 'bail|required|unique:tblInstitution',
-            // 'InstitutionName' => 'bail|required|unique:tblInstitution',
             'institutionEmail' => 'bail|required|email|unique:tblInstitution',
             'chiefDealerEmail' => 'bail|required|email|unique:tblInstitution',
-        ], [
-            // 'end.after_or_equal' => 'The end date must not be before the start date.',
         ]);
 
         if ($validated) {
@@ -131,10 +128,10 @@ class InstitutionController extends Controller
                 $logMessage = $user->email . ' created institution: ' . $name . ' for approval.';
                 logAction($user->email, 'Create Institution', $logMessage);
                 //
-                $authorisers = Profile::where('type', 'authoriser')->get();
+                $approver = Profile::where('email', $request->authoriser)->get();
 
                 Notification::send(
-                    $authorisers,
+                    $approver,
                     new InfoNotification(MailContents::createInstitutionMessage(), MailContents::createInstitutionSubject())
                 );
                 // Redirect or display a success message
@@ -162,7 +159,7 @@ class InstitutionController extends Controller
             $address = $request->address;
             $institutionEmail = $request->institutionEmail;
             $chiefDealerEmail = $request->chiefDealerEmail;
-            $authoriser = $request->authoriser;
+            // $authoriser = $request->authoriser;
             $inputter = $user->email;
             // You can now proceed with saving the other form data to your database or perform any other actions
             $institutions = new InstitutionTemp();
@@ -186,9 +183,9 @@ class InstitutionController extends Controller
                 $logMessage = $user->email . ' updated institution: ' . $previous->institutionName . ' and sent it for approval.';
                 logAction($user->email, 'Update Institution', $logMessage);
                 // notification
-                $authorisers = Profile::where('type', 'authoriser')->get();
+                $authoriser = Profile::where('email', $request->authoriser)->first();
                 Notification::send(
-                    $authorisers,
+                    $authoriser,
                     new InfoNotification(MailContents::updateInstitutionMessage(), MailContents::updateInstitutionSubject())
                 );
                 // Redirect or display a success message
@@ -211,9 +208,9 @@ class InstitutionController extends Controller
             $logMessage = $user->email . ' deleted institution: ' . $previous->institutionName . ' and sent it for approval.';
             logAction($user->email, 'Delete Institution', $logMessage);
             // notification
-            $authorisers = Profile::where('type', 'authoriser')->first();
+            $authoriser = Profile::where('email', $request->email)->first();
             Notification::send(
-                $authorisers,
+                $authoriser,
                 new InfoNotification(MailContents::deleteInstitutionMessage($request->reason), MailContents::deleteInstitutionSubject())
             );
             //
