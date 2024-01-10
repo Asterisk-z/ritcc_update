@@ -320,12 +320,12 @@ class AuctionManagementController extends Controller
     {
         $validated = $request->validate([
             'securityId' => 'bail|required|unique:tblAuction,securityRef',
-            'offerDate' => 'bail|required',
+            'offerDate' => 'bail|required|date',
             'auction_start_time' => 'bail|required',
             'bids_close_time' => 'bail|required',
             'bids_result_time' => 'bail|required',
-            'minimum_rate' => 'bail|required',
-            'maximum_rate' => 'bail|required',
+            'minimum_rate' => 'bail|required|integer|min:1',
+            'maximum_rate' => 'bail|required|integer|min:1',
         ], []);
 
         if (!$validated) {

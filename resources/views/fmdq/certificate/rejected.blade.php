@@ -17,8 +17,9 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
+                                        <th>Auctioneer</th>
                                         <th>Security Code</th>
-                                        {{-- <th>Auctioneer</th> --}}
+                                        <th>Auctioneer</th>
                                         <th>ISIN Number</th>
                                         <th>Isser Code</th>
                                         <th>Offer Amount</th>
@@ -35,6 +36,9 @@
                                     @forelse ($securities as $certificate)
                                     <tr>
                                         <td>{{ $i++; }}</td>
+                                        <td>{{ $certificate->auctioneer->firstName.'
+                                            '.$certificate->auctioneer->lastName }}
+                                        </td>
                                         <td>{{ $certificate->securityCode }}</td>
                                         <td>{{ $certificate->isinNumber }}</td>
                                         <td>{{ $certificate->issuerCode }}</td>

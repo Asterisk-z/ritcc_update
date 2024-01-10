@@ -1,7 +1,7 @@
 <div class="content-page-header">
     @if (auth()->user()->type == 'inputter' || auth()->user()->type == 'super')
     <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal" data-bs-target="#standard-modal"><i
-            class="fa fa-plus-circle me-2" aria-hidden="true"></i>Add
+            class="fa fa-plus-circle me-2" aria-hidden="true"></i>Create
         Auction</button>
     {{-- modal --}}
     <div id="standard-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel"
@@ -9,7 +9,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="standard-modalLabel">Add Auction</h4>
+                    <h4 class="modal-title" id="standard-modalLabel">Create Auction</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="{{ route('inputter.auction.mgt.create') }}" method="POST" id="myForm"
@@ -22,12 +22,10 @@
                                 <label for="validationCustom01">Security</label>
                                 <select name="securityId" id="validationCustom01" class="form-control" required>
                                     <option value="">--Select--</option>
-                                    @forelse ($securities as $security)
-                                    {{-- <option value="{{ $security->id }}">{{ $security->securityCode ." |
-                                        ".$security->auctioneer->email ?? '' }}</option> --}}
-                                    @empty
-
-                                    @endforelse
+                                    @foreach ($securities as $security)
+                                    <option value="{{ $security->id }}">{{ $security->auctioneer->firstName.'
+                                        '.$security->auctioneer->lastName .' ('.$security->issuerCode.')' }}</option>
+                                    @endforeach
                                 </select>
                                 <div class="invalid-feedback">
                                     This field is required
