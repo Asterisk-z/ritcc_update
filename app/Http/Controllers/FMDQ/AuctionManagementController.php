@@ -522,15 +522,16 @@ class AuctionManagementController extends Controller
             return redirect()->back()->with('error', "Fail to create Auction.");
         }
 
-        $auction = Auction::where('id', $auction_ref)->where('rejectionFlag', 0)->where('approveFlag', 0)->where('deleteFlag', 0)->first();
+        $auction = Auction::where('id', $auction_ref)->first();
 
         // You can now proceed with saving the other form data to your database or perform any other actions
+        // dd($security->offerAmount);
         $auctions = [];
         $auctions['securityRef'] = $securityId;
         $auctions['securityCode'] = $security->securityCode;
         $auctions['auctioneerRef'] = $security->auctioneerRef;
         $auctions['auctioneerEmail'] = $security->auctioneer->email;
-        $auctions['offerAmount'] = $$security->offerAmount;
+        $auctions['offerAmount'] = $security->offerAmount;
         $auctions['isinNumber'] = $security->isinNumber;
         $auctions['offerDate'] = $offerDate;
         $auctions['auctionStartTime'] = $auction_start_time;
@@ -538,11 +539,16 @@ class AuctionManagementController extends Controller
         $auctions['bidResultTime'] = $bids_result_time;
         $auctions['minimumRate'] = $minimum_rate;
         $auctions['maximumRate'] = $maximum_rate;
+        $auctions['approveFlag'] = $auction->approveFlag;
         $auctions['createdBy'] = auth()->user()->email;
         $auctions['createdDate'] = now();
 
+
         $modifyingData = json_encode($auctions);
 
+        $auction->approveFlag = 0;
+        $auction->approvedBy = null;
+        $auction->approvedDate = null;
         $auction->modifyingBy = auth()->user()->email;
         $auction->modifyingFlag = 1;
         $auction->modifyingDate = now();
@@ -557,7 +563,7 @@ class AuctionManagementController extends Controller
         $activity = new ActivityLog();
         $activity->date = now();
         $activity->app = 'RITCC';
-        $activity->type = 'Updaing Auction';
+        $activity->type = 'Updating Auction';
         $activity->activity = auth()->user()->email . ' Send Auction Update for approval';
         $activity->username = auth()->user()->email;
         $activity->save();
@@ -659,6 +665,12 @@ class AuctionManagementController extends Controller
         if (!$auction) {
             return redirect()->back()->with('error', "Fail to Approve update Auction.");
         }
+
+        $modifyData = json_decode($auction->modifyingData);
+
+        $auction->approveFlag = $modifyData->approveFlag;
+        $auction->approvedBy = $modifyData->approvedBy;
+        $auction->approvedDate = $modifyData->approvedDate;
 
         $auction->modifyingBy = null;
         $auction->modifyingFlag = 0;

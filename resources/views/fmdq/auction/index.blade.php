@@ -46,11 +46,11 @@
                                         <td>{{ date('F d, Y',strtotime($auction->createdDate))}}</td>
 
                                         @if ($auction->approveFlag ==='1')
-                                        <td><span class="badge bg-2">Approved</span></td>
+                                        <td><span class="badge bg-1">Approved</span></td>
                                         @elseif($auction->rejectionFlag ==='1')
-                                        <td><span class="badge bg-1">Rejected</span></td>
+                                        <td><span class="badge bg-3">Rejected</span></td>
                                         @else
-                                        <td><span class="badge bg-1">Pending</span></td>
+                                        <td><span class="badge bg-2">Pending</span></td>
                                         @endif
 
                                         <td class="d-flex align-items-center">
@@ -143,7 +143,7 @@
                                                         </h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('auction.mgt.update') }}" method="POST" class="needs-validation" id="update" novalidate>
+                                                    <form action="{{ route('inputter.auction.mgt.update') }}" method="POST" class="needs-validation" id="update" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='auction_ref' value="{{ $auction->id }}" />
                                                         <input type='hidden' name='securityId' value="{{ $auction->securityRef }}" />
@@ -219,7 +219,7 @@
                                                         </h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('auction.mgt.delete') }}" method="POST" class="needs-validation" id="myForm" novalidate>
+                                                    <form action="{{ route('inputter.auction.mgt.delete') }}" method="POST" class="needs-validation" id="myForm" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='auction_ref' value="{{ $auction->id }}" />
                                                         <div class="modal-body">
