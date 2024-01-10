@@ -27,9 +27,9 @@ class BankDashboardController extends Controller
         $rejected = 0;
 
         if (auth()->user()->type == 'auctioneer') {
-            $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->where('auctionStartTime', '>=', now())->where('bidCloseTime', '<=', now())->orderBy('createdDate', 'DESC')->get();
+            $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->where('auctionStartTime', '>=', now())->where('bidCloseTime', '>=', now())->orderBy('createdDate', 'DESC')->get();
             $all = Auction::where('auctioneerRef', auth()->user()->id)->count();
-            $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->count();
+            $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->where('bidCloseTime', '>=', now())->count();
             $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->count();
             $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->count();
         }
@@ -37,9 +37,9 @@ class BankDashboardController extends Controller
         if (auth()->user()->type == 'bidder') {
 
             $trades = Transaction::where('bidderRef', auth()->user()->id)->orderBy('timestamp', 'DESC')->get();
-            $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->where('auctionStartTime', '>=', now())->where('bidCloseTime', '<=', now())->orderBy('createdDate', 'DESC')->get();
+            $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->where('auctionStartTime', '>=', now())->where('bidCloseTime', '>=', now())->orderBy('createdDate', 'DESC')->get();
             $all = Auction::where('deleteFlag', 0)->count();
-            $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctionStartTime', '>=', now())->where('bidCloseTime', '<=', now())->count();
+            $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctionStartTime', '>=', now())->where('bidCloseTime', '>=', now())->count();
             $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
             $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
 
