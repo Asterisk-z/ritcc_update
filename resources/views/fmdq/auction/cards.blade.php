@@ -9,7 +9,7 @@
                     </span>
                     <div class="dash-count">
                         <div class="dash-title">
-                            <h5>All<br>Securities</h5>
+                            <h5>All<br>Auctions</h5>
                         </div>
                         <div class="dash-counts">
                             <h5>{{ $all }}</h5>
@@ -20,10 +20,10 @@
             <div class="card-footer text-center">
                 {{-- inputter --}}
                 @if (auth()->user()->type ==='inputter')
-                <h6><a href="{{ route('inputter.certificate.mgt.dashboard') }}" class="text-uppercase"> View
+                <h6><a href="{{ route('inputter.auction.mgt.dashboard') }}" class="text-uppercase"> View
                         More <i class="fa fa-arrow-circle-right"></i></a></h6>
-                @elseif (auth()->user()->type ==='firs')
-                <h6><a href="{{ route('firs.certificate.mgt.dashboard') }}" class="text-uppercase">View More <i
+                @elseif (auth()->user()->type ==='authoriser')
+                <h6><a href="{{ route('authoriser.auction.mgt.dashboard') }}" class="text-uppercase">View More <i
                             class="fa fa-arrow-circle-right"></i></a></h6>
                 @endif
             </div>
@@ -39,7 +39,7 @@
                     </span>
                     <div class="dash-count">
                         <div class="dash-title">
-                            <h5>Pending Securities</h5>
+                            <h5>Pending Auctions</h5>
                         </div>
                         <div class="dash-counts">
                             <h5>{{ $pending }}</h5>
@@ -50,10 +50,10 @@
             <div class="card-footer text-center bg-3">
                 {{-- inputter --}}
                 @if (auth()->user()->type ==='inputter')
-                <h6><a href="{{ route('inputter.certificate.mgt.pending') }}" class="text-uppercase">View More <i
+                <h6><a href="{{ route('inputter.auction.mgt.pending') }}" class="text-uppercase">View More <i
                             class="fa fa-arrow-circle-right"></i></a></h6>
-                @elseif (auth()->user()->type ==='firs')
-                <h6><a href="{{ route('firs.certificate.mgt.pending') }}" class="text-uppercase">View More <i
+                @elseif (auth()->user()->type ==='authoriser')
+                <h6><a href="{{ route('authoriser.auction.mgt.pending') }}" class="text-uppercase">View More <i
                             class="fa fa-arrow-circle-right"></i></a></h6>
                 @endif
             </div>
@@ -69,7 +69,7 @@
                     </span>
                     <div class="dash-count">
                         <div class="dash-title">
-                            <h5 class="text-white">Approved Securities</h5>
+                            <h5 class="text-white">Approved Auctions</h5>
                         </div>
                         <div class="dash-counts">
                             <h5 class="text-white">{{ $approved }}</h5>
@@ -80,10 +80,11 @@
             <div class="card-footer text-center bg-1">
                 {{-- inputter --}}
                 @if (auth()->user()->type ==='inputter')
-                <h6><a href="{{ route('inputter.certificate.mgt.approved') }}" class="text-uppercase text-white">View
+                <h6><a href="{{ route('inputter.auction.mgt.approved') }}" class="text-uppercase text-white">View
                         More <i class="fa fa-arrow-circle-right"></i></a></h6>
-                @elseif (auth()->user()->type ==='firs')
-                <h6><a href="{{ route('firs.certificate.mgt.approved') }}" class="text-uppercase text-white">View More
+                @elseif (auth()->user()->type ==='authoriser')
+                <h6><a href="{{ route('authoriser.auction.mgt.approved') }}" class="text-uppercase text-white">View
+                        More
                         <i class="fa fa-arrow-circle-right"></i></a>
                 </h6>
                 @endif
@@ -100,7 +101,7 @@
                     </span>
                     <div class="dash-count">
                         <div class="dash-title">
-                            <h5>Rejected Securities</h5>
+                            <h5>Rejected Auctions</h5>
                         </div>
                         <div class="dash-counts">
                             <h5>{{ $rejected }}</h5>
@@ -111,10 +112,10 @@
             <div class="card-footer text-center bg-2">
                 {{-- inputter --}}
                 @if (auth()->user()->type ==='inputter')
-                <h6><a href="{{ route('inputter.certificate.mgt.rejected') }}" class="text-uppercase ">View More <i
+                <h6><a href="{{ route('inputter.auction.mgt.rejected') }}" class="text-uppercase ">View More <i
                             class="fa fa-arrow-circle-right"></i></a></h6>
-                @elseif (auth()->user()->type ==='firs')
-                <h6><a href="{{ route('firs.certificate.mgt.rejected') }}" class="text-uppercase ">View More <i
+                @elseif (auth()->user()->type ==='authoriser')
+                <h6><a href="{{ route('authoriser.auction.mgt.rejected') }}" class="text-uppercase ">View More <i
                             class="fa fa-arrow-circle-right"></i></a></h6>
                 @endif
             </div>

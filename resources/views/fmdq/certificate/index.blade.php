@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','RITCC Certificate Management')
+@section('title','RITCC Security Management')
 
 @section('content')
 <div class="page-wrapper">
@@ -18,6 +18,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
+                                        <th>Auctioneer</th>
                                         <th>Security Code</th>
                                         <th>ISIN Number</th>
                                         <th>Isser Code</th>
@@ -34,6 +35,8 @@
                                     @foreach ($securities as $security)
                                     <tr>
                                         <td>{{ $i++; }}</td>
+                                        <td>{{ $security->auctioneer->firstName.' '.$security->auctioneer->lastName }}
+                                        </td>
                                         <td>{{ $security->securityCode }}</td>
                                         <td>{{ $security->isinNumber }}</td>
                                         <td>{{ $security->issuerCode }}</td>

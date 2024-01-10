@@ -28,8 +28,8 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
+                                        <th>Auctioneer</th>
                                         <th>Security Code</th>
-                                        {{-- <th>Auctioneer</th> --}}
                                         <th>ISIN Number</th>
                                         <th>Isser Code</th>
                                         <th>Offer Amount</th>
@@ -45,6 +45,8 @@
                                     @forelse ($securities as $certificate)
                                     <tr>
                                         <td>{{ $i++; }}</td>
+                                        <td>{{ $security->auctioneer->firstName.' '.$security->auctioneer->lastName }}
+                                        </td>
                                         @if($certificate->modifyingFlag || $certificate->deletingFlag)
                                         @php
                                         $updateCertificate = $certificate->modifyingFlag ?

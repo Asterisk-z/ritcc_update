@@ -37,11 +37,11 @@
                     <a href="{{ route('auction.mgt.auctions') }}"><i class="fa-solid fa-key"></i> <span> My
                             Auction</span></a>
                 </li>
-                <li class="">
+                <li class="mb-3">
                     <a href="{{ route('auction.mgt.history') }}"><i class="fa-solid fa-key"></i> <span> Auction
                             History</span></a>
                 </li>
-                <li class="">
+                <li class="mb-3">
                     <a href="#"><i class="fa-solid fa-key"></i> <span> Auction
                             Allocation</span></a>
                 </li>
@@ -59,34 +59,9 @@
                     <a href="{{ route('system.settings') }}"><i class="fa fa-bullseye"></i> <span>System
                             Settings</span></a>
                 </li>
+                @endif
 
-
-
-
-
-                @elseif (auth()->user()->type === 'authoriser')
-                <br>
-                <li class="mb-3">
-                    <a href="{{ route('authoriser.profile.index') }}"><i class="fas fa-bullseye"></i><span> Profile
-                            Management</span></a>
-                </li>
-                <li class="mb-3">
-                    <a href="{{ route('authoriser.institution.index') }}"><i class="fas fa-bullseye"></i><span>
-                            Institution Management</span></a>
-                </li>
-
-                <li class="mb-3">
-                    <a href="{{ route('authoriser.auction.mgt.dashboard') }}"><i class="fa fa-bullseye"></i>
-                        <span>Auction Management</span></a>
-                </li>
-
-
-
-
-
-
-
-                @elseif (auth()->user()->type === 'inputter')
+                @if (auth()->user()->type === 'inputter' && auth()->user()->Package ==='2')
                 <br>
                 <li class="mb-3">
                     <a href="{{ route('inputter.profile.index') }}"><i class="fa fa-bullseye"></i><span> Profile
@@ -107,15 +82,45 @@
                             Auction
                             Management</span></a>
                 </li>
-                <li class="mb-3">
-                    <a href="{{ route('settlement') }}"><i class="fa fa-bullseye"></i> <span> Settlement</span></a>
-                </li>
+
                 <li class="mb-3">
                     <a href="{{ route('system.settings') }}"><i class="fa fa-bullseye"></i> <span>System
                             Settings</span></a>
                 </li>
+                @endif
 
-                @elseif (auth()->user()->type === 'firs')
+                @if (auth()->user()->type === 'inputter' && auth()->user()->Package === '4')
+                <li class="mb-3">
+                    <a href="{{ route('settlement') }}"><i class="fa fa-bullseye"></i> <span> Settlement</span></a>
+                </li>
+                @endif
+
+                @if (auth()->user()->type === 'authoriser' && auth()->user()->Package === '3')
+                <br>
+                <li class="mb-3">
+                    <a href="{{ route('authoriser.profile.index') }}"><i class="fas fa-bullseye"></i><span> Profile
+                            Management</span></a>
+                </li>
+                <li class="mb-3">
+                    <a href="{{ route('authoriser.institution.index') }}"><i class="fas fa-bullseye"></i><span>
+                            Institution Management</span></a>
+                </li>
+
+                <li class="mb-3">
+                    <a href="{{ route('authoriser.auction.mgt.dashboard') }}"><i class="fa fa-bullseye"></i>
+                        <span>Auction Management</span></a>
+                </li>
+                @endif
+
+                @if (auth()->user()->type === 'authoriser' && auth()->user()->Package === '5')
+                <br>
+                <li class="mb-3">
+                    <a href="{{ route('settlement') }}"><i class="fa fa-bullseye"></i> <span> Settlement</span></a>
+                </li>
+                @endif
+
+
+                @if (auth()->user()->type === 'firs')
                 <br><br>
                 <li class="mb-3">
                     <a href="{{ route('firs.certificate.mgt.dashboard') }}"><i class="fa-solid fa-bullseye"></i> <span>
@@ -143,8 +148,9 @@
                     <a href="{{ route('auction.mgt.results') }}"><i class="fa-solid fa-key"></i> <span> Auction
                             Results</span></a>
                 </li>
+                @endif
 
-                @elseif (auth()->user()->type === 'bidder' )
+                @if (auth()->user()->type === 'bidder' )
                 <li class="mb-3">
                     <a href="{{ route('bank.dashboard') }}">
                         <i class="fa-solid fa-key"></i>

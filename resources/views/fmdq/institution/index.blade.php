@@ -29,7 +29,7 @@
                                     @php
                                     $i = 1;
                                     @endphp
-                                    @forelse ($institutions as $institution)
+                                    @foreach ($institutions as $institution)
                                     <tr>
                                         <td>{{ $i++; }}</td>
                                         <td>{{ $institution->code }}</td>
@@ -49,9 +49,7 @@
                                         @endif
                                         @include('fmdq.institution.actions')
                                     </tr>
-                                    @empty
-                                    {{ 'No information available yet' }}
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

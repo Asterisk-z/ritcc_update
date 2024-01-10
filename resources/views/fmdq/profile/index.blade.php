@@ -18,7 +18,7 @@
                                         <th>#</th>
                                         <th>Name</th>
                                         <th>Contact</th>
-                                        <th>Package</th>
+                                        <th>Role</th>
                                         <th>Created At</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -32,7 +32,8 @@
                                     <tr>
                                         <td>{{ $i++; }}</td>
                                         <td>{{ $profile->firstName .' '.$profile->lastName }}</td>
-                                        <td>{{ $profile->email }}</td>
+                                        <td>{{ $profile->email }}<br>{{ $profile->mobile ?? 'Information not available'
+                                            }}</td>
                                         <td>{{ $profile->package->Name }}</td>
                                         <td>{{ date('F d, Y',strtotime($profile->inputDate))}}</td>
                                         @if ($profile->status ==='0')

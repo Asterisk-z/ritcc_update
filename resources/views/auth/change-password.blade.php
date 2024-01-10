@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"> --}}
 </head>
 
-<body>
+<body class="login">
 
     <div class="main-wrapper login-body">
         <div class="login-wrapper">

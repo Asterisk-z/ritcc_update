@@ -105,6 +105,7 @@ class ProfileController extends Controller
             'email' => 'bail|required|email|unique:tblProfile',
             'fmdqNumber' => 'nullable|integer|min:1|unique:tblProfile',
             'rtgsNumber' => 'nullable|integer|min:1|unique:tblProfile',
+            'mobile' => 'bail|required|unique:tblProfile|integer|min:1',
         ]);
 
         if ($validated) {
@@ -113,9 +114,11 @@ class ProfileController extends Controller
             $firstName = $request->input('firstName');
             $lastName = $request->input('lastName');
             $institution = $request->input('institution');
+            $mobile = $request->input('mobile');
             $inputter = $user->email;
             $fmdqNumber = $request->input('FMDQ');
             $rtgsNumber = $request->input('RTGS');
+            $authoriser = $request->input('authoriser');
             // type
             if ($package === '1') {
                 $type = 'super';
@@ -141,7 +144,8 @@ class ProfileController extends Controller
             $profile->lastName = $lastName;
             $profile->institution = $institution;
             $profile->inputter = $inputter;
-            // $profile->approvedBy = $authoriser;
+            $profile->mobile = $mobile;
+            $profile->authoriser = $authoriser;
             $profile->status = $status;
             $profile->passwordStatus = $passwordStatus;
             $profile->type = $type;
@@ -154,12 +158,12 @@ class ProfileController extends Controller
                 $logMessage = $user->email . ' created a new profile : ' . $request->firstName . ' ' . $request->lastName;
                 logAction($user->email, 'Create Profile', $logMessage, $request->ip());
                 // mail
-                $authorisers = Profile::where('type', 'authoriser')->where('status', '1')->get();
+                $approver = Profile::where('email', $authoriser)->first();
                 $institutionName = Institution::where('ID', $institution)->first('institutionName');
                 $packageName = Package::where('ID', $package)->first('Name');
                 $profileName = $firstName . ' ' . $lastName;
                 Notification::send(
-                    $authorisers,
+                    $approver,
                     new InfoNotification(MailContents::createProfileMessage($profileName, $institutionName->institutionName, $packageName->Name), MailContents::createProfileSubject())
                 );
                 //
@@ -184,13 +188,13 @@ class ProfileController extends Controller
             $logMessage = $user->email . ' deactivated profile: ' . $profile->firstName . ' ' . $profile->lastName . ' and sent it for approval.';
             logAction($user->email, 'Deactivate Profile', $logMessage, $request->ip());
             // mail
-            $authorisers = Profile::where('type', 'authoriser')->where('status', '1')->get();
+            $approver = Profile::where('email', $request->authoriser)->first();
             $institutionName = Institution::where('ID', $profile->Institution)->first('institutionName');
             $packageName = Package::where('ID', $profile->Package)->first('Name');
             $profileName = $profile->firstName . ' ' . $profile->lastName;
 
             Notification::send(
-                $authorisers,
+                $approver,
                 new InfoNotification(MailContents::deactivateProfileMessage($profileName, $institutionName->institutionName, $packageName->Name, $reason), MailContents::deactivateProfileSubject())
             );
             //
@@ -249,93 +253,6 @@ class ProfileController extends Controller
                 new InfoNotification(MailContents::rejectProfileCreateMessage($profileName, $institutionName->institutionName, $packageName->Name, $reason), MailContents::rejectProfileCreateSubject())
             );
             return redirect()->back()->with('success', "New Profile has been rejected.");
-        }
-    }
-
-    // approve delete
-    public function approveDelete($id)
-    {
-        $user = Auth::user();
-        //
-        $profile = Profile::findOrFail($id);
-        //
-        $dump = new ProfileTemp();
-        $dump->firstName = $profile->firstName;
-        $dump->lastName = $profile->lastName;
-        $dump->email = $profile->email;
-        $dump->institution = $profile->institution;
-        $dump->mobile = $profile->mobile;
-        $dump->package = $profile->Package;
-        $dump->institution = $profile->Institution;
-        $dump->password = $profile->password;
-        $dump->reason = $profile->deactivatingReason;
-        $dump->createdBy = $profile->inputter;
-        $dump->createdDate = $profile->inputDate;
-        $dump->approvedBy = $profile->authoriser;
-        $dump->approvedDate = $profile->authoriserDate;
-        $dump->deleteRequestedBy = $profile->deactivateRequestedBy;
-        $dump->deleteApprovedBy = $user->email;
-        $dump->deleteApprovedDate = now();
-        $dump->profileRef = $profile->id;
-        $approveDelete = $dump->save();
-        //
-        if ($approveDelete) {
-            $delete = Profile::where('id', $id)->delete();
-        }
-        //
-        if ($delete) {
-            // log activity
-            $activity = new ActivityLog();
-            $activity->date = now();
-            $activity->app = 'RITCC';
-            $activity->type = 'Approve Delete for Profile';
-            $activity->activity = $user->email . ' approved delete for profile: ' . $dump->firstName . ' ' . $dump->lastName . '.';
-            $activity->username = $user->email;
-            $log = $activity->save();
-        }
-        if ($log) {
-            // mail
-            $inputter = Profile::where('email', $dump->deleteRequestedBy)->first();
-            $delete = ([
-                'inputter' => $inputter->firstName,
-                'name' => $dump->firstName . ' ' . $dump->lastName,
-                'type' => 'approve_delete',
-            ]);
-            Mail::to($user->email)->send(new DeleteMail($delete));
-
-            return redirect()->back()->with('success', "Profile delete has been approved.");
-        }
-    }
-
-    // reject delete
-    public function rejectDelete(Request $request, $id)
-    {
-        $user = Auth::user();
-        //
-        $profile = Profile::findOrFail($id);
-        $rejectDelete = Profile::where('id', $id)->update(['status' => 1, 'deactivatedRejectReason' => $request->reason, 'deactivateApprovedBy' => $user->email, 'deactivateApprovedDate' => now()]);
-        if ($rejectDelete) {
-            // log activity2
-            $activity = new ActivityLog();
-            $activity->date = now();
-            $activity->app = 'RITCC';
-            $activity->type = 'Reject Delete for Profile';
-            $activity->activity = $user->email . ' rejected approval to delete profile: ' . $profile->firstName . ' ' . $profile->lastName . '.';
-            $activity->username = $user->email;
-            $log = $activity->save();
-        }
-        if ($log) {
-            // Mail
-            $inputter = Profile::where('email', $profile->modifiedBy)->first();
-            $rejected = ([
-                'name' => $inputter->firstName,
-                'type' => 'rejected_delete',
-                'reason' => $request->reason
-
-            ]);
-            Mail::to($profile->modifiedBy)->send(new RejectedMail($rejected));
-
-            return redirect()->back()->with('success', "Profile delete has been rejected.");
         }
     }
 }

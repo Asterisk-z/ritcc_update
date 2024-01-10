@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Bank\BankDashboardController;
 use App\Http\Controllers\FMDQ\AuctionManagementController;
 use App\Http\Controllers\FMDQ\CertificateManagementController;
+use App\Http\Controllers\FMDQ\DashboardController;
 use App\Http\Controllers\FMDQ\InstitutionController;
 use App\Http\Controllers\FMDQ\ProfileController;
 use App\Http\Controllers\FMDQ\SystemController;
@@ -32,10 +34,13 @@ Route::get('/', [LoginController::class, 'login'])->name('login');
 Route::post('/sign-in', [LoginController::class, 'signIn'])->name('signIn');
 Route::post('/sign-out', [LoginController::class, 'signOut'])->name('signOut');
 Route::get('/change-password', [LoginController::class, 'changePassword'])->name('changePassword');
-// dashboard
+// reset password
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('form.forgetPassword');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('submit.forgotPassword');
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('get.resetPassword');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('post.resetPassword');
+Route::get('execute-commands', [SystemController::class, 'executeCommands'])->name('executeCommands');
 
-//
-// Route::group(['middleware'=>'auth','isSuperUser']);
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/update-password', [LoginController::class, 'updatePassword'])->name('updatePassword');
@@ -254,5 +259,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settlement', [SettlementController::class, 'index'])->name('settlement');
     Route::get('settlement/bids/{id}', [SettlementController::class, 'bidder'])->name('settlement.bidder');
     Route::get('settlement/bids/{id}/settle', [SettlementController::class, 'settle'])->name('settlement.bid.settle');
-
 });
