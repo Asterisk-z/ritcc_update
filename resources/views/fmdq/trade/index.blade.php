@@ -6,17 +6,3 @@
 @include('fmdq.trade.dashboard')
 
 @endsection
-
-
-@section('style')
-
-@endsection
-
-
-@section('script')
-
-<script>
-
-</script>
-
-@endsection

@@ -39,7 +39,10 @@
                                     <tr>
                                         <td>{{ $i++; }}</td>
                                         <td>{{ $auction->securityCode }}</td>
-                                        <td>{{ $auction->auctioneerEmail }}</td>
+                                        <td>{{ $auction->auctioneer->firstName.' '.$auction->auctioneer->lastName }}
+                                            <br>
+                                            {{ $auction->auctioneerEmail }}
+                                        </td>
                                         <td>{{ $auction->isinNumber }}</td>
                                         <td>{{ $auction->offerAmount }}</td>
                                         <td>{{ date('F d, Y h:m',strtotime($auction->auctionStartTime))}}</td>
