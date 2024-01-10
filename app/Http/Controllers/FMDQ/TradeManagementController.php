@@ -37,7 +37,6 @@ class TradeManagementController extends Controller
             $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
             return view('fmdq.trade.index', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page', 'trades'));
         }
-
     }
 
     /**
@@ -55,7 +54,6 @@ class TradeManagementController extends Controller
         $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->where('createdBy', auth()->user()->email)->count();
 
         return view('fmdq.trade.list', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
-
     }
 
     /**
@@ -67,9 +65,9 @@ class TradeManagementController extends Controller
     {
         $validated = $request->validate([
             'certificate' => 'bail|required',
-            'settlementAccount' => 'bail|required|numeric',
-            'nominalAmount' => 'bail|required|numeric',
-            'discountRate' => 'bail|required|numeric',
+            'settlementAccount' => 'bail|required|numeric|min:1',
+            'nominalAmount' => 'bail|required|numeric|min:1',
+            'discountRate' => 'bail|required|numeric|min:1',
         ], []);
 
         if (!$validated) {
@@ -137,7 +135,6 @@ class TradeManagementController extends Controller
         // Mail::to($authoriser)->send(new CreateInstitutionMail($new));
 
         return redirect()->back()->with('success', "Bid Placed successfully.");
-
     }
     /**
      * Show the form for creating a new resource.
@@ -150,9 +147,9 @@ class TradeManagementController extends Controller
         $validated = $request->validate([
             'transaction_ref' => 'bail|required',
             'auction_ref' => 'bail|required',
-            'settlementAccount' => 'bail|required|numeric',
-            'nominalAmount' => 'bail|required|numeric',
-            'discountRate' => 'bail|required|numeric',
+            'settlementAccount' => 'bail|required|numeric|min:1',
+            'nominalAmount' => 'bail|required|numeric|min:1',
+            'discountRate' => 'bail|required|numeric|min:1',
         ], []);
 
         if (!$validated) {
@@ -218,7 +215,6 @@ class TradeManagementController extends Controller
         // Mail::to($authoriser)->send(new CreateInstitutionMail($new));
 
         return redirect()->back()->with('success', "Bid Updated successfully.");
-
     }
     /**
      * Show the form for creating a new resource.
@@ -280,5 +276,4 @@ class TradeManagementController extends Controller
 
         return redirect()->back()->with('success', "Bid Updated successfully.");
     }
-
 }

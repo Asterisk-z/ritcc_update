@@ -23,8 +23,9 @@
                                 <select name="securityId" id="validationCustom01" class="form-control" required>
                                     <option value="">--Select--</option>
                                     @foreach ($securities as $security)
-                                    <option value="{{ $security->id }}">{{ $security->auctioneer->firstName.'
-                                        '.$security->auctioneer->lastName .' ('.$security->issuerCode.')' }}</option>
+                                    <option value="{{ $security->id }}">{{ $security->securityCode .'
+                                        ('.$security->auctioneer->firstName.'
+                                        '.$security->auctioneer->lastName.')' }}</option>
                                     @endforeach
                                 </select>
                                 <div class="invalid-feedback">
@@ -68,7 +69,7 @@
 
                             <div class="col-md-6 mb-3">
                                 <label for="validationCustom01">Minimum Rate</label>
-                                <input type="number" name="minimum_rate" class="form-control" id="validationCustom01"
+                                <input type="text" name="minimum_rate" class="form-control" id="validationCustom01"
                                     required>
                                 <div class="invalid-feedback">
                                     This field is required
@@ -77,7 +78,7 @@
                             {{-- --}}
                             <div class="col-md-6 mb-3">
                                 <label for="validationCustom01">Maximum Rate</label>
-                                <input type="number" name="maximum_rate" class="form-control" id="validationCustom01"
+                                <input type="text" name="maximum_rate" class="form-control" id="validationCustom01"
                                     required>
                                 <div class="invalid-feedback">
                                     This field is required

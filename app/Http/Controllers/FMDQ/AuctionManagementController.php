@@ -324,8 +324,8 @@ class AuctionManagementController extends Controller
             'auction_start_time' => 'bail|required',
             'bids_close_time' => 'bail|required',
             'bids_result_time' => 'bail|required',
-            'minimum_rate' => 'bail|required|integer|min:1',
-            'maximum_rate' => 'bail|required|integer|min:1',
+            'minimum_rate' => 'bail|required|numeric|min:1',
+            'maximum_rate' => 'bail|required|numeric|min:1',
         ], []);
 
         if (!$validated) {
@@ -495,12 +495,12 @@ class AuctionManagementController extends Controller
         $validated = $request->validate([
             'auction_ref' => 'bail|required|exists:tblAuction,id',
             'securityId' => 'bail|required|exists:tblAuction,securityRef',
-            'offerDate' => 'bail|required',
+            'offerDate' => 'bail|required|numeric|min:1',
             'auction_start_time' => 'bail|required',
             'bids_close_time' => 'bail|required',
             'bids_result_time' => 'bail|required',
-            'minimum_rate' => 'bail|required',
-            'maximum_rate' => 'bail|required',
+            'minimum_rate' => 'bail|required|numeric|min:1',
+            'maximum_rate' => 'bail|required|numeric|min:1',
         ], []);
 
         if (!$validated) {
