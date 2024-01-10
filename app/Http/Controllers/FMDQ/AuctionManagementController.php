@@ -20,8 +20,11 @@ class AuctionManagementController extends Controller
     public function index()
     {
         $page = 'All Auctions';
-        $securities = Security::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->orderBy('CreatedDate', 'DESC')->get();
 
+        $auctions = Auction::orderBy('createdDate', 'DESC')->get();
+
+        $auctions_sec_id = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->pluck('securityRef');
+        $securities = Security::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->whereNotIn('id', $auctions_sec_id)->orderBy('CreatedDate', 'DESC')->get();
         $auctions = Auction::orderBy('createdDate', 'DESC')->get();
         $all = Auction::count();
         $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
@@ -542,7 +545,6 @@ class AuctionManagementController extends Controller
         $auctions['approveFlag'] = $auction->approveFlag;
         $auctions['createdBy'] = auth()->user()->email;
         $auctions['createdDate'] = now();
-
 
         $modifyingData = json_encode($auctions);
 
