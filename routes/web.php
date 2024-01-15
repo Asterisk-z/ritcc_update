@@ -30,10 +30,14 @@ Route::get('/testing', function () {
 });
 
 // Auth
-Route::get('/', [LoginController::class, 'login'])->name('login');
+Route::get('/', [LoginController::class, 'termsAndConditions'])->name('termsAndConditions');
+Route::post('/agree', [LoginController::class, 'postTerms'])->name('postTerms');
+Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/sign-in', [LoginController::class, 'signIn'])->name('signIn');
 Route::post('/sign-out', [LoginController::class, 'signOut'])->name('signOut');
 Route::get('/change-password', [LoginController::class, 'changePassword'])->name('changePassword');
+
+
 // reset password
 Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('form.forgetPassword');
 Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('submit.forgotPassword');
@@ -43,6 +47,7 @@ Route::get('execute-commands', [SystemController::class, 'executeCommands'])->na
 
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/terms-and-conditions', [LoginController::class, 'termsAndConditions'])->name('termsAndConditions');
     Route::post('/update-password', [LoginController::class, 'updatePassword'])->name('updatePassword');
     // // all logs
     // Route::get('/all-activities', DashboardController::class, 'allLogs')->name('allLogs');

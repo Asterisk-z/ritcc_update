@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome/css/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    {{--
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"> --}}
 </head>
 
 <body class="login">
@@ -28,8 +26,8 @@
                             <h1></h1>
                             <p class="account-subtitle">Login to <b>Road Infrastructure Tax Credit Certificate
                                     Auctionining System Portal</b></p>
-                            <form action="{{ route('signIn') }}" method="POST" autocomplete="on"
-                                class="needs-validation confirmation" novalidate>
+                            <form action="{{ route('signIn') }}" method="POST" autocomplete="on" class="confirmation"
+                                novalidate>
                                 @csrf
                                 <div class="form-group">
                                     <label class="form-control-label">Email Address</label>
@@ -61,7 +59,7 @@
     </div>
 
     @include('auth.scripts')
-
+    {{-- @include('layouts.scripts') --}}
 </body>
 
 </html>

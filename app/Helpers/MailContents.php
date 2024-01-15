@@ -267,6 +267,26 @@ class MailContents
         </p>";
     }
 
+    public static function createAuctionSubject(): string
+    {
+        return "New Auction Created";
+    }
+
+    public static function createAuctionMessage(): string
+    {
+        return "<p>A new auction has been created. Kindly approve.</p>";
+    }
+
+    public static function updateAuctionSubject(): string
+    {
+        return "Auction Update";
+    }
+
+    public static function updateAuctionMessage(): string
+    {
+        return "<p>Auction has been updated. Kindly approve.</p>";
+    }
+
     public static function forgotPasswordSubject(): string
     {
         return "Forgot Password";

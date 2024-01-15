@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\FMDQ;
 
+use App\Helpers\MailContents;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\Auction;
 use App\Models\Security;
 use App\Models\Transaction;
+use App\Models\Profile;
+use App\Notifications\InfoNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class AuctionManagementController extends Controller
 {
@@ -26,12 +30,13 @@ class AuctionManagementController extends Controller
         $auctions_sec_id = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->pluck('securityRef');
         $securities = Security::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->whereNotIn('id', $auctions_sec_id)->orderBy('CreatedDate', 'DESC')->get();
         $auctions = Auction::orderBy('createdDate', 'DESC')->get();
+        $authorisers = Profile::where('status', 1)->where('Package', '3')->get();
         $all = Auction::count();
         $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
         $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
         $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
 
-        return view('fmdq.auction.index', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
+        return view('fmdq.auction.index', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'authorisers', 'page'));
     }
 
     /**
@@ -47,8 +52,8 @@ class AuctionManagementController extends Controller
         $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->count();
         $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->count();
         $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->count();
-
-        return view('fmdq.auction.list', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
+        $authorisers = Profile::where('status', 1)->where('Package', '3')->get();
+        return view('fmdq.auction.list', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page', 'authorisers'));
     }
 
     /**
@@ -65,8 +70,8 @@ class AuctionManagementController extends Controller
         $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
         $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
         $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
-
-        return view('fmdq.auction.pending', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page', 'securities'));
+        $authorisers = Profile::where('status', 1)->where('Package', '3')->get();
+        return view('fmdq.auction.pending', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page', 'securities', 'authorisers'));
     }
     /**
      * Show the form for creating a new resource.
@@ -82,8 +87,8 @@ class AuctionManagementController extends Controller
         $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
         $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
         $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
-
-        return view('fmdq.auction.rejected', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
+        $authorisers = Profile::where('status', 1)->where('Package', '3')->get();
+        return view('fmdq.auction.rejected', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page', 'authorisers'));
     }
     /**
      * Show the form for creating a new resource.
@@ -99,8 +104,8 @@ class AuctionManagementController extends Controller
         $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
         $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
         $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
-
-        return view('fmdq.auction.approved', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
+        $authorisers = Profile::where('status', 1)->where('Package', '3')->get();
+        return view('fmdq.auction.approved', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page', 'authorisers'));
     }
 
     /**
@@ -349,8 +354,6 @@ class AuctionManagementController extends Controller
             return redirect()->back()->with('error', "Fail to create Auction.");
         }
 
-        // dd($request->all(), $security);
-
         // You can now proceed with saving the other form data to your database or perform any other actions
         $auctions = new Auction();
         $auctions->securityRef = $securityId;
@@ -373,21 +376,16 @@ class AuctionManagementController extends Controller
         if (!$create_action) {
             return redirect()->back()->with('error', "Fail to create Auction.");
         }
-
-        $activity = new ActivityLog();
-        $activity->date = now();
-        $activity->app = 'RITCC';
-        $activity->type = 'Create Auction';
-        $activity->activity = auth()->user()->email . ' created Auction for Security';
-        $activity->username = auth()->user()->email;
-        $activity->save();
+        // log activity
+        $logMessage = auth()->user()->email . ' created an auction for Security ';
+        logAction(auth()->user()->email, 'Create Auction', $logMessage, $request->ip());
         // mail
-        // $approver = Profile::where('email', $authoriser)->first();
-        // $new = ([
-        //     'name' => $approver->FirstName,
-        // ]);
-        // Mail::to($authoriser)->send(new CreateInstitutionMail($new));
-
+        $approver = Profile::where('email', $request->authoriser)->first();
+        Notification::send(
+            $approver,
+            new InfoNotification(MailContents::createAuctionMessage(), MailContents::createAuctionSubject())
+        );
+        //
         return redirect()->back()->with('success', "Auction has been sent for approval.");
     }
     /**
@@ -562,15 +560,17 @@ class AuctionManagementController extends Controller
             return redirect()->back()->with('error', "Fail to update Auction.");
         }
 
-        $activity = new ActivityLog();
-        $activity->date = now();
-        $activity->app = 'RITCC';
-        $activity->type = 'Updating Auction';
-        $activity->activity = auth()->user()->email . ' Send Auction Update for approval';
-        $activity->username = auth()->user()->email;
-        $activity->save();
-
-        return redirect()->back()->with('success', "Auction has been sent for approval.");
+        // log activity
+        $logMessage = auth()->user()->email . ' sent an auction update for approval';
+        logAction(auth()->user()->email, 'Update Auction', $logMessage, $request->ip());
+        // mail
+        $approver = Profile::where('email', $request->authoriser)->first();
+        Notification::send(
+            $approver,
+            new InfoNotification(MailContents::updateAuctionMessage(), MailContents::updateAuctionSubject())
+        );
+        //
+        return redirect()->back()->with('success', "Auction update has been sent for approval.");
     }
     /**
      * Show the form for creating a new resource.
@@ -619,13 +619,13 @@ class AuctionManagementController extends Controller
         $auction->offerAmount = $modifyData->offerAmount;
         $auction->isinNumber = $modifyData->isinNumber;
         $auction->offerDate = $modifyData->offerDate;
-        $auction->auctionStartTime = Carbon::create($modifyData->auctionStartTime);
-        $auction->bidCloseTime = Carbon::create($modifyData->bidCloseTime);
-        $auction->bidResultTime = Carbon::create($modifyData->bidResultTime);
+        $auction->auctionStartTime = date('Y-m-d H:i:s', strtotime($modifyData->auctionStartTime));
+        $auction->bidCloseTime = date('Y-m-d H:i:s', strtotime($modifyData->bidCloseTime));
+        $auction->bidResultTime = date('Y-m-d H:i:s', strtotime($modifyData->bidResultTime));
         $auction->minimumRate = $modifyData->minimumRate;
         $auction->maximumRate = $modifyData->maximumRate;
         $auction->createdBy = $modifyData->createdBy;
-        $auction->createdDate = Carbon::create($modifyData->createdDate);
+        $auction->createdDate = date('Y-m-d H:i:s', strtotime($modifyData->createdDate));
 
         $approve_action = $auction->save();
 

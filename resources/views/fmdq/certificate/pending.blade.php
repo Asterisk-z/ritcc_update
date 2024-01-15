@@ -45,7 +45,8 @@
                                     @forelse ($securities as $certificate)
                                     <tr>
                                         <td>{{ $i++; }}</td>
-                                        <td>{{ $security->auctioneer->firstName.' '.$security->auctioneer->lastName }}
+                                        <td>{{ $certificate->auctioneer->firstName.'
+                                            '.$certificate->auctioneer->lastName }}
                                         </td>
                                         @if($certificate->modifyingFlag || $certificate->deletingFlag)
                                         @php

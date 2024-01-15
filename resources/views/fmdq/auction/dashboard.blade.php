@@ -1,7 +1,7 @@
 <div class="page-wrapper">
     <div class="content container-fluid">
         {{-- cards --}}
-        @include('fmdq.auction.widgets')
+        {{-- @include('fmdq.auction.widgets') --}}
 
         {{-- tables --}}
         {{-- --}}

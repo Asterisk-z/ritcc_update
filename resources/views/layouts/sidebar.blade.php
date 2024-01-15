@@ -157,10 +157,10 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="mb-3">
+                {{-- <li class="mb-3">
                     <a href="{{ route('trade.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span>Trade</span></a>
 
-                </li>
+                </li> --}}
                 <li class="mb-3">
                     <a href="{{ route('trade.mgt.dashboard', 'result') }}"><i class="fa-solid fa-key"></i>
                         <span>Allocated Trade</span></a>

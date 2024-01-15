@@ -44,7 +44,7 @@
                                         {{-- --}}
                                         <div class="col-md-6 mb-3">
                                             <label for="validationCustom01">Settlement Account</label>
-                                            <input type="number" name="settlementAccount" class="form-control"
+                                            <input type="text" name="settlementAccount" class="form-control"
                                                 id="validationCustom01" required>
                                             <div class="invalid-feedback">
                                                 This field is required
@@ -53,7 +53,7 @@
 
                                         <div class="col-md-6 mb-3">
                                             <label for="validationCustom01">Nominal Amount (₦‘mm)</label>
-                                            <input type="number" name="nominalAmount" class="form-control"
+                                            <input type="text" name="nominalAmount" class="form-control"
                                                 id="validationCustom01" required>
                                             <div class="invalid-feedback">
                                                 This field is required
@@ -62,7 +62,7 @@
 
                                         <div class="col-md-12 mb-3">
                                             <label for="validationCustom01">Dicount Rate (%)</label>
-                                            <input type="number" name="discountRate" class="form-control"
+                                            <input type="text" name="discountRate" class="form-control"
                                                 id="validationCustom01" required>
                                             <div class="invalid-feedback">
                                                 This field is required
@@ -96,7 +96,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Security Code</th>
-                                        <th>Security Name</th>
+                                        {{-- <th>Security Name</th> --}}
                                         <th>Issuer Code</th>
                                         <th>Settlement Account</th>
                                         <th>Nominal Amount (₦‘mm)</th>
@@ -115,13 +115,13 @@
 
                                         <td>{{ $i++; }}</td>
                                         <td>{{ $bid->securityCode }}</td>
-                                        <td>{{ $bid->auction->security->description }}</td>
+                                        {{-- <td>{{ $bid->auction->security->description }}</td> --}}
                                         <td>{{ $bid->institutionCode }}</td>
                                         <td>{{ $bid->settlementAccount }}</td>
                                         <td>{{ $bid->nominalAmount }}</td>
                                         <td>{{ $bid->discountRate }}</td>
                                         <td>Pending Allocation</td>
-                                        <td>{{ date('F d, Y h:m',strtotime($bid->timestamp))}}</td>
+                                        <td>{{ date('F d, Y',strtotime($bid->timestamp))}}</td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"

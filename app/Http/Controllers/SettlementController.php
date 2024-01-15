@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Auction;
+use App\Models\Profile;
+use App\Models\Security;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SettlementController extends Controller
 {
     //
-
     public function index()
     {
         $auctions = Auction::all();
@@ -33,10 +35,7 @@ class SettlementController extends Controller
         if (!$validated) {
             return back()->withErrors($validated);
         }
-
-
-        dd($request->all());
-
+        // dd($request->all());
     }
 
     /**
@@ -98,14 +97,10 @@ class SettlementController extends Controller
         if (!$create_action) {
             return redirect()->back()->with('error', "Fail to create certificate.");
         }
-
-        $activity = new ActivityLog();
-        $activity->date = now();
-        $activity->app = 'RITCC';
-        $activity->type = 'Create Certificate';
-        $activity->activity = auth()->user()->email . ' created a certificate ';
-        $activity->username = auth()->user()->email;
-        $activity->save();
+        // log activity
+        $user = auth()->user();
+        $logMessage = $user->email . ' created a certificate.';
+        logAction($user->email, 'Create Settlement', $logMessage);
         // mail
         $authorisers = Profile::where('status', '1')->where('type', 'firs')->get();
         foreach ($authorisers as $authoriser) {
@@ -568,5 +563,4 @@ class SettlementController extends Controller
 
         return redirect()->back()->with('success', "Auction Delete Rejected Successfully.");
     }
-
 }

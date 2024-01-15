@@ -118,7 +118,7 @@ class CertificateManagementController extends Controller
             'auctioneer' => 'bail|required',
             'securityType' => 'bail|required',
             'securityCode' => 'bail|required',
-            'description' => 'bail|required',
+            // 'description' => 'bail|required',
             'isinNumber' => 'bail|required',
             'issueDate' => 'bail|required',
             'transactionFee' => 'bail|required',
@@ -152,7 +152,7 @@ class CertificateManagementController extends Controller
         $certificate->securityCode = $securityCode;
         $certificate->isinNumber = $isinNumber;
         $certificate->issuerCode = $auctioneer->user_inst->code;
-        $certificate->description = $description;
+        $certificate->description = $securityCode;
         $certificate->issueDate = $issueDate;
         $certificate->transactionSettlementFeeRate = $transactionFee;
         $certificate->offerAmount = $offerAmount;

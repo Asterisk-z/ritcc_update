@@ -18,7 +18,7 @@
                 <div class="card-table">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="datatable table table-center table-stripped table-bordered" id="example2">
+                            <table class="datatable table table-center table-stripped table-bordered" id="example1">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>S/N</th>
@@ -36,7 +36,7 @@
                                     @php
                                     $i = 1;
                                     @endphp
-                                    @forelse ($auctions as $item)
+                                    @foreach ($auctions as $item)
                                     <tr>
                                         <td>{{ $i++; }}</td>
                                         <td>{{ $item->transactions_count }} bidders</td>
@@ -48,21 +48,21 @@
                                         <td>{{ date('F d, Y',strtotime($item->bidCloseTime))}}</td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul>
                                                         <li>
-                                                            <a class="dropdown-item" href="{{route('auction.mgt.results', $item->auctionRef)}}"><i class="far fa-edit me-2"></i>Result</a>
+                                                            <a class="dropdown-item"
+                                                                href="{{route('auction.mgt.results', $item->auctionRef)}}"><i
+                                                                    class="far fa-edit me-2"></i>Result</a>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </td>
-
                                     </tr>
-                                    @empty
-                                    {{ 'No information available yet' }}
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

@@ -25,6 +25,23 @@ class LoginController extends Controller
         return view('auth.change-password');
     }
 
+    //
+    public function termsAndConditions()
+    {
+        return view('termsAndConditions');
+    }
+
+    //
+    public function postTerms(Request $request)
+    {
+        return redirect()->route('login')->with('success', "You have successfully attested to the terms and conditions. Kindly proceed to login");
+        // $accepted = '1';
+        // $profileUpdated = Profile::where('termsAndConditions', null)->update(['termsAndConditions' => $accepted]);
+        // if ($profileUpdated) {
+        //     return redirect()->route('login')->with('success', "You have successfully attested the terms and conditions. Kindly proceed");
+        // }
+    }
+
     // update password
     public function updatePassword(Request $request)
     {
@@ -36,7 +53,7 @@ class LoginController extends Controller
         $user = Profile::where('email', $request->email)->first();
         if (Hash::check($default, $current)) {
             // dd($default . ' is not equals to ' . $current);
-            return redirect()->back()->with('error', "The entered password does not match your default or current password.");
+            return redirect()->back()->with('error', "The entered password does not match your default or current password");
         }
         //
         if (Hash::check($new, $current)) {
@@ -100,11 +117,17 @@ class LoginController extends Controller
         if (!$attempt_login) {
             return redirect()->route('login')->with('error', 'Invalid credentials.');
         }
+        // //
+        // if (auth()->user()->termsAndConditions !== '1') {
+        //     return redirect()->route('termsAndConditions')->with('info', 'Kindly accept the RITCC terms and conditions');
+        // }
+
         // to check if the
         if (auth()->user()->passwordStatus === '0') {
             // Auth::logout(); // Logout the user
             return redirect()->route('changePassword')->with('info', 'Kindly update your password.');
         }
+
         // super admin
         if (auth()->user()->type === 'super') {
             return redirect()->route('iqx.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');

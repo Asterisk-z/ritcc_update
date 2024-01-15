@@ -231,13 +231,29 @@
                                                                         This field is required
                                                                     </div>
                                                                 </div>
-
+                                                                {{-- --}}
+                                                                <div class="col-md-12 mb-3">
+                                                                    <label for="validationCustom01">Authoriser</label>
+                                                                    <select name="authoriser" id="validationCustom01"
+                                                                        class="form-control" required>
+                                                                        <option value="">--Select--</option>
+                                                                        @forelse ($authorisers as $authoriser)
+                                                                        <option value="{{ $authoriser->email }}">{{
+                                                                            $authoriser->firstName.'
+                                                                            '.$authoriser->lastName }}</option>
+                                                                        @empty
+                                                                        @endforelse
+                                                                    </select>
+                                                                    <div class="invalid-feedback">
+                                                                        This field is required
+                                                                    </div>
+                                                                </div>
                                                             </div>
 
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Update Auction</button>
+                                                            <button type="submit" class="btn btn-primary">Update
+                                                                Auction</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
@@ -260,15 +276,38 @@
                                                     <form action="{{ route('inputter.auction.mgt.delete') }}"
                                                         method="POST" class="needs-validation" id="myForm" novalidate>
                                                         @csrf
-                                                        <input type='hidden' name='auction_ref'
-                                                            value="{{ $auction->id }}" />
+
                                                         <div class="modal-body">
-                                                            <p>Are you sure you want to delete this institution?</p>
+                                                            <p>Are you sure you want to delete this auction?</p>
+                                                            <input type='hidden' name='auction_ref'
+                                                                value="{{ $auction->id }}" />
+                                                            <div class="col-md-12 mb-3">
+                                                                <label for="validationCustom01">Reason</label>
+                                                                <input type='text' class="form-control" name='reason'
+                                                                    required />
+                                                            </div>
+
+                                                            {{-- --}}
+                                                            <div class="col-md-12 mb-3">
+                                                                <label for="validationCustom01">Authoriser</label>
+                                                                <select name="authoriser" id="validationCustom01"
+                                                                    class="form-control" required>
+                                                                    <option value="">--Select--</option>
+                                                                    @forelse ($authorisers as $authoriser)
+                                                                    <option value="{{ $authoriser->email }}">{{
+                                                                        $authoriser->firstName.'
+                                                                        '.$authoriser->lastName }}</option>
+                                                                    @empty
+                                                                    @endforelse
+                                                                </select>
+                                                                <div class="invalid-feedback">
+                                                                    This field is required
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Delete
-                                                                Institution</button>
+                                                                id="updateButton">Delete Auction</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>

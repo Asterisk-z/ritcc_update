@@ -9,6 +9,7 @@ use App\Models\Security;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TradeManagementController extends Controller
 {
@@ -30,7 +31,21 @@ class TradeManagementController extends Controller
             return view('fmdq.trade.awarded', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page', 'trades'));
         } else {
             $trades = Transaction::where('bidderRef', auth()->user()->id)->where('awardedFlag', 0)->orderBy('timestamp', 'DESC')->get();
-            $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
+            // $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('modifyingFlag', 0)->where('deletingFlag', 0)->orderBy('createdDate', 'DESC')->get();
+            $auctioneerEmail = auth()->user()->email;
+            $auctions =  Auction::where('approveFlag', 1)
+                ->where('rejectionFlag', 0)
+                ->where('deleteFlag', 0)
+                ->where('modifyingFlag', 0)
+                ->where('deletingFlag', 0)
+                ->whereIn('securityCode', function ($query) use ($auctioneerEmail) {
+                    $query->select('securityCode')
+                        ->from('tblTransaction')
+                        ->where('auctioneerEmail', $auctioneerEmail);
+                })
+                ->orderBy('createdDate', 'DESC')
+                ->get();
+
             $all = Auction::where('deleteFlag', 0)->count();
             $approved = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
             $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
@@ -122,17 +137,10 @@ class TradeManagementController extends Controller
         $activity = new ActivityLog();
         $activity->date = now();
         $activity->app = 'RITCC';
-        $activity->type = 'Place Bid';
-        $activity->activity = auth()->user()->email . ' place bid for Security';
+        $activity->type = 'Place Auction Bid';
+        $activity->activity = auth()->user()->email . ' placed bid for an auction for Security';
         $activity->username = auth()->user()->email;
         $activity->save();
-
-        // mail
-        // $approver = Profile::where('email', $authoriser)->first();
-        // $new = ([
-        //     'name' => $approver->FirstName,
-        // ]);
-        // Mail::to($authoriser)->send(new CreateInstitutionMail($new));
 
         return redirect()->back()->with('success', "Bid Placed successfully.");
     }
