@@ -48,8 +48,8 @@ class BankDashboardController extends Controller
 
         }
 
-        dd($auctions, now(), date('H:i:s'));
-// ->where('auctionStartTime', '>=', now())->where('bidCloseTime', '<=', now())
+        // dd($auctions, now(), date('H:i:s'));
+        // ->where('auctionStartTime', '>=', now())->where('bidCloseTime', '<=', now())
         return view('bank.dashboard', compact('user', 'auctions', 'trades', 'all', 'pending', 'approved', 'rejected'));
 
     }

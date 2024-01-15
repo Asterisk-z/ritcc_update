@@ -106,6 +106,10 @@ class TradeManagementController extends Controller
         $transactions->auctioneerEmail = $auction->security->auctioneer->email;
         $transactions->discountRate = $discountRate;
         $transactions->institutionCode = $auction->security->issuerCode;
+        $transactions->settlementFlag = 0;
+        $transactions->awardedFlag = 0;
+        $transactions->amountOffered = 0;
+        $transactions->institutionCode = $auction->security->issuerCode;
         $transactions->bidDateTime = now();
         $transactions->bidderRef = auth()->user()->id;
         $transactions->bidder = auth()->user()->email;
@@ -188,6 +192,9 @@ class TradeManagementController extends Controller
         $transaction->auctioneerEmail = $auction->security->auctioneer->email;
         $transaction->discountRate = $discountRate;
         $transaction->institutionCode = $auction->security->issuerCode;
+        $transactions->settlementFlag = 0;
+        $transactions->awardedFlag = 0;
+        $transactions->amountOffered = 0;
         $transaction->bidDateTime = now();
         $transaction->bidderRef = auth()->user()->id;
         $transaction->bidder = auth()->user()->email;

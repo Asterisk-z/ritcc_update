@@ -1,15 +1,14 @@
+@extends('layouts.app')
+@section('title','RITCC Depository Management')
+
+@section('content')
 <div class="page-wrapper">
     <div class="content container-fluid">
         {{-- cards --}}
-        {{-- @include('fmdq.auction.widgets')  --}}
 
-        {{-- tables --}}
         {{-- --}}
-        <div class="page-header">
-            <div class="content-page-header">
-            </div>
-        </div>
-        {{-- --}}
+
+
         <div class="row">
             <div class="col-sm-12">
                 <div class="card-table">
@@ -19,11 +18,14 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
-                                        <th>Code</th>
-                                        <th>Description</th>
-                                        <th>ISIN Number</th>
-                                        <th>Date Created</th>
+                                        <th>Bidder</th>
+                                        <th>Bid Amount (₦‘mm)</th>
+                                        <th>Bid Rate (%)</th>
+                                        <th>RTGS Account Number</th>
+                                        <th>Custodian Account Number</th>
+                                        <th>Settlement Account</th>
                                         <th>Status</th>
+                                        <th>Amount Awarded (₦‘mm)</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -31,14 +33,29 @@
                                     @php
                                     $i = 1;
                                     @endphp
-                                    @foreach ($auctions as $auction)
+                                    @foreach ($transactions as $auction)
                                     <tr>
                                         <td>{{ $i++; }}</td>
-                                        <td>{{ $auction->securityCode }}</td>
-                                        <td>{{ $auction->security->description }}</td>
-                                        <td>{{ $auction->isinNumber }}</td>
-                                        <td>{{ date('F d, Y',strtotime($auction->createdDate))}}</td>
-                                        <td><span class="badge bg-1">Approved</span></td>
+                                        <td>{{ $auction->bidder }}</td>
+                                        <td>{{ $auction->nominalAmount }}</td>
+                                        <td>{{ $auction->discountRate }}</td>
+                                        <td>{{ $auction->bidder_obj ? $auction->bidder_obj->rtgsNumber : 'e' }}</td>
+                                        <td>{{ $auction->bidder_obj ? $auction->bidder_obj->fmdqNumber : 'e' }}</td>
+                                        <td>{{ $auction->settlementAccount ."" }} </td>
+                                        <td>
+                                            @if($auction->settlementFlag == 1)
+                                            <span class="badge bg-1">Settled</span>
+                                            @else
+                                            @if($auction->settlementRejectedFlag == 1)
+                                            <span class="badge bg-3">Rejected</span>
+                                            @elseif ($auction->settlementPendingApprovalFlag == 1)
+                                            <span class="badge bg-3">Pending Approval</span>
+                                            @else
+                                            <span class="badge bg-3">Not Settled</span>
+                                            @endif
+                                            @endif
+                                        </td>
+                                        <td>{{ $auction->amountOffered ."" }} </td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
@@ -61,11 +78,9 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
 
+
                                                     <div class="modal-body">
                                                         <div class="text-center">
-                                                            <h6>Security Description : <strong>{{ $auction->description
-                                                                    }}</strong></h6>
-                                                            <br>
                                                             <h6>Security Code : <strong>{{ $auction->securityCode
                                                                     }}</strong></h6>
                                                             <br>
@@ -113,6 +128,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -124,3 +140,12 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+
+@section('script')
+<script>
+
+</script>
+@endsection

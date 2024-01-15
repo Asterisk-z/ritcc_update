@@ -172,6 +172,13 @@
                         <span>My Activity Logs</span></a>
 
                 </li>
+                <li class="mb-3">
+                    <a href="{{ route('settlement') }}"><i class="fa fa-bullseye"></i> <span> Settlement</span></a>
+                </li>
+                <li class="mb-3">
+                    <a href="{{ route('depository') }}"><i class="fa fa-bullseye"></i> <span> Depository</span></a>
+                </li>
+
             </ul>
 
         </div>

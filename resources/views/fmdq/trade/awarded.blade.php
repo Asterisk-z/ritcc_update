@@ -49,9 +49,9 @@
                                         <td>{{ $bid->settlementAccount }}</td>
                                         <td>{{ $bid->nominalAmount }}</td>
                                         <td>{{ $bid->discountRate }}</td>
-                                        <td>{{ $bid->amountOffered }}</td>
                                         <td>Allocated</td>
                                         <td>{{ date('F d, Y h:m',strtotime($bid->timestamp))}}</td>
+                                        <td>{{ $bid->amountOffered }}</td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
