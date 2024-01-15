@@ -67,6 +67,9 @@ class BankDashboardController extends Controller
             $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
             $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
         }
+
+        dd($auctions, now(), date('H:i:s'));
+        // ->where('auctionStartTime', '>=', now())->where('bidCloseTime', '<=', now())
         return view('bank.dashboard', compact('user', 'auctions', 'trades', 'all', 'pending', 'approved', 'rejected'));
     }
 

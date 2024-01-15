@@ -45,7 +45,6 @@ Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showRese
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('post.resetPassword');
 Route::get('execute-commands', [SystemController::class, 'executeCommands'])->name('executeCommands');
 
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/terms-and-conditions', [LoginController::class, 'termsAndConditions'])->name('termsAndConditions');
     Route::post('/update-password', [LoginController::class, 'updatePassword'])->name('updatePassword');
@@ -261,7 +260,11 @@ Route::middleware(['auth'])->group(function () {
 
     // bidder
 
+    Route::get('depository', [SettlementController::class, 'depository'])->name('depository');
     Route::get('settlement', [SettlementController::class, 'index'])->name('settlement');
     Route::get('settlement/bids/{id}', [SettlementController::class, 'bidder'])->name('settlement.bidder');
-    Route::get('settlement/bids/{id}/settle', [SettlementController::class, 'settle'])->name('settlement.bid.settle');
+    Route::get('settlement/approve', [SettlementController::class, 'approval_list'])->name('settlement.approve');
+    Route::post('settlement/bids/{id}/settle', [SettlementController::class, 'settle'])->name('settlement.bid.settle');
+    Route::post('settlement/approve/{id}/settle', [SettlementController::class, 'approve_settle'])->name('settlement.approve.settle');
+    Route::post('settlement/decline/{id}/settle', [SettlementController::class, 'decline_settle'])->name('settlement.decline.settle');
 });

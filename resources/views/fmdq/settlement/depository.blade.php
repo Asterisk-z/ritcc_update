@@ -1,17 +1,14 @@
 @extends('layouts.app')
-@section('title','RITCC Allocation Management')
+@section('title','RITCC Depository Management')
 
 @section('content')
 <div class="page-wrapper">
     <div class="content container-fluid">
         {{-- cards --}}
-        <div class="page-header">
-            <div class="content-page-header">
-                <a href="{{ route('settlement.approve') }}" class="btn btn-primary mt-1">Approve Settlements</a>
-            </div>
-        </div>
 
         {{-- --}}
+
+
         <div class="row">
             <div class="col-sm-12">
                 <div class="card-table">
@@ -21,12 +18,14 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
-                                        <th>Description</th>
-                                        <th>Code</th>
-                                        <th>Auctioneer</th>
-                                        <th>ISIN Number</th>
-                                        <th>Date Created</th>
+                                        <th>Bidder</th>
+                                        <th>Bid Amount (₦‘mm)</th>
+                                        <th>Bid Rate (%)</th>
+                                        <th>RTGS Account Number</th>
+                                        <th>Custodian Account Number</th>
+                                        <th>Settlement Account</th>
                                         <th>Status</th>
+                                        <th>Amount Awarded (₦‘mm)</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -34,20 +33,29 @@
                                     @php
                                     $i = 1;
                                     @endphp
-                                    @foreach ($auctions as $auction)
+                                    @foreach ($transactions as $auction)
                                     <tr>
-                                        {{-- @dd($auction->security) --}}
                                         <td>{{ $i++; }}</td>
-                                        <td>{{ $auction->security->description }}</td>
-                                        <td>{{ $auction->securityCode }}</td>
-                                        <td>{{ $auction->auctioneerEmail }}</td>
-                                        <td>{{ $auction->isinNumber }}</td>
-                                        <td>{{ date('F d, Y',strtotime($auction->createdDate))}}</td>
+                                        <td>{{ $auction->bidder }}</td>
+                                        <td>{{ $auction->nominalAmount }}</td>
+                                        <td>{{ $auction->discountRate }}</td>
+                                        <td>{{ $auction->bidder_obj ? $auction->bidder_obj->rtgsNumber : 'e' }}</td>
+                                        <td>{{ $auction->bidder_obj ? $auction->bidder_obj->fmdqNumber : 'e' }}</td>
+                                        <td>{{ $auction->settlementAccount ."" }} </td>
                                         <td>
-                                            <span class="badge bg-1">Completed</span>
-                                            {{-- <span class="badge bg-2">Completed</span>
-                                            <span class="badge bg-3">Not Started</span> --}}
+                                            @if($auction->settlementFlag == 1)
+                                            <span class="badge bg-1">Settled</span>
+                                            @else
+                                            @if($auction->settlementRejectedFlag == 1)
+                                            <span class="badge bg-3">Rejected</span>
+                                            @elseif ($auction->settlementPendingApprovalFlag == 1)
+                                            <span class="badge bg-3">Pending Approval</span>
+                                            @else
+                                            <span class="badge bg-3">Not Settled</span>
+                                            @endif
+                                            @endif
                                         </td>
+                                        <td>{{ $auction->amountOffered ."" }} </td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
@@ -55,9 +63,6 @@
                                                     <ul>
                                                         <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#view{{ $auction->id }}" href=""><i class="far fa-edit me-2"></i>View</a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item" href="{{route('settlement.bidder', $auction->id)}}"><i class="far fa-eye me-2"></i>Bids</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -72,6 +77,7 @@
                                                         </h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
+
 
                                                     <div class="modal-body">
                                                         <div class="text-center">
@@ -122,6 +128,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -133,4 +140,12 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+
+@section('script')
+<script>
+
+</script>
 @endsection
