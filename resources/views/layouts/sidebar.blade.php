@@ -89,11 +89,11 @@
                 </li>
                 @endif
 
-                @if (auth()->user()->type === 'inputter' && auth()->user()->Package === '4')
+                {{-- @if (auth()->user()->type === 'inputter' && auth()->user()->Package === '4')
                 <li class="mb-3">
                     <a href="{{ route('settlement') }}"><i class="fa fa-bullseye"></i> <span> Settlement</span></a>
                 </li>
-                @endif
+                @endif --}}
 
                 @if (auth()->user()->type === 'authoriser' && auth()->user()->Package === '3')
                 <br>
@@ -167,16 +167,20 @@
 
                 </li>
                 @endif
-                <li class="mb-3">
-                    <a href="{{ route('myLogs') }}"><i class="fa fa-bullseye"></i>
-                        <span>My Activity Logs</span></a>
 
-                </li>
+                @if (auth()->user()->Package ==='4' || auth()->user()->Package ==='5')
                 <li class="mb-3">
                     <a href="{{ route('settlement') }}"><i class="fa fa-bullseye"></i> <span> Settlement</span></a>
                 </li>
                 <li class="mb-3">
                     <a href="{{ route('depository') }}"><i class="fa fa-bullseye"></i> <span> Depository</span></a>
+                </li>
+                @endif
+
+                <li class="mb-3">
+                    <a href="{{ route('myLogs') }}"><i class="fa fa-bullseye"></i>
+                        <span>My Activity Logs</span></a>
+
                 </li>
 
             </ul>

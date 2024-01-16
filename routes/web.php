@@ -256,15 +256,23 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/firs/certificate-management/approve/delete', [CertificateManagementController::class, 'approveDelete'])->name('firs.certificate.mgt.approve.delete');
         Route::post('/firs/certificate-management/reject/delete', [CertificateManagementController::class, 'rejectDelete'])->name('firs.certificate.mgt.reject.delete');
     });
+
+    // Depository
+    Route::middleware(['isDepository'])->group(function () {
+        //
+        Route::group(['prefix' => 'depository'], function () {
+            Route::get('index', [SettlementController::class, 'depository'])->name('depository');
+            Route::get('settlement', [SettlementController::class, 'index'])->name('settlement');
+            Route::get('settlement/bids/{id}', [SettlementController::class, 'bidder'])->name('settlement.bidder');
+            Route::get('settlement/approve', [SettlementController::class, 'approval_list'])->name('settlement.approve');
+            Route::post('settlement/bids/{id}/settle', [SettlementController::class, 'settle'])->name('settlement.bid.settle');
+            Route::post('settlement/approve/{id}/settle', [SettlementController::class, 'approve_settle'])->name('settlement.approve.settle');
+            Route::post('settlement/decline/{id}/settle', [SettlementController::class, 'decline_settle'])->name('settlement.decline.settle');
+        });
+    });
     // auctioneer
 
     // bidder
 
-    Route::get('depository', [SettlementController::class, 'depository'])->name('depository');
-    Route::get('settlement', [SettlementController::class, 'index'])->name('settlement');
-    Route::get('settlement/bids/{id}', [SettlementController::class, 'bidder'])->name('settlement.bidder');
-    Route::get('settlement/approve', [SettlementController::class, 'approval_list'])->name('settlement.approve');
-    Route::post('settlement/bids/{id}/settle', [SettlementController::class, 'settle'])->name('settlement.bid.settle');
-    Route::post('settlement/approve/{id}/settle', [SettlementController::class, 'approve_settle'])->name('settlement.approve.settle');
-    Route::post('settlement/decline/{id}/settle', [SettlementController::class, 'decline_settle'])->name('settlement.decline.settle');
+
 });
