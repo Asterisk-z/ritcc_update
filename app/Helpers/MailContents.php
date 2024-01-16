@@ -307,4 +307,48 @@ class MailContents
     {
         return "<p>Your password reset was successful.</p>";
     }
+
+    // auctioneer mail after receiving bid
+    public static function placeAuctionBidSubject(): string
+    {
+        return "Bid for Auction";
+    }
+
+    public static function placeAuctionBidMessage($security): string
+    {
+        return "<p>A new auction bid has been placed for Security: {$security}</p>";
+    }
+
+    // bidder mail after placing bid
+    public static function placeAuctionBidForBidderSubject(): string
+    {
+        return "Bid for Auction";
+    }
+
+    public static function placeAuctionBidForBidderMessage($security): string
+    {
+        return "<p>You have been placed an auction bid for Security: {$security}</p>";
+    }
+
+    // auctioneer mail after updating bid
+    public static function updateAuctionBidSubject(): string
+    {
+        return "Update on Auction Bid";
+    }
+
+    public static function updateAuctionBidMessage($security): string
+    {
+        return "<p>Update for auction bid has been placed for Security: {$security}</p>";
+    }
+
+    // bidder mail after updating bid
+    public static function updateAuctionBidForBidderSubject(): string
+    {
+        return "Update Auction Bid";
+    }
+
+    public static function updateAuctionBidForBidderMessage($security): string
+    {
+        return "<p>You have updated the auction bid placed for Security: {$security}</p>";
+    }
 }

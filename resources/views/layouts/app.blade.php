@@ -5,7 +5,7 @@
     <div class="main-wrapper">
 
         {{-- <p class="text-center" style="color: blue;">Road Infrastructure Tax Credit Certificate
-            Auctionining System</p> --}}
+            Auctioning System</p> --}}
         {{-- <h1 class="text-center" style="color: blue;">RITCC</h1> --}}
         @include('layouts.navbar')
         @include('layouts.sidebar')

@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers\FMDQ;
 
+use App\Helpers\MailContents;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\Auction;
+use App\Models\Profile;
 use App\Models\Security;
 use App\Models\Transaction;
+use App\Notifications\InfoNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class TradeManagementController extends Controller
 {
@@ -137,16 +141,26 @@ class TradeManagementController extends Controller
         if (!$create_action) {
             return redirect()->back()->with('error', "Fail to place bid.");
         }
+        // log activity
+        $logMessage = auth()->user()->email . ' placed bid for an auction for Security: ' . $auction->security->securityCode;
+        logAction(auth()->user()->email, 'Place Auction Bid', $logMessage, $request->ip());
 
-        $activity = new ActivityLog();
-        $activity->date = now();
-        $activity->app = 'RITCC';
-        $activity->type = 'Place Auction Bid';
-        $activity->activity = auth()->user()->email . ' placed bid for an auction for Security';
-        $activity->username = auth()->user()->email;
-        $activity->save();
+        // mail for auctioneer
+        // auctioneer to receive the mail
+        $auctioneerEmail = Profile::where('email', $auction->security->auctioneer->email)->first();
+        Notification::send(
+            $auctioneerEmail,
+            new InfoNotification(MailContents::placeAuctionBidMessage($auction->security->securityCode), MailContents::placeAuctionBidSubject())
+        );
 
-        return redirect()->back()->with('success', "Bid Placed successfully.");
+        // mail for bidder
+        // bidder to receive the mail
+        $bidderEmail = Profile::where('email', auth()->user()->email)->first();
+        Notification::send(
+            $bidderEmail,
+            new InfoNotification(MailContents::placeAuctionBidForBidderMessage($auction->security->securityCode), MailContents::placeAuctionBidForBidderSubject())
+        );
+        return redirect()->back()->with('success', "Bid Placed successfully");
     }
     /**
      * Show the form for creating a new resource.
@@ -155,7 +169,6 @@ class TradeManagementController extends Controller
      */
     public function update(Request $request)
     {
-
         $validated = $request->validate([
             'transaction_ref' => 'bail|required',
             'auction_ref' => 'bail|required',
@@ -200,9 +213,9 @@ class TradeManagementController extends Controller
         $transaction->auctioneerEmail = $auction->security->auctioneer->email;
         $transaction->discountRate = $discountRate;
         $transaction->institutionCode = $auction->security->issuerCode;
-        $transactions->settlementFlag = 0;
-        $transactions->awardedFlag = 0;
-        $transactions->amountOffered = 0;
+        $transaction->settlementFlag = 0;
+        $transaction->awardedFlag = 0;
+        $transaction->amountOffered = 0;
         $transaction->bidDateTime = now();
         $transaction->bidderRef = auth()->user()->id;
         $transaction->bidder = auth()->user()->email;
@@ -213,21 +226,25 @@ class TradeManagementController extends Controller
         if (!$create_action) {
             return redirect()->back()->with('error', "Fail to place bid.");
         }
+        // log activity
+        $logMessage = auth()->user()->email . ' updated the bid for an auction for Security: ' . $auction->security->securityCode;
+        logAction(auth()->user()->email, 'Auction Bid Updated', $logMessage, $request->ip());
 
-        $activity = new ActivityLog();
-        $activity->date = now();
-        $activity->app = 'RITCC';
-        $activity->type = 'Place Bid';
-        $activity->activity = auth()->user()->email . ' place bid for Security';
-        $activity->username = auth()->user()->email;
-        $activity->save();
+        // mail for auctioneer
+        // auctioneer to receive the mail
+        $auctioneerEmail = Profile::where('email', $auction->security->auctioneer->email)->first();
+        Notification::send(
+            $auctioneerEmail,
+            new InfoNotification(MailContents::updateAuctionBidMessage($auction->security->securityCode), MailContents::updateAuctionBidSubject())
+        );
 
-        // mail
-        // $approver = Profile::where('email', $authoriser)->first();
-        // $new = ([
-        //     'name' => $approver->FirstName,
-        // ]);
-        // Mail::to($authoriser)->send(new CreateInstitutionMail($new));
+        // mail for bidder
+        // bidder to receive the mail
+        $bidderEmail = Profile::where('email', auth()->user()->email)->first();
+        Notification::send(
+            $bidderEmail,
+            new InfoNotification(MailContents::updateAuctionBidForBidderMessage($auction->security->securityCode), MailContents::updateAuctionBidForBidderSubject())
+        );
 
         return redirect()->back()->with('success', "Bid Updated successfully.");
     }

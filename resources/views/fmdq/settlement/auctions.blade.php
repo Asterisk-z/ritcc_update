@@ -23,7 +23,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
-                                        <th>Description</th>
+                                        {{-- <th>Description</th> --}}
                                         <th>Code</th>
                                         <th>Auctioneer</th>
                                         <th>ISIN Number</th>
@@ -40,9 +40,9 @@
                                     <tr>
                                         {{-- @dd($auction->security) --}}
                                         <td>{{ $i++; }}</td>
-                                        <td>{{ $auction->security->description }}</td>
+                                        {{-- <td>{{ $auction->security->description }}</td> --}}
                                         <td>{{ $auction->securityCode }}</td>
-                                        <td>{{ $auction->auctioneerEmail }}</td>
+                                        <td>{{ $auction->auctioneerEmail->firstName }}</td>
                                         <td>{{ $auction->isinNumber }}</td>
                                         <td>{{ date('F d, Y',strtotime($auction->createdDate))}}</td>
                                         <td>

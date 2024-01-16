@@ -24,7 +24,7 @@
     {{-- <marquee>
         <h6 class="text-center text-uppercase" style="color:#1D326C;">Road Infrastructure Tax Credit Certificate
             (RITCC)
-            Auctionining System</h6>
+            Auctioning System</h6>
     </marquee> --}}
     <ul class="nav nav-tabs user-menu">
         <li class="nav-item dropdown">

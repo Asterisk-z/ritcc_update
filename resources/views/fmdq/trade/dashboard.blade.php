@@ -44,7 +44,7 @@
                                         {{-- --}}
                                         <div class="col-md-6 mb-3">
                                             <label for="validationCustom01">Settlement Account</label>
-                                            <input type="text" name="settlementAccount" class="form-control"
+                                            <input type="number" min="1" name="settlementAccount" class="form-control"
                                                 id="validationCustom01" required>
                                             <div class="invalid-feedback">
                                                 This field is required
@@ -81,7 +81,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         {{-- --}}
@@ -211,46 +210,46 @@
                                                         <input type='hidden' name='auction_ref'
                                                             value="{{ $bid->auctionRef }}" />
 
-                                                        <div class="form-row row">
-                                                            {{-- code --}}
-                                                            {{-- --}}
-                                                            <div class="col-md-6 mb-3">
-                                                                <label for="validationCustom01">Settlement
-                                                                    Account</label>
-                                                                <input type="number" name="settlementAccount"
-                                                                    class="form-control" id="validationCustom01"
-                                                                    value="{{ $bid->settlementAccount }}" required>
-                                                                <div class="invalid-feedback">
-                                                                    This field is required
+                                                        <div class="form-row">
+                                                            <div class="row">
+                                                                <div class="col-md-6 mb-3">
+                                                                    <label for="validationCustom01">Settlement
+                                                                        Account</label>
+                                                                    <input type="number" name="settlementAccount"
+                                                                        class="form-control" id="validationCustom01"
+                                                                        value="{{ $bid->settlementAccount }}" required>
+                                                                    <div class="invalid-feedback">
+                                                                        This field is required
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-6 mb-3">
+                                                                    <label for="validationCustom01">Nominal Amount
+                                                                        (₦‘mm)</label>
+                                                                    <input type="number" name="nominalAmount"
+                                                                        class="form-control" id="validationCustom01"
+                                                                        value="{{ $bid->nominalAmount }}" required>
+                                                                    <div class="invalid-feedback">
+                                                                        This field is required
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-12 mb-3">
+                                                                    <label for="validationCustom01">Dicount Rate
+                                                                        (%)</label>
+                                                                    <input type="number" name="discountRate"
+                                                                        class="form-control" id="validationCustom01"
+                                                                        value="{{ $bid->discountRate }}" required>
+                                                                    <div class="invalid-feedback">
+                                                                        This field is required
+                                                                    </div>
                                                                 </div>
                                                             </div>
-
-                                                            <div class="col-md-6 mb-3">
-                                                                <label for="validationCustom01">Nominal Amount
-                                                                    (₦‘mm)</label>
-                                                                <input type="number" name="nominalAmount"
-                                                                    class="form-control" id="validationCustom01"
-                                                                    value="{{ $bid->nominalAmount }}" required>
-                                                                <div class="invalid-feedback">
-                                                                    This field is required
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-md-12 mb-3">
-                                                                <label for="validationCustom01">Dicount Rate (%)</label>
-                                                                <input type="number" name="discountRate"
-                                                                    class="form-control" id="validationCustom01"
-                                                                    value="{{ $bid->discountRate }}" required>
-                                                                <div class="invalid-feedback">
-                                                                    This field is required
-                                                                </div>
-                                                            </div>
-
                                                         </div>
 
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Update Bid</button>
+                                                            <button type="submit" class="btn btn-primary">Update
+                                                                Bid</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
@@ -279,8 +278,7 @@
                                                             <p>Are you sure you want to delete this bid?</p>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Delete
+                                                            <button type="submit" class="btn btn-primary">Delete
                                                                 bid</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"

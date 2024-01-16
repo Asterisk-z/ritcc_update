@@ -1,14 +1,8 @@
 @extends('layouts.app')
-@section('title','RITCC Institution Management')
+@section('title','RITCC Auctioneer Dashboard')
 
 @section('content')
 
 @include('fmdq.auction.dashboard')
 
-@endsection
-
-@section('script')
-<script>
-
-</script>
 @endsection

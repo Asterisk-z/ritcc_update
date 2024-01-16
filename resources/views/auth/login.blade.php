@@ -25,7 +25,7 @@
                                 alt="Logo">
                             <h1></h1>
                             <p class="account-subtitle">Login to <b>Road Infrastructure Tax Credit Certificate
-                                    Auctionining System Portal</b></p>
+                                    Auctioning System Portal</b></p>
                             <form action="{{ route('signIn') }}" method="POST" autocomplete="on" class="confirmation"
                                 novalidate>
                                 @csrf

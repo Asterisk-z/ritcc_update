@@ -54,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my-activities', [DashboardController::class, 'userLogs'])->name('myLogs');
     //
     Route::middleware(['isSuperUser'])->group(function () {
-
+        // Route::group(['prefix' => 'bank'], function () {};
         // profile
         Route::get('/profile-management', [ProfileController::class, 'index'])->name('profile.index');
         Route::get('/profile-management/pending', [ProfileController::class, 'pending'])->name('profile.pending');
@@ -120,6 +120,7 @@ Route::middleware(['auth'])->group(function () {
 
     // inputter
     Route::middleware(['isInputter'])->group(function () {
+        // Route::group(['prefix' => 'bank'], function () {};
         // profile
         Route::get('/inputter/profile-management', [ProfileController::class, 'index'])->name('inputter.profile.index');
         Route::get('/inputter/profile-management/pending', [ProfileController::class, 'pending'])->name('inputter.profile.pending');
@@ -179,6 +180,7 @@ Route::middleware(['auth'])->group(function () {
 
     // authoriser
     Route::middleware(['isAuthoriser'])->group(function () {
+        // Route::group(['prefix' => 'bank'], function () {};
         // profile
         Route::get('/authoriser/profile-management', [ProfileController::class, 'index'])->name('authoriser.profile.index');
         Route::get('/authoriser/profile-management/pending', [ProfileController::class, 'pending'])->name('authoriser.profile.pending');
@@ -220,7 +222,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware(['isBank'])->group(function () {
-
+        // Route::group(['prefix' => 'bank'], function () {};
         Route::get('/bank-dashboard', [BankDashboardController::class, 'index'])->name('bank.dashboard');
         Route::get('/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('bank.mgt.auctions');
         Route::get('/certificates', [CertificateManagementController::class, 'myIndex'])->name('bank.mgt.certificates');
@@ -241,6 +243,7 @@ Route::middleware(['auth'])->group(function () {
 
     // firs
     Route::middleware(['isFirs'])->group(function () {
+        // Route::group(['prefix' => 'firs/certificate-management'], function () {};
         // Certificate
         Route::get('/firs/certificate-management', [CertificateManagementController::class, 'index'])->name('firs.certificate.mgt.dashboard');
         Route::get('/firs/certificate-management/pending', [CertificateManagementController::class, 'pendingIndex'])->name('firs.certificate.mgt.pending');

@@ -25,7 +25,7 @@
                     </div>
                     <div class="col-lg-10">
                         <h2>Road Infrastructure Tax Credit Certificate
-                            Auctionining System Portal</h4>
+                            Auctioning System Portal</h4>
                     </div>
                 </div>
 

@@ -17,14 +17,14 @@ class SettlementController extends Controller
         $auctions = Auction::where('bidResultTime', '<', now())->get();
         return view('fmdq.settlement.auctions', compact('auctions'));
     }
-
+    // to view the the bids for the auctioneers
     public function bidder()
     {
         $transactions = Transaction::where('auctionRef', request('id'))->with('bidder_obj')->orderBy('amountOffered', 'DESC')->orderBy('timestamp', 'DESC')->get();
 
         return view('fmdq.settlement.bidders', compact('transactions'));
     }
-
+    // to display the list of settlements that has been settled
     public function depository()
     {
         $transactions = Transaction::where('settlementFlag', '1')->with('bidder_obj')->orderBy('amountOffered', 'DESC')->orderBy('timestamp', 'DESC')->get();
@@ -32,6 +32,7 @@ class SettlementController extends Controller
         return view('fmdq.settlement.depository', compact('transactions'));
     }
 
+    // to display the list of approved settlements
     public function approval_list()
     {
         $transactions = Transaction::where('settlementFlag', '0')->where('settlementPendingApprovalFlag', 1)->where('settlementRejectedFlag', 0)->where('settlementApprovalFlag', 0)->with('bidder_obj')->orderBy('amountOffered', 'DESC')->orderBy('timestamp', 'DESC')->get();
@@ -39,13 +40,14 @@ class SettlementController extends Controller
         return view('fmdq.settlement.approve', compact('transactions'));
     }
 
+    // depository inputter to create settlement
     public function settle(Request $request)
     {
 
         $validated = $request->validate([
             'bid_ref' => 'bail|required',
             'settlement_date' => 'bail|required|date',
-        ], []);
+        ]);
 
         if (!$validated) {
             return back()->withErrors($validated);
@@ -63,26 +65,25 @@ class SettlementController extends Controller
             $daysToAdd = ($settlement_date->weekday() - 5) + 1;
             $settlement_date = $settlement_date->addDays($daysToAdd);
         }
-
+        //
         $transaction->settlementFlag = '0';
         $transaction->settlementPendingApprovalFlag = '1';
         $transaction->settlementRejectedFlag = '0';
         $transaction->settlementApprovalFlag = '0';
         $transaction->settlementDate = $settlement_date;
 
-        $transaction->save();
+        $settle = $transaction->save();
+        if ($settle) {
+            // log activity
+            $logMessage = auth()->user()->email . ' sent transaction settlement for approval';
+            logAction(auth()->user()->email, 'Transaction Settlement Sent for Approval', $logMessage, $request->ip());
+            //
 
-        $activity = new ActivityLog();
-        $activity->date = now();
-        $activity->app = 'RITCC';
-        $activity->type = 'Transaction Settlement Sent for Approval';
-        $activity->activity = auth()->user()->email . ' sent transaction settlement for approval';
-        $activity->username = auth()->user()->email;
-        $activity->save();
-
-        return redirect()->back()->with('success', "Transaction Settlement Approved.");
+            return redirect()->back()->with('success', "Transaction Settlement has been set for approval");
+        }
     }
 
+    // authoriser to approve settlement
     public function approve_settle(Request $request)
     {
 
@@ -118,6 +119,7 @@ class SettlementController extends Controller
         return redirect()->back()->with('success', "Transaction Settlement Approved.");
     }
 
+    // authoriser to decline settlement
     public function decline_settle(Request $request)
     {
 
@@ -156,6 +158,7 @@ class SettlementController extends Controller
         return redirect()->back()->with('success', "Transaction Settlement Approved.");
     }
 
+    // function to make sure that trade does not go on Public Holidays
     private function updateTimeBasedOnPublicHoliday($settlement_date)
     {
 

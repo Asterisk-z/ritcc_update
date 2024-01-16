@@ -66,7 +66,7 @@
         </div>
         <div class="content">
             <h4 style="text-align: center;">Road Infrastructure Tax Credit Certificate
-                Auctionining System</h4>
+                Auctioning System</h4>
             <p>Dear {{$user->firstName}},</p>
             <p>{!! $info !!}</p>
             <p>Kindly click on this <a href="{{ route('login') }}"><strong>link</strong></a> to proceed.</p>

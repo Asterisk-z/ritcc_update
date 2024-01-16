@@ -20,7 +20,6 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Code</th>
-                                        <th>Description</th>
                                         <th>ISIN Number</th>
                                         <th>Date Created</th>
                                         <th>Status</th>
@@ -35,7 +34,6 @@
                                     <tr>
                                         <td>{{ $i++; }}</td>
                                         <td>{{ $auction->securityCode }}</td>
-                                        <td>{{ $auction->security->description }}</td>
                                         <td>{{ $auction->isinNumber }}</td>
                                         <td>{{ date('F d, Y',strtotime($auction->createdDate))}}</td>
                                         <td><span class="badge bg-1">Approved</span></td>

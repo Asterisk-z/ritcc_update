@@ -17,16 +17,13 @@ class BankDashboardController extends Controller
      */
     public function index()
     {
-
         $user = auth()->user();
-
         $auctions = [];
         $trades = [];
         $all = 0;
         $approved = 0;
         $pending = 0;
         $rejected = 0;
-        // dd(auth()->user()->email);
         if (auth()->user()->type == 'auctioneer') {
             $auctions = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->where('auctioneerRef', auth()->user()->id)->where('auctionStartTime', '<=', now())->where('bidCloseTime', '<=', now())->orderBy('createdDate', 'DESC')->get();
             $all = Auction::where('auctioneerRef', auth()->user()->id)->count();
@@ -38,14 +35,6 @@ class BankDashboardController extends Controller
         if (auth()->user()->type == 'bidder') {
 
             $trades = Transaction::where('bidderRef', auth()->user()->id)->orderBy('timestamp', 'DESC')->get();
-            // $auctions = Auction::where('approveFlag', 1)
-            //     ->where('rejectionFlag', 0)
-            //     ->where('deleteFlag', 0)
-            //     ->where('modifyingFlag', 0)
-            //     ->where('deletingFlag', 0)
-            //     ->where('auctionStartTime', '<=', now())
-            //     ->where('bidCloseTime', '>=', now())
-            //     ->get();
             $bidder = auth()->user()->email;
             $auctions = Auction::where('approveFlag', 1)
                 ->where('rejectionFlag', 0)
@@ -67,9 +56,6 @@ class BankDashboardController extends Controller
             $pending = Auction::where('approveFlag', 0)->where('rejectionFlag', 0)->where('deleteFlag', 0)->count();
             $rejected = Auction::where('approveFlag', 0)->where('rejectionFlag', 1)->where('deleteFlag', 0)->count();
         }
-
-        dd($auctions, now(), date('H:i:s'));
-        // ->where('auctionStartTime', '>=', now())->where('bidCloseTime', '<=', now())
         return view('bank.dashboard', compact('user', 'auctions', 'trades', 'all', 'pending', 'approved', 'rejected'));
     }
 

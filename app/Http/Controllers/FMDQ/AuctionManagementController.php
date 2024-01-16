@@ -175,10 +175,7 @@ class AuctionManagementController extends Controller
 
         $bids = Transaction::pluck('auctionRef');
         $auctions = Auction::whereIn('tblAuction.id', $bids)->withCount('transactions')->get();
-        // dd($bids, $auctions);
-        // if (request('id')) {
-        //     $bids = Transaction::where('auctionRef', request('id'))->where('awardedFlag', 1)->orderBy('nominalAmount', 'DESC')->orderBy('timestamp', 'DESC')->get();
-        // }
+        // dd($auctions);
         return view('fmdq.auction.results', compact('bids', 'auctions', 'page'));
     }
     /**

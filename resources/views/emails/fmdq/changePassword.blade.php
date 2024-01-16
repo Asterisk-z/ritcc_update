@@ -130,7 +130,7 @@
         <main>
             <div class="body-text">
                 <h1 style="text-align: center;">Road Infrastructure Tax Credit Certificate
-                    Auctionining System</h1>
+                    Auctioning System</h1>
                 <p>Dear <span>{{ $updated['name'] }}</span>,</p>
                 {{-- Profie --}}
                 @if ($updated['type'] == 'change_password')

@@ -22,4 +22,14 @@ class Transaction extends Model
     {
         return $this->hasOne(Profile::class, 'id', 'bidderRef');
     }
+
+    public function auctioneer()
+    {
+        return $this->belongsTo(Profile::class, 'auctioneerEmail', 'email');
+    }
+
+    public function bidder()
+    {
+        return $this->belongsTo(Profile::class, 'bidderRef', 'id');
+    }
 }
