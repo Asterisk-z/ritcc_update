@@ -9,10 +9,12 @@
     <meta name="keywords" content="FMDQ RITCC">
     <title>RITCC - Terms And Conditions</title>
 
-    <link rel="shortcut icon" href="{{ asset('favicon/favicon.ico') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-
+    <!-- <link rel="shortcut icon" href="  {{ asset('favicon/favicon.ico') }}"> -->
+    <!-- <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}"> -->
+    <!-- <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+     -->
+    <link rel="stylesheet" href="public/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/assets/css/style.css">
 </head>
 
 <body class="login">
@@ -24,7 +26,7 @@
                         <img src="{{ asset('assets/img/FMDQLogo.png') }}" alt="logo">
                     </div>
                     <div class="col-lg-10">
-                        <h2>Road Infrastructure Tax Credit Certificate Auctionining System Portal</h4>
+                        <h2>Road Infrastructure Tax Credit Certificate Auctioning System Portal</h4>
                     </div>
                 </div>
 
@@ -94,13 +96,13 @@
                                                         By clicking “Agree”, you confirm that you have read and understood the foregoing and consent to the collection, use, storage, processing, transfer and disclosure of your personal information in accordance with the Exchange’s Privacy Policy.
                                                     </p>
                                                     <form action="{{ route('postTerms') }}" class="needs-validation confirmation" method="POST" novalidate>
-                                                        @csrf
+                                                        <!-- @csrf -->
                                                         <input type="checkbox" name="accept" style="height:15px; width:18px;" required>
                                                         <strong class="text-black mb-3">I agree to the Terms and
                                                             Conditions
                                                             stated <span class="text-danger">*</span></strong>
                                                         <div class="invalid-feedback">This field is required</div>
-                                                        <br><br> {{-- <input type="button" value="Continue"> --}}
+                                                        <br><br>
                                                         <button type="submit" class="btn btn-primary">Continue</button>
                                                     </form>
                                                 </div>
@@ -115,6 +117,7 @@
             </div>
         </div>
     </div>
+
 </body>
 
 </html>
