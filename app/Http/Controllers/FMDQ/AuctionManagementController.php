@@ -255,16 +255,15 @@ class AuctionManagementController extends Controller
             return redirect()->back()->with('error', "Fail to Award Offer.");
         }
 
+        // if (!$approve_action) {
+        //     return redirect()->back()->with('error', "Fail to approve Auction.");
+        // }
+
         // dd($bid->auction, $totalAwardedBids, ($totalAwardedBids > $bid->auction->offerAmount));
         $bid->awardedFlag = 1;
         $bid->amountOffered = $award_amount;
-
         $approve_action = $bid->save();
-
-        if (!$approve_action) {
-            return redirect()->back()->with('error', "Fail to approve Auction.");
-        }
-
+        //
         $activity = new ActivityLog();
         $activity->date = now();
         $activity->app = 'RITCC';
