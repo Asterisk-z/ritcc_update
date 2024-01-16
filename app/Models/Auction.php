@@ -9,6 +9,7 @@ class Auction extends Model
 {
     use HasFactory;
     protected $table = 'tblAuction';
+    // protected $appends = ['field_options'];
     public $guarded = [];
     public $timestamps = false;
 
@@ -24,6 +25,11 @@ class Auction extends Model
         return $this->hasMany(Transaction::class, 'auctionRef', 'id');
     }
 
+    // public function getFieldOptionsAttribute()
+    // {
+    //     dd(Transaction::where('auctionRef', $this->id)->get());
+    //     return Transaction::where('auctionRef', $this->id)->sum('nominalAmount');
+    // }
 
     public function auctioneer()
     {

@@ -6,9 +6,9 @@ use App\Helpers\MailContents;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\Auction;
+use App\Models\Profile;
 use App\Models\Security;
 use App\Models\Transaction;
-use App\Models\Profile;
 use App\Notifications\InfoNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -174,9 +174,20 @@ class AuctionManagementController extends Controller
         $page = 'Auctions History Bids';
 
         $bids = Transaction::pluck('auctionRef');
-        $auctions = Auction::whereIn('tblAuction.id', $bids)->withCount('transactions')->get();
-        // dd($auctions);
-        return view('fmdq.auction.results', compact('bids', 'auctions', 'page'));
+        // $auctions = Auction::whereIn('tblAuction.id', $bids)->withCount('transactions')->get();
+        $auctions = Auction::whereIn('tblAuction.id', $bids)->get();
+        $auction_list = [];
+        foreach ($auctions as $auction) {
+
+            $bids = Transaction::where('auctionRef', $auction->id)->sum('nominalAmount');
+            $total_bid = Transaction::where('auctionRef', $auction->id)->count();
+            $auction->total_bid_amount = $bids;
+            $auction->total_bid = $total_bid;
+            array_push($auction_list, $auction);
+
+        }
+
+        return view('fmdq.auction.results', compact('bids', 'auction_list', 'page'));
     }
     /**
      * Show the form for creating a new resource.

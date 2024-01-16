@@ -30,24 +30,21 @@
                                     @php
                                     $i = 1;
                                     @endphp
-                                    @foreach ($auctions as $item)
+                                    @foreach ($auction_list as $item)
                                     <tr>
                                         <td>{{ $i++; }}</td>
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->offerAmount }}</td>
-                                        <td></td>
+                                        <td>{{ number_format($item->total_bid_amount) }}</td>
                                         <td>{{ $item->isinNumber }}</td>
                                         <td>{{ date('F d, Y',strtotime($item->bidCloseTime))}}</td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
-                                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul>
                                                         <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{route('auction.mgt.results', $item->id)}}"><i
-                                                                    class="far fa-edit me-2"></i>Result</a>
+                                                            <a class="dropdown-item" href="{{route('auction.mgt.results', $item->id)}}"><i class="far fa-edit me-2"></i>Result</a>
                                                         </li>
                                                     </ul>
                                                 </div>
