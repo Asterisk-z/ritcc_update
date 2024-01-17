@@ -129,57 +129,56 @@ Route::middleware(['auth'])->group(function () {
             Route::post('profile/create', [ProfileController::class, 'create'])->name('inputter.profile.create');
             Route::post('profile/update/{id}', [ProfileController::class, 'update'])->name('inputterProfileUpdate');
             Route::post('profile/deactivate/{id}', [ProfileController::class, 'deactivateProfile'])->name('inputter.profile.deactivateProfile');
+            // institution
+            Route::get('institution-management', [InstitutionController::class, 'index'])->name('inputter.institution.index');
+            Route::get('institution-management/pending', [InstitutionController::class, 'pending'])->name('inputter.institution.pending');
+            Route::get('institution-management/rejected', [InstitutionController::class, 'rejected'])->name('inputter.institution.rejected');
+            Route::get('institution-management/approved', [InstitutionController::class, 'approved'])->name('inputter.institution.approved');
+            Route::post('institution/create', [InstitutionController::class, 'create'])->name('inputter.institution.create');
+            Route::post('institution/update/{id}', [InstitutionController::class, 'update'])->name('inputter.institution.update');
+            Route::post('institution/delete/{id}', [InstitutionController::class, 'delete'])->name('inputter.institution.delete');
+            // certificate
+            Route::get('certificate-management', [CertificateManagementController::class, 'index'])->name('inputter.certificate.mgt.dashboard');
+            Route::get('certificate-management/pending', [CertificateManagementController::class, 'pendingIndex'])->name('inputter.certificate.mgt.pending');
+            Route::get('certificate-management/rejected', [CertificateManagementController::class, 'rejectedIndex'])->name('inputter.certificate.mgt.rejected');
+            Route::get('certificate-management/approved', [CertificateManagementController::class, 'approvedIndex'])->name('inputter.certificate.mgt.approved');
+            Route::post('certificate-management/create', [CertificateManagementController::class, 'create'])->name('inputter.certificate.mgt.create');
+            Route::post('certificate-management/update', [CertificateManagementController::class, 'update'])->name('inputter.certificate.mgt.update');
+            Route::post('certificate-management/delete', [CertificateManagementController::class, 'delete'])->name('inputter.certificate.mgt.delete');
+            // auctions
+            Route::get('auction-management', [AuctionManagementController::class, 'index'])->name('inputter.auction.mgt.dashboard');
+            Route::get('auction-management/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('inputter.auction.mgt.auctions');
+            Route::get('auction-management/history', [AuctionManagementController::class, 'auctionsHistory'])->name('inputter.auction.mgt.history');
+            Route::post('auction-management/delete', [AuctionManagementController::class, 'delete'])->name('inputter.auction.mgt.delete');
+            Route::post('auction-management/update', [AuctionManagementController::class, 'update'])->name('inputter.auction.mgt.update');
+            Route::get('auction-management/bids/{id}', [AuctionManagementController::class, 'auctionBids'])->name('inputter.auction.mgt.bids');
+            Route::get('auction-management/pending', [AuctionManagementController::class, 'pendingIndex'])->name('inputter.auction.mgt.pending');
+            Route::get('auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('inputter.auction.mgt.rejected');
+            Route::get('auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('inputter.auction.mgt.approved');
+            Route::post('auction-management/create', [AuctionManagementController::class, 'create'])->name('inputter.auction.mgt.create');
+
+            // system settings
+            Route::get('/system-settings', [SystemController::class, 'index'])->name('system.settings');
+            Route::get('/packages', [SystemController::class, 'packagesIndex'])->name('packages');
+            Route::post('/create-package', [SystemController::class, 'packageStore'])->name('createPackage');
+            Route::post('/update-package/{id}', [SystemController::class, 'packageUpdate'])->name('updatePackage');
+            Route::post('/delete-package/{id}', [SystemController::class, 'packageDelete'])->name('deletePackage');
+            //
+            Route::get('/public-holidays', [SystemController::class, 'holidaysIndex'])->name('publicHolidays');
+            Route::post('/create-holiday', [SystemController::class, 'storeHoliday'])->name('storeHoliday');
+            Route::post('/update-holiday', [SystemController::class, 'updateHoliday'])->name('updateHoliday');
+            Route::post('/delete-holiday', [SystemController::class, 'deleteHoliday'])->name('deleteHoliday');
+            //
+            Route::get('/auction-windows', [SystemController::class, 'windowsIndex'])->name('auctionWindows');
+            Route::post('/create-window', [SystemController::class, 'storeWindow'])->name('storeWindow');
+            Route::post('/update-window', [SystemController::class, 'updateWindow'])->name('updateWindow');
+            Route::post('/delete-window', [SystemController::class, 'deleteWindow'])->name('deleteWindow');
+            // security type
+            Route::get('/security-type', [SecurityTypeController::class, 'index'])->name('securityType');
+            Route::post('/create-security-type', [SecurityTypeController::class, 'store'])->name('storeSecurityType');
+            Route::post('/update-security-type', [SecurityTypeController::class, 'update'])->name('updateSecurityType');
+            Route::post('/delete-security-type', [SecurityTypeController::class, 'destroy'])->name('deleteSecurityType');
         });
-
-        // institution
-        Route::get('/inputter/institution-management', [InstitutionController::class, 'index'])->name('inputter.institution.index');
-        Route::get('/inputter/institution-management/pending', [InstitutionController::class, 'pending'])->name('inputter.institution.pending');
-        Route::get('/inputter/institution-management/rejected', [InstitutionController::class, 'rejected'])->name('inputter.institution.rejected');
-        Route::get('/inputter/institution-management/approved', [InstitutionController::class, 'approved'])->name('inputter.institution.approved');
-        Route::post('/inputter/institution/create', [InstitutionController::class, 'create'])->name('inputter.institution.create');
-        Route::post('/inputter/institution/update/{id}', [InstitutionController::class, 'update'])->name('inputter.institution.update');
-        Route::post('/inputter/institution/delete/{id}', [InstitutionController::class, 'delete'])->name('inputter.institution.delete');
-        // certificate
-        Route::get('/inputter/certificate-management', [CertificateManagementController::class, 'index'])->name('inputter.certificate.mgt.dashboard');
-        Route::get('/inputter/certificate-management/pending', [CertificateManagementController::class, 'pendingIndex'])->name('inputter.certificate.mgt.pending');
-        Route::get('/inputter/certificate-management/rejected', [CertificateManagementController::class, 'rejectedIndex'])->name('inputter.certificate.mgt.rejected');
-        Route::get('/inputter/certificate-management/approved', [CertificateManagementController::class, 'approvedIndex'])->name('inputter.certificate.mgt.approved');
-        Route::post('/inputter/certificate-management/create', [CertificateManagementController::class, 'create'])->name('inputter.certificate.mgt.create');
-        Route::post('/inputter/certificate-management/update', [CertificateManagementController::class, 'update'])->name('inputter.certificate.mgt.update');
-        Route::post('/inputter/certificate-management/delete', [CertificateManagementController::class, 'delete'])->name('inputter.certificate.mgt.delete');
-        // auctions
-        Route::get('/inputter/auction-management', [AuctionManagementController::class, 'index'])->name('inputter.auction.mgt.dashboard');
-        Route::get('/inputter/auction-management/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('inputter.auction.mgt.auctions');
-        Route::get('/inputter/auction-management/history', [AuctionManagementController::class, 'auctionsHistory'])->name('inputter.auction.mgt.history');
-        Route::post('/inputter/auction-management/delete', [AuctionManagementController::class, 'delete'])->name('inputter.auction.mgt.delete');
-        Route::post('/inputter/auction-management/update', [AuctionManagementController::class, 'update'])->name('inputter.auction.mgt.update');
-        Route::get('/inputter/auction-management/bids/{id}', [AuctionManagementController::class, 'auctionBids'])->name('inputter.auction.mgt.bids');
-        Route::get('/inputter/auction-management/pending', [AuctionManagementController::class, 'pendingIndex'])->name('inputter.auction.mgt.pending');
-        Route::get('/inputter/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('inputter.auction.mgt.rejected');
-        Route::get('/inputter/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('inputter.auction.mgt.approved');
-        Route::post('/inputter/auction-management/create', [AuctionManagementController::class, 'create'])->name('inputter.auction.mgt.create');
-
-        // system settings
-        Route::get('/system-settings', [SystemController::class, 'index'])->name('system.settings');
-        Route::get('/packages', [SystemController::class, 'packagesIndex'])->name('packages');
-        Route::post('/create-package', [SystemController::class, 'packageStore'])->name('createPackage');
-        Route::post('/update-package/{id}', [SystemController::class, 'packageUpdate'])->name('updatePackage');
-        Route::post('/delete-package/{id}', [SystemController::class, 'packageDelete'])->name('deletePackage');
-        //
-        Route::get('/public-holidays', [SystemController::class, 'holidaysIndex'])->name('publicHolidays');
-        Route::post('/create-holiday', [SystemController::class, 'storeHoliday'])->name('storeHoliday');
-        Route::post('/update-holiday', [SystemController::class, 'updateHoliday'])->name('updateHoliday');
-        Route::post('/delete-holiday', [SystemController::class, 'deleteHoliday'])->name('deleteHoliday');
-        //
-        Route::get('/auction-windows', [SystemController::class, 'windowsIndex'])->name('auctionWindows');
-        Route::post('/create-window', [SystemController::class, 'storeWindow'])->name('storeWindow');
-        Route::post('/update-window', [SystemController::class, 'updateWindow'])->name('updateWindow');
-        Route::post('/delete-window', [SystemController::class, 'deleteWindow'])->name('deleteWindow');
-        // security type
-        Route::get('/security-type', [SecurityTypeController::class, 'index'])->name('securityType');
-        Route::post('/create-security-type', [SecurityTypeController::class, 'store'])->name('storeSecurityType');
-        Route::post('/update-security-type', [SecurityTypeController::class, 'update'])->name('updateSecurityType');
-        Route::post('/delete-security-type', [SecurityTypeController::class, 'destroy'])->name('deleteSecurityType');
     });
 
     // authoriser
@@ -196,65 +195,45 @@ Route::middleware(['auth'])->group(function () {
             Route::post('profile/update/reject/{id}', [ProfileController::class, 'rejectUpdate'])->name('authoriserProfileRejectUpdate');
             Route::post('profile/delete/approve/{id}', [ProfileController::class, 'approveDeactivate'])->name('authoriserProfileApproveDelete');
             Route::post('profile/delete/reject/{id}', [ProfileController::class, 'rejectDeactivate'])->name('authoriserProfileRejectDelete');
+            // Institution
+            Route::get('/authoriser/institution-management', [InstitutionController::class, 'index'])->name('authoriser.institution.index');
+            Route::get('/authoriser/institution-management/pending', [InstitutionController::class, 'pending'])->name('authoriser.institution.pending');
+            Route::get('/authoriser/institution-management/rejected', [InstitutionController::class, 'rejected'])->name('authoriser.institution.rejected');
+            Route::get('/authoriser/institution-management/approved', [InstitutionController::class, 'approved'])->name('authoriser.institution.approved');
+            Route::post('/authoriser/institution/create', [InstitutionController::class, 'create'])->name('authoriser.institution.create');
+            Route::post('/authoriser/institution/update/{id}', [InstitutionController::class, 'update'])->name('authoriser.institution.update');
+            Route::post('/authoriser/institution/delete/{id}', [InstitutionController::class, 'delete'])->name('authoriser.institution.delete');
+            Route::post('/authoriser/institution/create/approve/{id}', [InstitutionController::class, 'approveCreate'])->name('authoriser.institution.approveCreate');
+            Route::post('/authoriser/institution/create/reject/{id}', [InstitutionController::class, 'rejectCreate'])->name('authoriser.institution.rejectCreate');
+            Route::post('/authoriser/institution/update/approve/{id}', [InstitutionController::class, 'approveUpdate'])->name('authoriser.institution.approveUpdate');
+            Route::post('/authoriser/institution/update/reject/{id}', [InstitutionController::class, 'rejectUpdate'])->name('authoriser.institution.rejectUpdate');
+            Route::post('/authoriser/institution/delete/approve/{id}', [InstitutionController::class, 'approveDelete'])->name('authoriser.institution.approveDelete');
+            Route::post('/authoriser/institution/delete/reject/{id}', [InstitutionController::class, 'rejectDelete'])->name('authoriser.institution.rejectDelete');
+            // auctions
+            Route::get('/authoriser/auction-management', [AuctionManagementController::class, 'index'])->name('authoriser.auction.mgt.dashboard');
+            Route::get('/authoriser/auction-management/pending', [AuctionManagementController::class, 'pendingIndex'])->name('authoriser.auction.mgt.pending');
+            Route::get('/authoriser/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('authoriser.auction.mgt.rejected');
+            Route::get('/authoriser/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('authoriser.auction.mgt.approved');
+            Route::post('/auction-management/approve/delete', [AuctionManagementController::class, 'approveDelete'])->name('auction.mgt.approve.delete');
+            Route::post('/auction-management/reject/delete', [AuctionManagementController::class, 'rejectDelete'])->name('auction.mgt.reject.delete');
+            Route::post('/auction-management/approve/create', [AuctionManagementController::class, 'approveCreate'])->name('auction.mgt.approve.create');
+            Route::post('/auction-management/reject/create', [AuctionManagementController::class, 'rejectCreate'])->name('auction.mgt.reject.create');
+            Route::get('/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('auction.mgt.rejected');
+            Route::get('/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('auction.mgt.approved');
+            Route::post('/auction-management/approve/update', [AuctionManagementController::class, 'approveUpdate'])->name('auction.mgt.approve.update');
+            Route::post('/auction-management/reject/update', [AuctionManagementController::class, 'rejectUpdate'])->name('auction.mgt.reject.update');
         });
-
-
-        // Institution
-        Route::get('/authoriser/institution-management', [InstitutionController::class, 'index'])->name('authoriser.institution.index');
-        Route::get('/authoriser/institution-management/pending', [InstitutionController::class, 'pending'])->name('authoriser.institution.pending');
-        Route::get('/authoriser/institution-management/rejected', [InstitutionController::class, 'rejected'])->name('authoriser.institution.rejected');
-        Route::get('/authoriser/institution-management/approved', [InstitutionController::class, 'approved'])->name('authoriser.institution.approved');
-        Route::post('/authoriser/institution/create', [InstitutionController::class, 'create'])->name('authoriser.institution.create');
-        Route::post('/authoriser/institution/update/{id}', [InstitutionController::class, 'update'])->name('authoriser.institution.update');
-        Route::post('/authoriser/institution/delete/{id}', [InstitutionController::class, 'delete'])->name('authoriser.institution.delete');
-        Route::post('/authoriser/institution/create/approve/{id}', [InstitutionController::class, 'approveCreate'])->name('authoriser.institution.approveCreate');
-        Route::post('/authoriser/institution/create/reject/{id}', [InstitutionController::class, 'rejectCreate'])->name('authoriser.institution.rejectCreate');
-        Route::post('/authoriser/institution/update/approve/{id}', [InstitutionController::class, 'approveUpdate'])->name('authoriser.institution.approveUpdate');
-        Route::post('/authoriser/institution/update/reject/{id}', [InstitutionController::class, 'rejectUpdate'])->name('authoriser.institution.rejectUpdate');
-        Route::post('/authoriser/institution/delete/approve/{id}', [InstitutionController::class, 'approveDelete'])->name('authoriser.institution.approveDelete');
-        Route::post('/authoriser/institution/delete/reject/{id}', [InstitutionController::class, 'rejectDelete'])->name('authoriser.institution.rejectDelete');
-
-        // auctions
-        Route::get('/authoriser/auction-management', [AuctionManagementController::class, 'index'])->name('authoriser.auction.mgt.dashboard');
-        Route::get('/authoriser/auction-management/pending', [AuctionManagementController::class, 'pendingIndex'])->name('authoriser.auction.mgt.pending');
-        Route::get('/authoriser/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('authoriser.auction.mgt.rejected');
-        Route::get('/authoriser/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('authoriser.auction.mgt.approved');
-        Route::post('/auction-management/approve/delete', [AuctionManagementController::class, 'approveDelete'])->name('auction.mgt.approve.delete');
-        Route::post('/auction-management/reject/delete', [AuctionManagementController::class, 'rejectDelete'])->name('auction.mgt.reject.delete');
-        Route::post('/auction-management/approve/create', [AuctionManagementController::class, 'approveCreate'])->name('auction.mgt.approve.create');
-        Route::post('/auction-management/reject/create', [AuctionManagementController::class, 'rejectCreate'])->name('auction.mgt.reject.create');
-        Route::get('/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('auction.mgt.rejected');
-        Route::get('/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('auction.mgt.approved');
-        Route::post('/auction-management/approve/update', [AuctionManagementController::class, 'approveUpdate'])->name('auction.mgt.approve.update');
-        Route::post('/auction-management/reject/update', [AuctionManagementController::class, 'rejectUpdate'])->name('auction.mgt.reject.update');
     });
-    // // bidder
-    // Route::middleware(['isBank'])->group(function () {
-    //     // Route::group(['prefix' => 'bank'], function () {};
-    //     Route::get('/bank-dashboard', [BankDashboardController::class, 'index'])->name('bank.dashboard');
-    //     Route::get('/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('bank.mgt.auctions');
-    //     Route::get('/certificates', [CertificateManagementController::class, 'myIndex'])->name('bank.mgt.certificates');
 
-    //     Route::get('/trade-management/{id?}', [TradeManagementController::class, 'index'])->name('trade.mgt.dashboard');
-    //     Route::get('/trade-management/bids', [TradeManagementController::class, 'bidIndex'])->name('trade.mgt.bids');
-    //     Route::post('/trade-management/create', [TradeManagementController::class, 'create'])->name('trade.mgt.create');
-    //     Route::post('/trade-management/update', [TradeManagementController::class, 'update'])->name('trade.mgt.update');
-    //     Route::post('/trade-management/delete', [TradeManagementController::class, 'delete'])->name('trade.mgt.delete');
-
-    //     Route::get('auctions/allocation', [AuctionManagementController::class, 'allocation'])->name('auction.mgt.allocation');
-    //     Route::post('auction/close', [AuctionManagementController::class, 'closeAuction'])->name('auction.mgt.close');
-    //     Route::post('auction/award', [AuctionManagementController::class, 'awardAuction'])->name('auction.mgt.award');
-    //     Route::post('auction/cancel', [AuctionManagementController::class, 'awardCancelAuction'])->name('auction.mgt.cancel.award');
-    //     Route::get('/auctions/bids/{id}', [AuctionManagementController::class, 'auctionBids'])->name('auction.mgt.bids');
-    //     Route::get('auctions/results/{id?}', [AuctionManagementController::class, 'results'])->name('auction.mgt.results');
-    // });
     // bidder
     Route::middleware(['isBidder'])->group(function () {
-
         Route::group(['prefix' => 'bidder'], function () {
             Route::get('/dashboard', [BankDashboardController::class, 'bidderDashboard'])->name('bidderDashboard');
             Route::get('/pending-trades', [BankDashboardController::class, 'myPendingTrades'])->name('myPendingTrades');
             Route::get('/awarded-trades', [BankDashboardController::class, 'myAwardedTrades'])->name('myAwardedTrades');
+            Route::post('/trade-management/create', [TradeManagementController::class, 'create'])->name('trade.mgt.create');
+            Route::post('/trade-management/update', [TradeManagementController::class, 'update'])->name('trade.mgt.update');
+            Route::post('/trade-management/delete', [TradeManagementController::class, 'delete'])->name('trade.mgt.delete');
         });
     });
 
@@ -271,9 +250,7 @@ Route::middleware(['auth'])->group(function () {
 
             Route::get('/trade-management/{id?}', [TradeManagementController::class, 'index'])->name('trade.mgt.dashboard');
             Route::get('/trade-management/bids', [TradeManagementController::class, 'bidIndex'])->name('trade.mgt.bids');
-            Route::post('/trade-management/create', [TradeManagementController::class, 'create'])->name('trade.mgt.create');
-            Route::post('/trade-management/update', [TradeManagementController::class, 'update'])->name('trade.mgt.update');
-            Route::post('/trade-management/delete', [TradeManagementController::class, 'delete'])->name('trade.mgt.delete');
+
 
             Route::get('auctions/allocation', [AuctionManagementController::class, 'allocation'])->name('auction.mgt.allocation');
             Route::post('auction/close', [AuctionManagementController::class, 'closeAuction'])->name('auction.mgt.close');
@@ -316,9 +293,4 @@ Route::middleware(['auth'])->group(function () {
             Route::post('settlement/decline/{id}/settle', [SettlementController::class, 'decline_settle'])->name('settlement.decline.settle');
         });
     });
-    // auctioneer
-
-    // bidder
-
-
 });

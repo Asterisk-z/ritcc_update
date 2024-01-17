@@ -23,8 +23,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Code</th>
-                                        <th>Name</th>
                                         <th>Email</th>
+                                        <th>ISIN Number</th>
                                         {{-- <th>Inputter</th> --}}
                                         {{-- <th>Authoriser</th> --}}
                                         <th>Date Created</th>
@@ -190,7 +190,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('auction.mgt.approve.update') }}"
-                                                        method="POST" class="needs-validation" id="update" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='auction_ref'
                                                             value="{{ $auction->id }}" />
@@ -220,7 +220,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('auction.mgt.reject.update') }}"
-                                                        method="POST" class="needs-validation" id="myForm" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='auction_ref'
                                                             value="{{ $auction->id }}" />
@@ -252,7 +252,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('auction.mgt.approve.delete') }}"
-                                                        method="POST" class="needs-validation" id="update" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='auction_ref'
                                                             value="{{ $auction->id }}" />
@@ -282,7 +282,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('auction.mgt.reject.delete') }}"
-                                                        method="POST" class="needs-validation" id="myForm" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='auction_ref'
                                                             value="{{ $auction->id }}" />
@@ -292,8 +292,8 @@
                                                                 required>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Reject</button>
+                                                            <button type="submit"
+                                                                class="btn btn-primary">Reject</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
@@ -361,7 +361,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('auction.mgt.approve.create') }}"
-                                                        method="POST" class="needs-validation" id="update" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='auction_ref'
                                                             value="{{ $auction->id }}" />
@@ -391,7 +391,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('auction.mgt.reject.create') }}"
-                                                        method="POST" class="needs-validation" id="myForm" novalidate>
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='auction_ref'
                                                             value="{{ $auction->id }}" />

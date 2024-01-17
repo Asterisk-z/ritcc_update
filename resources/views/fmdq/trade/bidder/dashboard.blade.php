@@ -23,7 +23,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('trade.mgt.create') }}" method="POST" id="myForm"
+                            <form action="{{ route('trade.mgt.create') }}" method="POST"
                                 class="needs-validation confirmation" novalidate>
                                 @csrf
                                 <div class="modal-body">
@@ -51,13 +51,13 @@
 
                                         <div class="col-md-6 mb-3">
                                             <label for="validationCustom01">Nominal Amount (₦‘mm)</label>
-                                            <input type="number" name="nominalAmount" class="form-control"
+                                            <input type="text" name="nominalAmount" class="form-control"
                                                 id="validationCustom01" required>
 
                                         </div>
 
                                         <div class="col-md-12 mb-3">
-                                            <label for="validationCustom01">Dicount Rate (%)</label>
+                                            <label for="validationCustom01">Discount Rate (%)</label>
                                             <input type="text" name="discountRate" class="form-control"
                                                 id="validationCustom01" required>
 
