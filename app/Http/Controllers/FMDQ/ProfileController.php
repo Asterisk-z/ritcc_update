@@ -27,6 +27,7 @@ class ProfileController extends Controller
     //
     public function index()
     {
+        // dd($role);
         $user = Auth::user();
         $profiles = Profile::orderBy('inputDate', 'ASC')->with('package', 'institution')->get();
         $all = Profile::count();

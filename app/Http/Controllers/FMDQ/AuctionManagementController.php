@@ -16,17 +16,11 @@ use Illuminate\Support\Facades\Notification;
 
 class AuctionManagementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // all auctions page
     public function index()
     {
         $page = 'All Auctions';
-
         $auctions = Auction::orderBy('createdDate', 'DESC')->get();
-
         $auctions_sec_id = Auction::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->pluck('securityRef');
         $securities = Security::where('approveFlag', 1)->where('rejectionFlag', 0)->where('deleteFlag', 0)->whereNotIn('id', $auctions_sec_id)->orderBy('CreatedDate', 'DESC')->get();
         $auctions = Auction::orderBy('createdDate', 'DESC')->get();
@@ -39,11 +33,7 @@ class AuctionManagementController extends Controller
         return view('fmdq.auction.index', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'authorisers', 'page'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // auctions index
     public function auctionsIndex()
     {
         $page = 'Auctions';
@@ -56,11 +46,7 @@ class AuctionManagementController extends Controller
         return view('fmdq.auction.list', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page', 'authorisers'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // pending auction page
     public function pendingIndex()
     {
         $page = 'Pending Auctions';
@@ -73,11 +59,8 @@ class AuctionManagementController extends Controller
         $authorisers = Profile::where('status', 1)->where('Package', '3')->get();
         return view('fmdq.auction.pending', compact('auctions', 'all', 'pending', 'approved', 'rejected', 'page', 'securities', 'authorisers'));
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    // rejected auction page
     public function rejectedIndex()
     {
         $page = 'Rejected Auctions';
@@ -90,11 +73,8 @@ class AuctionManagementController extends Controller
         $authorisers = Profile::where('status', 1)->where('Package', '3')->get();
         return view('fmdq.auction.rejected', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page', 'authorisers'));
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    // approved auction page
     public function approvedIndex()
     {
         $page = 'Approved Auctions';
@@ -108,11 +88,7 @@ class AuctionManagementController extends Controller
         return view('fmdq.auction.approved', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page', 'authorisers'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // auction history page
     public function auctionsHistory()
     {
         $page = 'Auctions History';
@@ -133,11 +109,7 @@ class AuctionManagementController extends Controller
         return view('fmdq.auction.history', compact('securities', 'auctions', 'all', 'pending', 'approved', 'rejected', 'page'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // auction allocation page
     public function allocation()
     {
         $page = 'Auction Allocation';
@@ -148,11 +120,7 @@ class AuctionManagementController extends Controller
         return view('fmdq.auction.allocation', compact('securities', 'auctions', 'page'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // auction bids page
     public function auctionBids()
     {
         $page = 'Auctions History Bids';
@@ -164,11 +132,7 @@ class AuctionManagementController extends Controller
         return view('fmdq.auction.bids', compact('bids', 'page', 'availableAmount'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // auction results page
     public function results()
     {
         $page = 'Auctions History Bids';
@@ -184,16 +148,12 @@ class AuctionManagementController extends Controller
             $auction->total_bid_amount = $bids;
             $auction->total_bid = $total_bid;
             array_push($auction_list, $auction);
-
         }
 
         return view('fmdq.auction.results', compact('bids', 'auction_list', 'page'));
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    // close auction
     public function closeAuction(Request $request)
     {
 
@@ -232,11 +192,7 @@ class AuctionManagementController extends Controller
         return redirect()->back()->with('success', "Auction Approved Successfully.");
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // award auction to bidder
     public function awardAuction(Request $request)
     {
 
@@ -266,11 +222,6 @@ class AuctionManagementController extends Controller
             return redirect()->back()->with('error', "Fail to Award Offer.");
         }
 
-        // if (!$approve_action) {
-        //     return redirect()->back()->with('error', "Fail to approve Auction.");
-        // }
-
-        // dd($bid->auction, $totalAwardedBids, ($totalAwardedBids > $bid->auction->offerAmount));
         $bid->awardedFlag = 1;
         $bid->amountOffered = $award_amount;
         $approve_action = $bid->save();
@@ -286,6 +237,7 @@ class AuctionManagementController extends Controller
         return redirect()->back()->with('success', "Bid Awarded Successfully.");
     }
 
+    // cancel award auction
     public function awardCancelAuction(Request $request)
     {
 
@@ -326,21 +278,18 @@ class AuctionManagementController extends Controller
 
         return redirect()->back()->with('success', "Bid Awarded Successfully.");
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    // create auction
     public function create(Request $request)
     {
         $validated = $request->validate([
             'securityId' => 'bail|required|unique:tblAuction,securityRef',
-            'offerDate' => 'bail|required|date',
-            'auction_start_time' => 'bail|required',
-            'bids_close_time' => 'bail|required',
-            'bids_result_time' => 'bail|required',
-            'minimum_rate' => 'bail|required|numeric|min:1',
-            'maximum_rate' => 'bail|required|numeric|min:1',
+            'offerDate' => 'bail|required|date|after_or_equal:today',
+            'auction_start_time' => 'bail|required|date|after_or_equal:today',
+            'bids_close_time' => 'bail|required|date|after_or_equal:today|after:auction_start_time',
+            'bids_result_time' => 'bail|required|date|after_or_equal:today|after:auction_start_time|after:bids_close_time',
+            'minimum_rate' => 'bail|required|numeric|min:0',
+            'maximum_rate' => 'bail|required|numeric|min:0|gte:minimum_rate',
         ], []);
 
         if (!$validated) {
@@ -395,11 +344,7 @@ class AuctionManagementController extends Controller
         //
         return redirect()->back()->with('success', "Auction has been sent for approval.");
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // approve create auction
     public function approveCreate(Request $request)
     {
 
@@ -443,11 +388,7 @@ class AuctionManagementController extends Controller
 
         return redirect()->back()->with('success', "Auction Approved Successfully.");
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // reject create auction
     public function rejectCreate(Request $request)
     {
         $validated = $request->validate([
@@ -493,22 +434,18 @@ class AuctionManagementController extends Controller
 
         return redirect()->back()->with('success', "Auction Approved Successfully.");
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // update auction
     public function update(Request $request)
     {
         $validated = $request->validate([
             'auction_ref' => 'bail|required|exists:tblAuction,id',
             'securityId' => 'bail|required|exists:tblAuction,securityRef',
-            'offerDate' => 'bail|required|date',
-            'auction_start_time' => 'bail|required',
-            'bids_close_time' => 'bail|required',
-            'bids_result_time' => 'bail|required',
-            'minimum_rate' => 'bail|required|numeric|min:1',
-            'maximum_rate' => 'bail|required|numeric|min:1',
+            'offerDate' => 'bail|required|date|after_or_equal:today',
+            'auction_start_time' => 'bail|required|date|after_or_equal:today',
+            'bids_close_time' => 'bail|required|date|after_or_equal:today|after:auction_start_time',
+            'bids_result_time' => 'bail|required|date|after_or_equal:today|after:auction_start_time|after:bids_close_time',
+            'minimum_rate' => 'bail|required|numeric|min:0',
+            'maximum_rate' => 'bail|required|numeric|min:0|gte:minimum_rate',
         ], []);
 
         if (!$validated) {
@@ -579,11 +516,7 @@ class AuctionManagementController extends Controller
         //
         return redirect()->back()->with('success', "Auction update has been sent for approval.");
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // approve update auction
     public function approveUpdate(Request $request)
     {
         $validated = $request->validate([
@@ -650,11 +583,7 @@ class AuctionManagementController extends Controller
 
         return redirect()->back()->with('success', "Auction Approved Successfully.");
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // reject update auction
     public function rejectUpdate(Request $request)
     {
         $validated = $request->validate([
@@ -706,11 +635,7 @@ class AuctionManagementController extends Controller
 
         return redirect()->back()->with('success', "Auction Rejected Successfully.");
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // delete auction
     public function delete(Request $request)
     {
         $validated = $request->validate([
@@ -748,11 +673,7 @@ class AuctionManagementController extends Controller
 
         return redirect()->back()->with('success', "Auction Rejected Successfully.");
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // approve delete auction
     public function approveDelete(Request $request)
     {
         $validated = $request->validate([
@@ -791,13 +712,7 @@ class AuctionManagementController extends Controller
 
         return redirect()->back()->with('success', "Auction Rejected Successfully.");
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    // reject delete auction
     public function rejectDelete(Request $request)
     {
         $validated = $request->validate([
@@ -844,38 +759,5 @@ class AuctionManagementController extends Controller
         $activity->save();
 
         return redirect()->back()->with('success', "Auction Delete Rejected Successfully.");
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

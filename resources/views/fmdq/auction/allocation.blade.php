@@ -5,11 +5,12 @@
 <div class="page-wrapper">
     <div class="content container-fluid">
         {{-- cards --}}
-
-        {{-- --}}
         <div class="row">
-            <div class="col-sm-12">
-                <div class="card-table">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">List of Auctions</h4>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="datatable table table-center table-stripped table-bordered" id="example1">
@@ -46,20 +47,21 @@
                                                     aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul>
-                                                        <li>
+                                                        {{-- <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal"
                                                                 data-bs-target="#view{{ $auction->id }}" href=""><i
                                                                     class="far fa-edit me-2"></i>View</a>
-                                                        </li>
+                                                        </li> --}}
                                                         <li>
                                                             <a class="dropdown-item"
                                                                 href="{{route('auction.mgt.bids', $auction->id)}}"><i
-                                                                    class="far fa-eye me-2"></i>Bids</a>
+                                                                    class="far fa-eye me-2"></i>View Bids</a>
                                                         </li>
                                                         <li>
                                                             <a class="dropdown-item" data-bs-toggle="modal"
                                                                 data-bs-target="#close{{ $auction->id }}" href=""><i
-                                                                    class="far fa-times me-2"></i>Close Auction</a>
+                                                                    class="far fa-times-circle me-2"></i>Close
+                                                                Auction</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -132,22 +134,22 @@
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="standard-modalLabel">Delete
+                                                        <h4 class="modal-title" id="standard-modalLabel">Close Auction
                                                         </h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('auction.mgt.close') }}" method="POST"
-                                                        class="needs-validation" id="myForm" novalidate>
+                                                        class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='auction_ref'
                                                             value="{{ $auction->id }}" />
                                                         <div class="modal-body">
-                                                            <p>Are you sure you want close auction?</p>
+                                                            <h4>Are you sure you want close auction?</h4>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">Close Bidding</button>
+                                                            <button type="submit" class="btn btn-primary">Close
+                                                                Auction</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>

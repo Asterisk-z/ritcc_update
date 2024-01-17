@@ -28,61 +28,40 @@
                                         '.$security->auctioneer->lastName.')' }}</option>
                                     @endforeach
                                 </select>
-                                <div class="invalid-feedback">
-                                    This field is required
-                                </div>
                             </div>
                             {{-- --}}
                             <div class="col-md-6 mb-3">
                                 <label for="validationCustom01">Offer Date</label>
                                 <input type="date" name="offerDate" class="form-control" id="validationCustom01"
                                     required>
-                                <div class="invalid-feedback">
-                                    This field is required
-                                </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="validationCustom01">Auction Start Time</label>
                                 <input type="datetime-local" name="auction_start_time" class="form-control"
                                     id="validationCustom01" required>
-                                <div class="invalid-feedback">
-                                    This field is required
-                                </div>
                             </div>
                             {{-- --}}
                             <div class="col-md-6 mb-3">
                                 <label for="validationCustom01">Bids Close Time</label>
                                 <input type="datetime-local" name="bids_close_time" class="form-control"
                                     id="validationCustom01" required>
-                                <div class="invalid-feedback">
-                                    This field is required
-                                </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="validationCustom01">Bids Result Time</label>
                                 <input type="datetime-local" name="bids_result_time" class="form-control"
                                     id="validationCustom01" required>
-                                <div class="invalid-feedback">
-                                    This field is required
-                                </div>
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="validationCustom01">Minimum Rate</label>
-                                <input type="text" name="minimum_rate" class="form-control" id="validationCustom01"
+                                <input type="number" name="minimum_rate" class="form-control" id="validationCustom01"
                                     required>
-                                <div class="invalid-feedback">
-                                    This field is required
-                                </div>
                             </div>
                             {{-- --}}
                             <div class="col-md-6 mb-3">
                                 <label for="validationCustom01">Maximum Rate</label>
-                                <input type="text" name="maximum_rate" class="form-control" id="validationCustom01"
+                                <input type="number" name="maximum_rate" class="form-control" id="validationCustom01"
                                     required>
-                                <div class="invalid-feedback">
-                                    This field is required
-                                </div>
                             </div>
                             {{-- --}}
                             <div class="col-md-12 mb-3">
@@ -95,9 +74,6 @@
                                     @empty
                                     @endforelse
                                 </select>
-                                <div class="invalid-feedback">
-                                    This field is required
-                                </div>
                             </div>
                         </div>
                     </div>

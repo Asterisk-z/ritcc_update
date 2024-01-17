@@ -120,7 +120,7 @@ Route::middleware(['auth'])->group(function () {
 
     // inputter
     Route::middleware(['isInputter'])->group(function () {
-        // Route::group(['prefix' => 'bank'], function () {};
+        // Route::group(['prefix' => 'inputter'], function () {};
         // profile
         Route::get('/inputter/profile-management', [ProfileController::class, 'index'])->name('inputter.profile.index');
         Route::get('/inputter/profile-management/pending', [ProfileController::class, 'pending'])->name('inputter.profile.pending');
@@ -155,12 +155,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/inputter/auction-management/rejected', [AuctionManagementController::class, 'rejectedIndex'])->name('inputter.auction.mgt.rejected');
         Route::get('/inputter/auction-management/approved', [AuctionManagementController::class, 'approvedIndex'])->name('inputter.auction.mgt.approved');
         Route::post('/inputter/auction-management/create', [AuctionManagementController::class, 'create'])->name('inputter.auction.mgt.create');
+
         // system settings
         Route::get('/system-settings', [SystemController::class, 'index'])->name('system.settings');
         Route::get('/packages', [SystemController::class, 'packagesIndex'])->name('packages');
         Route::post('/create-package', [SystemController::class, 'packageStore'])->name('createPackage');
         Route::post('/update-package/{id}', [SystemController::class, 'packageUpdate'])->name('updatePackage');
-        Route::post('/delete-package', [SystemController::class, 'packageDelete'])->name('deletePackage');
+        Route::post('/delete-package/{id}', [SystemController::class, 'packageDelete'])->name('deletePackage');
         //
         Route::get('/public-holidays', [SystemController::class, 'holidaysIndex'])->name('publicHolidays');
         Route::post('/create-holiday', [SystemController::class, 'storeHoliday'])->name('storeHoliday');
@@ -171,7 +172,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/create-window', [SystemController::class, 'storeWindow'])->name('storeWindow');
         Route::post('/update-window', [SystemController::class, 'updateWindow'])->name('updateWindow');
         Route::post('/delete-window', [SystemController::class, 'deleteWindow'])->name('deleteWindow');
-        //
+        // security type
         Route::get('/security-type', [SecurityTypeController::class, 'index'])->name('securityType');
         Route::post('/create-security-type', [SecurityTypeController::class, 'store'])->name('storeSecurityType');
         Route::post('/update-security-type', [SecurityTypeController::class, 'update'])->name('updateSecurityType');
@@ -220,25 +221,60 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/auction-management/approve/update', [AuctionManagementController::class, 'approveUpdate'])->name('auction.mgt.approve.update');
         Route::post('/auction-management/reject/update', [AuctionManagementController::class, 'rejectUpdate'])->name('auction.mgt.reject.update');
     });
+    // // bidder
+    // Route::middleware(['isBank'])->group(function () {
+    //     // Route::group(['prefix' => 'bank'], function () {};
+    //     Route::get('/bank-dashboard', [BankDashboardController::class, 'index'])->name('bank.dashboard');
+    //     Route::get('/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('bank.mgt.auctions');
+    //     Route::get('/certificates', [CertificateManagementController::class, 'myIndex'])->name('bank.mgt.certificates');
 
-    Route::middleware(['isBank'])->group(function () {
-        // Route::group(['prefix' => 'bank'], function () {};
-        Route::get('/bank-dashboard', [BankDashboardController::class, 'index'])->name('bank.dashboard');
-        Route::get('/auctions', [AuctionManagementController::class, 'auctionsIndex'])->name('bank.mgt.auctions');
-        Route::get('/certificates', [CertificateManagementController::class, 'myIndex'])->name('bank.mgt.certificates');
+    //     Route::get('/trade-management/{id?}', [TradeManagementController::class, 'index'])->name('trade.mgt.dashboard');
+    //     Route::get('/trade-management/bids', [TradeManagementController::class, 'bidIndex'])->name('trade.mgt.bids');
+    //     Route::post('/trade-management/create', [TradeManagementController::class, 'create'])->name('trade.mgt.create');
+    //     Route::post('/trade-management/update', [TradeManagementController::class, 'update'])->name('trade.mgt.update');
+    //     Route::post('/trade-management/delete', [TradeManagementController::class, 'delete'])->name('trade.mgt.delete');
 
-        Route::get('/trade-management/{id?}', [TradeManagementController::class, 'index'])->name('trade.mgt.dashboard');
-        Route::get('/trade-management/bids', [TradeManagementController::class, 'bidIndex'])->name('trade.mgt.bids');
-        Route::post('/trade-management/create', [TradeManagementController::class, 'create'])->name('trade.mgt.create');
-        Route::post('/trade-management/update', [TradeManagementController::class, 'update'])->name('trade.mgt.update');
-        Route::post('/trade-management/delete', [TradeManagementController::class, 'delete'])->name('trade.mgt.delete');
+    //     Route::get('auctions/allocation', [AuctionManagementController::class, 'allocation'])->name('auction.mgt.allocation');
+    //     Route::post('auction/close', [AuctionManagementController::class, 'closeAuction'])->name('auction.mgt.close');
+    //     Route::post('auction/award', [AuctionManagementController::class, 'awardAuction'])->name('auction.mgt.award');
+    //     Route::post('auction/cancel', [AuctionManagementController::class, 'awardCancelAuction'])->name('auction.mgt.cancel.award');
+    //     Route::get('/auctions/bids/{id}', [AuctionManagementController::class, 'auctionBids'])->name('auction.mgt.bids');
+    //     Route::get('auctions/results/{id?}', [AuctionManagementController::class, 'results'])->name('auction.mgt.results');
+    // });
+    // bidder
+    Route::middleware(['isBidder'])->group(function () {
 
-        Route::get('auctions/allocation', [AuctionManagementController::class, 'allocation'])->name('auction.mgt.allocation');
-        Route::post('auction/close', [AuctionManagementController::class, 'closeAuction'])->name('auction.mgt.close');
-        Route::post('auction/award', [AuctionManagementController::class, 'awardAuction'])->name('auction.mgt.award');
-        Route::post('auction/cancel', [AuctionManagementController::class, 'awardCancelAuction'])->name('auction.mgt.cancel.award');
-        Route::get('/auctions/bids/{id}', [AuctionManagementController::class, 'auctionBids'])->name('auction.mgt.bids');
-        Route::get('auctions/results/{id?}', [AuctionManagementController::class, 'results'])->name('auction.mgt.results');
+        Route::group(['prefix' => 'bidder'], function () {
+            Route::get('/dashboard', [BankDashboardController::class, 'bidderDashboard'])->name('bidderDashboard');
+            Route::get('/pending-trades', [BankDashboardController::class, 'myPendingTrades'])->name('myPendingTrades');
+            Route::get('/awarded-trades', [BankDashboardController::class, 'myAwardedTrades'])->name('myAwardedTrades');
+        });
+    });
+
+    // auctioneer
+    Route::middleware(['isAuctioneer'])->group(function () {
+
+        Route::group(['prefix' => 'auctioneer'], function () {
+            Route::get('/all', [BankDashboardController::class, 'myAuctions'])->name('myAuctions');
+            Route::get('/pending', [BankDashboardController::class, 'myPendingAuctions'])->name('myPendingAuctions');
+            Route::get('/rejected', [BankDashboardController::class, 'myRejectedAuctions'])->name('myRejectedAuctions');
+            Route::get('/approved', [BankDashboardController::class, 'myApprovedAuctions'])->name('myApprovedAuctions');
+            // Route::get('/dashboard', [AuctionManagementController::class, 'auctionsIndex'])->name('auctioneerDashboard');
+            // Route::get('/certificates', [CertificateManagementController::class, 'myIndex'])->name('bank.mgt.certificates');
+
+            Route::get('/trade-management/{id?}', [TradeManagementController::class, 'index'])->name('trade.mgt.dashboard');
+            Route::get('/trade-management/bids', [TradeManagementController::class, 'bidIndex'])->name('trade.mgt.bids');
+            Route::post('/trade-management/create', [TradeManagementController::class, 'create'])->name('trade.mgt.create');
+            Route::post('/trade-management/update', [TradeManagementController::class, 'update'])->name('trade.mgt.update');
+            Route::post('/trade-management/delete', [TradeManagementController::class, 'delete'])->name('trade.mgt.delete');
+
+            Route::get('auctions/allocation', [AuctionManagementController::class, 'allocation'])->name('auction.mgt.allocation');
+            Route::post('auction/close', [AuctionManagementController::class, 'closeAuction'])->name('auction.mgt.close');
+            Route::post('auction/award', [AuctionManagementController::class, 'awardAuction'])->name('auction.mgt.award');
+            Route::post('auction/cancel', [AuctionManagementController::class, 'awardCancelAuction'])->name('auction.mgt.cancel.award');
+            Route::get('/auctions/bids/{id}', [AuctionManagementController::class, 'auctionBids'])->name('auction.mgt.bids');
+            Route::get('auctions/results/{id?}', [AuctionManagementController::class, 'results'])->name('auction.mgt.results');
+        });
     });
 
     // firs

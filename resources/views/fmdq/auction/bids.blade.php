@@ -4,23 +4,18 @@
 @section('content')
 <div class="page-wrapper">
     <div class="content container-fluid">
-
-        {{-- tables --}}
-        {{-- --}}
         <div class="page-header">
             <div class="content-page-header">
-
-                {{-- <button type="button" class="btn btn-primary mt-1"
-                    style="background-color: transparent; border: transparent;">rrre</button> --}}
-                <h4>Remaining Amount {{ $availableAmount }} (₦‘mm)</h4>
-
-
+                <h4>Remaining Offer Amount (₦‘mm): {{ $availableAmount }} </h4>
             </div>
         </div>
         {{-- --}}
         <div class="row">
-            <div class="col-sm-12">
-                <div class="card-table">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>List of Bidders</h4>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="datatable table table-center table-stripped table-bordered" id="example1">
@@ -29,7 +24,7 @@
                                         <th>S/N</th>
                                         <th>Settlement Account</th>
                                         <th>Security</th>
-                                        <th>Bidder Email</th>
+                                        <th>Bidder</th>
                                         <th>Discount Rate (%)</th>
                                         <th>Offer Rate (₦‘mm)</th>
                                         <th>Offered Amount (₦‘mm)</th>
@@ -41,13 +36,13 @@
                                     @php
                                     $i = 1;
                                     @endphp
-                                    @forelse ($bids as $item)
+                                    @foreach ($bids as $item)
                                     <tr>
                                         <td>{{ $i++; }}</td>
                                         <td>{{ $item->settlementAccount }}</td>
                                         <td>{{ $item->securityCode }}</td>
-                                        <td>{{ $item->bidder }}</td>
-                                        <td>{{ $item->discountRate }}</td>
+                                        <td>{{ $item->bidder_obj->firstName.' '.$item->bidder_obj->lastName }}</td>
+                                        <td>{{ number_format($item->discountRate, 2) }}</td>
                                         <td>{{ $item->nominalAmount }}</td>
                                         <td>{{ $item->amountOffered }}</td>
                                         <td>{{ date('F d, Y',strtotime($item->timestamp))}}</td>
@@ -150,7 +145,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('auction.mgt.award') }}" method="POST"
-                                                        class="needs-validation" id="myForm" novalidate>
+                                                        class="needs-validation confirmation" novalidate>
                                                         @csrf
                                                         <input type='hidden' name='bid_ref' value="{{ $item->id }}" />
                                                         <input type='hidden' name='bidder_email'
@@ -192,7 +187,7 @@
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <form action="{{ route('auction.mgt.cancel.award') }}" method="POST"
-                                                        class="needs-validation" id="myForm" novalidate>
+                                                        class="needs-validation confirmation" novalidate>
 
                                                         @csrf
                                                         <input type='hidden' name='bid_ref' value="{{ $item->id }}" />
@@ -203,8 +198,8 @@
                                                             <p>Are you sure you want cancel auction?</p>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary"
-                                                                id="updateButton">cancel Bidding</button>
+                                                            <button type="submit" class="btn btn-primary">Cancel
+                                                                Auction</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
@@ -213,12 +208,8 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </tr>
-                                    @empty
-                                    {{ 'No information available yet' }}
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

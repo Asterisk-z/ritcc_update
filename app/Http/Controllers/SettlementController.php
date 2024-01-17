@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ActivityLog;
 use App\Models\Auction;
+use App\Models\Profile;
 use App\Models\PublicHoliday;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -17,13 +18,15 @@ class SettlementController extends Controller
         $auctions = Auction::where('bidResultTime', '<', now())->get();
         return view('fmdq.settlement.auctions', compact('auctions'));
     }
+
     // to view the the bids for the auctioneers
     public function bidder()
     {
         $transactions = Transaction::where('auctionRef', request('id'))->with('bidder_obj')->orderBy('amountOffered', 'DESC')->orderBy('timestamp', 'DESC')->get();
-
-        return view('fmdq.settlement.bidders', compact('transactions'));
+        $authorisers = Profile::where('Package', 5)->where('status', 1)->get();
+        return view('fmdq.settlement.bidders', compact('transactions', 'authorisers'));
     }
+
     // to display the list of settlements that has been settled
     public function depository()
     {
@@ -77,6 +80,7 @@ class SettlementController extends Controller
             // log activity
             $logMessage = auth()->user()->email . ' sent transaction settlement for approval';
             logAction(auth()->user()->email, 'Transaction Settlement Sent for Approval', $logMessage, $request->ip());
+
             //
 
             return redirect()->back()->with('success', "Transaction Settlement has been set for approval");
@@ -107,14 +111,10 @@ class SettlementController extends Controller
         $transaction->settlementApprovalFlag = '0';
 
         $transaction->save();
-
-        $activity = new ActivityLog();
-        $activity->date = now();
-        $activity->app = 'RITCC';
-        $activity->type = 'Transaction Settlement Approved';
-        $activity->activity = auth()->user()->email . ' Approved transaction settlement';
-        $activity->username = auth()->user()->email;
-        $activity->save();
+        // log activity
+        $logMessage = auth()->user()->email . ' approved transaction settlement.';
+        logAction(auth()->user()->email, 'Transaction Settlement Approved', $logMessage, $request->ip());
+        //
 
         return redirect()->back()->with('success', "Transaction Settlement Approved.");
     }
@@ -162,7 +162,7 @@ class SettlementController extends Controller
     private function updateTimeBasedOnPublicHoliday($settlement_date)
     {
 
-        $publicHolidays = PublicHoliday::all();
+        $publicHolidays = PublicHoliday::get();
 
         foreach ($publicHolidays as $publicHoliday) {
             $publicHolidayDate = Carbon::create($publicHoliday->date);

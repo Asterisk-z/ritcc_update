@@ -1,7 +1,11 @@
+@extends('layouts.app')
+@section('title','RITCC Bidder Dashboard')
+
+@section('content')
 <div class="page-wrapper">
     <div class="content container-fluid">
         {{-- cards --}}
-        @include('fmdq.trade.widgets')
+        @include('fmdq.trade.bidder.cards')
         {{-- tables --}}
         {{-- --}}
         <div class="page-header">
@@ -301,3 +305,5 @@
         </div>
     </div>
 </div>
+
+@endsection

@@ -30,14 +30,22 @@
         <li class="nav-item dropdown">
             <a href="javascript:void(0)" class="user-link  nav-link" data-bs-toggle="dropdown">
                 <span class="user-content">
-                    {{-- <span class="user-details">Admin</span> --}}
                     <span class="user-name">{{ auth()->user()->firstName.' '.auth()->user()->lastName }}</span>
+                    {{-- <span class="user-details">{{ auth()->user()->email }}</span> --}}
+                    <?php
+                    $role = \App\Models\Package::where('ID', auth()->user()->Package)->first();
+                //    echo $role;
+                   ?>
+                    <span class="user-details">{{ $role->Name }}</span>
                 </span>
             </a>
             <div class="dropdown-menu menu-drop-user">
                 <div class="profilemenu">
                     <div class="subscription-logout">
                         <ul>
+                            {{-- <li class="pb-0">
+                                <p class="dropdown-item"><strong>{{ $role->Name }}</strong></p>
+                            </li> --}}
                             <li class="pb-0">
                                 <form action="{{ route('signOut') }}" method="POST" id="logout">
                                     @csrf

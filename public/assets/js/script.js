@@ -237,41 +237,34 @@ Version      : 1.0
     }
 
     // Datatable
-
-    // if ($('.datatable').length > 0) {
-    //     $('.datatable').DataTable({
-    //         language: {
-    //             search: '<i class="fas fa-search"></i>',
-    //             searchPlaceholder: "Search"
-    //         }
-    //     });
-    // }
-    if ($('.datatable').length > 1) {
-        $('.datatable').DataTable({
-            "bFilter": true,
-            "sDom": 'fBtlpi',
-            "ordering": true,
+if($('.datatable').length > 0) {
+		$('.datatable').DataTable({
+			"bFilter": true,
+			"sDom": 'fBtlpi',
+			"ordering": false,
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": true,
             "paging": true,
-            "lengthChange": true,
             "searching": true,
             "ordering": false,
             "info": true,
-            "autoWidth": true,
-            "responsive": true,
-            "language": {
-                search: ' ',
-                sLengthMenu: '_MENU_',
-                paginate: {
-                    next: 'Next <i class=" fa fa-angle-double-right ms-2"></i>',
-                    previous: '<i class="fa fa-angle-double-left me-2"></i> Previous'
-                },
-            },
-            initComplete: (settings, json) => {
-                $('.dataTables_filter').appendTo('#tableSearch');
-                $('.dataTables_filter').appendTo('.search-input');
-            },
-        });
-    }
+			"language": {
+                // search: ' ',
+                search: '<i class="fas fa-search"></i>',
+				searchPlaceholder: "Search",
+				// sLengthMenu: '_MENU_',
+				paginate: {
+					next: 'Next <i class=" fa fa-angle-double-right ms-2"></i>',
+					previous: '<i class="fa fa-angle-double-left me-2"></i> Previous'
+				},
+			 },
+			initComplete: (settings, json)=>{
+				$('.dataTables_filter').appendTo('#tableSearch');
+				$('.dataTables_filter').appendTo('.search-input');
+			},
+		});
+	}
 
 
     // Sidebar Slimscroll

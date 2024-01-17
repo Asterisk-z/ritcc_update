@@ -17,142 +17,185 @@
 
 <body class="login">
     <div class="main-wrapper">
-        <div class="page-wrapper">
+        <div class="" style="padding: 0 50px">
             <div class="content container-fluid">
                 <div class="row">
-                    <div class="col-lg-2">
-                        <img src="{{ asset('assets/img/FMDQLogo.png') }}" alt="logo">
+                    <div style="
+                                margin: 20px;
+                                width: 100%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            ">
+                        <img width="200px" src="public/assets/img/FMDQLogo.png" alt="logo" />
                     </div>
-                    <div class="col-lg-10">
-                        <h2>Road Infrastructure Tax Credit Certificate
-                            Auctioning System Portal</h4>
+                    <div style="padding: 10px; text-align: center">
+                        <h4>
+                            Road Infrastructure Tax Credit Certificate Auctioning System Portal
+                        </h4>
                     </div>
                 </div>
 
-
                 <div class="card">
-                    <div class="card-header" style="background-color: #1d326c;">
-                        <h4 class="card-title text-uppercase text-white">
-                            <center>FMDQ Privacy Notice</center>
-                        </h4>
+                    <div style="
+                                background-color: #1d326c;
+                                height: 50px;
+                                padding: 10px;
+                                text-align: center;
+                                border-top-right-radius: 10px;
+                                border-top-left-radius: 10px;
+                            ">
+                        <h4 class="text-white">FMDQ Privacy Notice</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
-
                             <div class="terms-conditions">
                                 <div class="row align-items-center justify-content-between">
                                     <div class="col-lg-12 col-md-12">
                                         <div class="invoice-terms align-center">
                                             <div class="invocie-note">
-                                                {{-- --}}
                                                 <div class="mb-3">
-                                                    <h6 style="color: #1d326c;">Consent Requirement</h6>
-                                                    <p class="text-black mb-1">FMDQ Securities
-                                                        Exchange Limited (the “Exchange”) is (i) committed
-                                                        to treating your personal information as private and
-                                                        confidential,
-                                                        and (ii) dedicated to ensuring
-                                                        that personal information provided is treated in accordance with
-                                                        best practice and extant
-                                                        regulation. The Exchange will process your personal information
-                                                        where consent has been provided or
-                                                        in accordance with the law. You may withdraw your consent at any
-                                                        given time and inform the Exchange
+                                                    <h6 style="
+                                                                color: #1d326c;
+                                                            ">
+                                                        Consent Requirement
+                                                    </h6>
+                                                    <p class="text-black mb-1">
+                                                        FMDQ Securities Exchange Limited (the “Exchange”) is (i)
+                                                        committed to treating your personal information as private
+                                                        and
+                                                        confidential, and (ii) dedicated to ensuring that personal
+                                                        information provided is treated in accordance with best
+                                                        practice
+                                                        and extant
+                                                        regulation. The Exchange will process your personal
+                                                        information
+                                                        where consent has been provided or in accordance with the
+                                                        law.
+                                                        You may withdraw your consent at any given time and inform
+                                                        the
+                                                        Exchange
                                                         in writing of the withdrawal. However, the withdrawal of the
-                                                        consent
-                                                        shall not affect the lawfulness
-                                                        of processing based on consent before withdrawal.
+                                                        consent shall not affect the lawfulness of processing based
+                                                        on
+                                                        consent before withdrawal.
                                                     </p>
-                                                    <p class="text-black">We hereby request that you provide the
-                                                        Exchange with your consent to
-                                                        collect and process your personal information by clicking the
-                                                        applicable check box further below.
-                                                    </p>
-                                                </div>
-
-                                                {{-- --}}
-                                                <div class="mb-3">
-                                                    <h6 style="color: #1d326c;">Collectable Information</h6>
-                                                    <p class="text-black mb-3">We collect personal information directly
-                                                        from
-                                                        you and where lawful
-                                                        and reasonable, we may collect personal information about you
-                                                        from
-                                                        third parties and publicly
-                                                        available sources such as government and regulatory agencies.
-                                                        The
-                                                        personal information that we
-                                                        collect include (but are not limited to) your name, address,
-                                                        age,
-                                                        gender, account details, passport
-                                                        details, bank verification number, biometric information,
-                                                        telephone
-                                                        number, email address,
-                                                        occupation, and other information that the Exchange deems
-                                                        necessary
-                                                        for provision of its services to
-                                                        you.
+                                                    <p class="text-black">
+                                                        We hereby request that you provide the Exchange with your
+                                                        consent to collect and process your personal information by
+                                                        clicking the applicable check box further below.
                                                     </p>
                                                 </div>
-                                                {{-- --}}
                                                 <div class="mb-3">
-                                                    <h6 style="color: #1d326c;">Purpose of Collection of Personal
-                                                        Information</h6>
+                                                    <h6 style="
+                                                                color: #1d326c;
+                                                            ">
+                                                        Collectable Information
+                                                    </h6>
                                                     <p class="text-black mb-3">
-                                                        Your information will be collected and processed for the purpose
-                                                        of
-                                                        onboarding you as a Member of the Exchange and in continuing our
-                                                        business relationship with you. The
-                                                        Exchange will also collect and process your personal information
-                                                        to comply with applicable law,
-                                                        regulatory requirements, and as a self-regulatory organisation.
+                                                        We collect personal information directly from you and where
+                                                        lawful and reasonable, we may collect personal information
+                                                        about
+                                                        you from third parties and publicly available sources such
+                                                        as
+                                                        government and regulatory agencies. The personal information
+                                                        that
+                                                        we collect include (but are not limited to) your name,
+                                                        address,
+                                                        age, gender, account details, passport details, bank
+                                                        verification number, biometric information, telephone
+                                                        number,
+                                                        email address, occupation,
+                                                        and other information that the Exchange deems necessary for
+                                                        provision of its services to you.
                                                     </p>
                                                 </div>
-                                                {{-- --}}
                                                 <div class="mb-3">
-                                                    <h6 style="color: #1d326c;">Changes to our Privacy Notice</h6>
+                                                    <h6 style="
+                                                                color: #1d326c;
+                                                            ">
+                                                        Purpose of Collection of Personal Information
+                                                    </h6>
+                                                    <p class="text-black mb-3">
+                                                        Your information will be collected and processed for the
+                                                        purpose
+                                                        of onboarding you as a Member of the Exchange and in
+                                                        continuing
+                                                        our business relationship with you. The Exchange will also
+                                                        collect and process your personal information to comply with
+                                                        applicable
+                                                        law, regulatory requirements, and as a self-regulatory
+                                                        organisation.
+                                                    </p>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <h6 style="
+                                                                color: #1d326c;
+                                                            ">
+                                                        Changes to our Privacy Notice
+                                                    </h6>
                                                     <p class="text-black mb-3">
                                                         Due to constant changes in technology and regulatory
-                                                        requirements,
-                                                        we may need to change or update this Notice from time to time.
-                                                        You will always be able to find the
-                                                        most recent version of this Notice on this system.
+                                                        requirements, we may need to change or update this Notice
+                                                        from
+                                                        time to time. You will always be able to find the most
+                                                        recent
+                                                        version of this Notice on this system.
                                                     </p>
                                                 </div>
-                                                {{-- --}}
                                                 <div class="mb-3">
-                                                    <h6 style="color: #1d326c;">Additional Information</h6>
+                                                    <h6 style="
+                                                                color: #1d326c;
+                                                            ">
+                                                        Additional Information
+                                                    </h6>
                                                     <p class="text-black mb-3">
                                                         For additional information on the Exchange’s Privacy Policy
-                                                        please
-                                                        visit our website
-                                                        <a href='http://www.fmdqgroup.com/privacy-policy'
+                                                        please visit our website
+                                                        <a href="http://www.fmdqgroup.com/privacy-policy"
                                                             target="_blank">
-                                                            <strong>FMDQ Privacy Policy</strong>
+                                                            <strong>FMDQ
+                                                                Privacy
+                                                                Policy</strong>
                                                         </a>
                                                     </p>
                                                 </div>
-                                                {{-- --}}
                                                 <div class="mb-3">
                                                     <p class="text-black mb-3">
-                                                        By clicking “Agree”, you confirm that you have read and
-                                                        understood the foregoing and consent to the
-                                                        collection, use, storage, processing, transfer and disclosure of
-                                                        your personal information in
-                                                        accordance with the Exchange’s Privacy Policy.
+                                                        By clicking “Agree”,
+                                                        you confirm that you
+                                                        have read and
+                                                        understood the
+                                                        foregoing and
+                                                        consent to the
+                                                        collection, use,
+                                                        storage, processing,
+                                                        transfer and
+                                                        disclosure of your
+                                                        personal information
+                                                        in accordance with
+                                                        the Exchange’s
+                                                        Privacy Policy.
                                                     </p>
                                                     <form action="{{ route('postTerms') }}"
                                                         class="needs-validation confirmation" method="POST" novalidate>
                                                         @csrf
-                                                        <input type="checkbox" name="accept"
-                                                            style="height:15px; width:18px;" required>
-                                                        <strong class="text-black mb-3">I agree to the Terms and
-                                                            Conditions
-                                                            stated <span class="text-danger">*</span></strong>
-                                                        <div class="invalid-feedback">This field is required</div>
-                                                        <br><br>
-                                                        {{-- <input type="button" value="Continue"> --}}
-                                                        <button type="submit" class="btn btn-primary">Continue</button>
+                                                        <div style="display: flex; align-items: center; gap: 5px;">
+                                                            <input type="checkbox" name="accept"
+                                                                style="height: 15px;width: 18px;" required />
+                                                            <strong class="text-black">I agree to the Terms and
+                                                                Conditions stated
+                                                                <span class="text-danger">*</span></strong>
+                                                        </div>
+
+                                                        <div class="invalid-feedback">
+                                                            This field is
+                                                            required
+                                                        </div>
+                                                        <br /><br />
+                                                        <button type="submit" class="btn btn-primary">
+                                                            Continue
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -166,7 +209,13 @@
             </div>
         </div>
     </div>
-    @include('layouts.scripts')
+    <script src="{{ asset('assets/js/script.js') }}"></script>
+    <script src="{{ asset('assets/js/form-validation.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
 </body>
 
 </html>

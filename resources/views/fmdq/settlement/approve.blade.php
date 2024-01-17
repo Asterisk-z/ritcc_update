@@ -7,11 +7,11 @@
         {{-- cards --}}
 
         {{-- --}}
-        <div class="page-header">
+        {{-- <div class="page-header">
             <div class="content-page-header">
                 <a href="{{ route('settlement') }}" class="btn btn-primary mt-1">Back</a>
             </div>
-        </div>
+        </div> --}}
 
 
         <div class="row">
@@ -26,8 +26,8 @@
                                         <th>Bidder</th>
                                         <th>Bid Amount (₦‘mm)</th>
                                         <th>Bid Rate (%)</th>
-                                        <th>RTGS Account Number</th>
-                                        <th>Custodian Account Number</th>
+                                        {{-- <th>RTGS Account Number</th>
+                                        <th>Custodian Account Number</th> --}}
                                         <th>Settlement Account</th>
                                         <th>Status</th>
                                         <th>Amount Awarded (₦‘mm)</th>
@@ -41,11 +41,12 @@
                                     @foreach ($transactions as $auction)
                                     <tr>
                                         <td>{{ $i++; }}</td>
-                                        <td>{{ $auction->bidder }}</td>
-                                        <td>{{ $auction->nominalAmount }}</td>
-                                        <td>{{ $auction->discountRate }}</td>
-                                        <td>{{ $auction->bidder_obj ? $auction->bidder_obj->rtgsNumber : '' }}</td>
-                                        <td>{{ $auction->bidder_obj ? $auction->bidder_obj->fmdqNumber : '' }}</td>
+                                        <td>{{ $auction->bidder_obj->firstName.' '.$auction->bidder_obj->lastName }}
+                                        </td>
+                                        <td>{{ number_format($auction->nominalAmount,2) }}</td>
+                                        <td>{{ number_format($auction->discountRate,2) }}</td>
+                                        {{-- <td>{{ $auction->bidder_obj ? $auction->bidder_obj->rtgsNumber : '' }}</td>
+                                        <td>{{ $auction->bidder_obj ? $auction->bidder_obj->fmdqNumber : '' }}</td> --}}
                                         <td>{{ $auction->settlementAccount ."" }} </td>
                                         <td>
                                             @if($auction->settlementFlag == 1)
@@ -63,20 +64,29 @@
                                         <td>{{ $auction->amountOffered ."" }} </td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul>
 
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#approveSettlement{{ $auction->id }}" href=""><i class="far fa-times me-2"></i>Approve</a>
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#approveSettlement{{ $auction->id }}"
+                                                                href=""><i
+                                                                    class="far fa-check-circle me-2"></i>Approve</a>
                                                         </li>
 
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#declineSettlement{{ $auction->id }}" href=""><i class="far fa-times me-2"></i>Decline</a>
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#declineSettlement{{ $auction->id }}"
+                                                                href=""><i
+                                                                    class="far fa-times-circle me-2"></i>Decline</a>
                                                         </li>
 
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#view{{ $auction->id }}" href=""><i class="far fa-edit me-2"></i>View</a>
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#view{{ $auction->id }}" href=""><i
+                                                                    class="far fa-edit me-2"></i>View</a>
                                                         </li>
 
                                                     </ul>
@@ -84,13 +94,15 @@
                                             </div>
                                         </td>
 
-                                        <div id="view{{ $auction->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="view{{ $auction->id }}" class="modal fade" tabindex="-1" role="dialog"
+                                            aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="standard-modalLabel">View
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
 
 
@@ -138,53 +150,70 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-secondary btn-lg"
+                                                            data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div id="approveSettlement{{ $auction->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="approveSettlement{{ $auction->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="standard-modalLabel">Approve Settlement</h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <h4 class="modal-title" id="standard-modalLabel">Approve
+                                                            Settlement</h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('settlement.approve.settle', $auction->id) }}" method="POST" class="needs-validation confirmation" novalidate>
+                                                    <form
+                                                        action="{{ route('settlement.approve.settle', $auction->id) }}"
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
-                                                        <input type='hidden' name='bid_ref' value="{{ $auction->id }}" />
+                                                        <input type='hidden' name='bid_ref'
+                                                            value="{{ $auction->id }}" />
                                                         <div class="modal-body">
-                                                            <p>Are you sure you want approve settlement?</p>
+                                                            <h4>Are you sure you want approve settlement?</h4>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary">Approve</button>
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit"
+                                                                class="btn btn-primary me-2">Approve</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div id="declineSettlement{{ $auction->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        <div id="declineSettlement{{ $auction->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="standard-modalLabel">Delete
+                                                        <h4 class="modal-title" id="standard-modalLabel">Reject
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('settlement.decline.settle', $auction->id) }}" method="POST" class="needs-validation confirmation" novalidate>
+                                                    <form
+                                                        action="{{ route('settlement.decline.settle', $auction->id) }}"
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
-                                                        <input type='hidden' name='bid_ref' value="{{ $auction->id }}" />
+                                                        <input type='hidden' name='bid_ref'
+                                                            value="{{ $auction->id }}" />
                                                         <div class="modal-body">
-                                                            <p>Do you sure you want settle bid?</p>
+                                                            {{-- <h4>Do you sure you reject the request to settle this
+                                                                bid?
+                                                            </h4> --}}
                                                             <div class="form-row row">
                                                                 {{-- --}}
-                                                                <div class="col-md-6 mb-3">
-
+                                                                <div class="col-md-12 mb-3">
                                                                     <label for="validationCustom01">Reason</label>
-                                                                    <input type="text" name="reason" class="form-control" id="validationCustom01" required>
+                                                                    <input type="text" name="reason"
+                                                                        class="form-control" id="validationCustom01"
+                                                                        required>
                                                                     <div class="invalid-feedback">
                                                                         This field is required
                                                                     </div>
@@ -193,8 +222,10 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary">Settle</button>
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit"
+                                                                class="btn btn-primary me-2">Reject</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </form>
                                                 </div>

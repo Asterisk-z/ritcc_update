@@ -5,18 +5,17 @@
 <div class="page-wrapper">
     <div class="content container-fluid">
         {{-- cards --}}
-
-        {{-- --}}
-        <div class="page-header">
+        {{-- <div class="page-header">
             <div class="content-page-header">
                 <a href="{{ route('settlement') }}" class="btn btn-primary mt-1">Back</a>
             </div>
-        </div>
-
-
+        </div> --}}
         <div class="row">
-            <div class="col-sm-12">
-                <div class="card-table">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">List of Unsettled Bids</h4>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="datatable table table-center table-stripped table-bordered" id="example1">
@@ -26,8 +25,8 @@
                                         <th>Bidder</th>
                                         <th>Bid Amount (₦‘mm)</th>
                                         <th>Bid Rate (%)</th>
-                                        <th>RTGS Account Number</th>
-                                        <th>Custodian Account Number</th>
+                                        {{-- <th>RTGS Account Number</th> --}}
+                                        {{-- <th>Custodian Account Number</th>--}}
                                         <th>Settlement Account</th>
                                         <th>Status</th>
                                         <th>Amount Awarded (₦‘mm)</th>
@@ -41,11 +40,14 @@
                                     @foreach ($transactions as $auction)
                                     <tr>
                                         <td>{{ $i++; }}</td>
-                                        <td>{{ $auction->bidder }}</td>
-                                        <td>{{ $auction->nominalAmount }}</td>
-                                        <td>{{ $auction->discountRate }}</td>
-                                        <td>{{ $auction->bidder_obj ? $auction->bidder_obj->rtgsNumber : 'e' }}</td>
+                                        <td>{{ $auction->bidder_obj->firstName.' '.$auction->bidder_obj->lastName }}
+                                        </td>
+                                        <td>{{ number_format($auction->nominalAmount,2) }}</td>
+                                        <td>{{ number_format($auction->discountRate,2) }}</td>
+                                        {{-- <td>{{ $auction->bidder_obj ? $auction->bidder_obj->rtgsNumber : 'e' }}
+                                        </td>
                                         <td>{{ $auction->bidder_obj ? $auction->bidder_obj->fmdqNumber : 'e' }}</td>
+                                        --}}
                                         <td>{{ $auction->settlementAccount ."" }} </td>
                                         <td>
                                             @if($auction->settlementFlag == 1)
@@ -63,29 +65,36 @@
                                         <td>{{ $auction->amountOffered ."" }} </td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul>
                                                         @if(!$auction->settlementDate)
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#settlebid{{ $auction->id }}" href=""><i class="far fa-times me-2"></i>Settle Bid</a>
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#settlebid{{ $auction->id }}" href=""><i
+                                                                    class="far fa-check-circle me-2"></i>Settle Bid</a>
                                                         </li>
                                                         @endif
                                                         <li>
-                                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#view{{ $auction->id }}" href=""><i class="far fa-edit me-2"></i>View</a>
+                                                            <a class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#view{{ $auction->id }}" href=""><i
+                                                                    class="far fa-edit me-2"></i>View</a>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </td>
-
-                                        <div id="view{{ $auction->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        {{-- view --}}
+                                        <div id="view{{ $auction->id }}" class="modal fade" tabindex="-1" role="dialog"
+                                            aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h4 class="modal-title" id="standard-modalLabel">View
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
 
 
@@ -133,40 +142,69 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-secondary btn-lg"
+                                                            data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="settlebid{{ $auction->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+                                        {{-- settle bids --}}
+                                        <div id="settlebid{{ $auction->id }}" class="modal fade" tabindex="-1"
+                                            role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="standard-modalLabel">Delete
+                                                        <h4 class="modal-title" id="standard-modalLabel">Settle Bids
                                                         </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
                                                     </div>
-                                                    <form action="{{ route('settlement.bid.settle', $auction->id) }}" method="POST" class="needs-validation confirmation" novalidate>
+                                                    <form action="{{ route('settlement.bid.settle', $auction->id) }}"
+                                                        method="POST" class="needs-validation confirmation" novalidate>
                                                         @csrf
-                                                        <input type='hidden' name='bid_ref' value="{{ $auction->id }}" />
+                                                        <input type='hidden' name='bid_ref'
+                                                            value="{{ $auction->id }}" />
                                                         <div class="modal-body">
-                                                            <p>Are you sure you want settle bid?</p>
+                                                            {{-- <p>Are you sure you want settle bid?</p> --}}
                                                             <div class="form-row row">
                                                                 {{-- --}}
-                                                                <div class="col-md-6 mb-3">
+                                                                <div class="col-md-12 mb-3">
                                                                     <label for="validationCustom01">Settlement
                                                                         Date</label>
-                                                                    <input type="datetime-local" name="settlement_date" class="form-control" id="validationCustom01" required>
+                                                                    <input type="datetime-local" name="settlement_date"
+                                                                        class="form-control" id="validationCustom01"
+                                                                        required>
                                                                     <div class="invalid-feedback">
                                                                         This field is required
                                                                     </div>
                                                                 </div>
-
+                                                                {{-- --}}
+                                                                <div class="col-md-12 mb-3">
+                                                                    <div class="col-md-12 mb-3">
+                                                                        <label
+                                                                            for="validationCustom01">Authoriser</label>
+                                                                        <select name="authoriser"
+                                                                            id="validationCustom01" class="form-control"
+                                                                            required>
+                                                                            <option value="">--Select--</option>
+                                                                            @foreach ($authorisers as $authoriser)
+                                                                            <option value="{{ $authoriser->email }}">{{
+                                                                                $authoriser->firstName.'
+                                                                                '.$authoriser->lastName }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        <div class="invalid-feedback">
+                                                                            This field is required
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary">Settle</button>
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit"
+                                                                class="btn btn-primary me-2">Settle</button>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
                                                         </div>
                                                     </form>
                                                 </div>

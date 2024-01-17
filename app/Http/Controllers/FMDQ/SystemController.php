@@ -13,25 +13,27 @@ use Illuminate\Support\Facades\Auth;
 
 class SystemController extends Controller
 {
-    //
+    // list of configuration cards
     public function index()
     {
         return view('fmdq.settings.index');
     }
 
-    //
+    // list of packages
     public function packagesIndex()
     {
         $user = Auth::user();
         $packages = Package::all();
         return view('fmdq.settings.packages', compact('user', 'packages'));
     }
-    //
+
+    // create package
     public function packageStore(Request $request)
     {
         $user = Auth::user();
         $package = new Package();
         $package->Name = $request->Name;
+        $package->status = 'active';
         $create = $package->save();
         //
         if ($create) {
@@ -48,7 +50,8 @@ class SystemController extends Controller
             return redirect()->back()->with('success', "Package created.");
         }
     }
-    //
+
+    // update package
     public function packageUpdate(Request $request, $id)
     {
         $user = Auth::user();
@@ -71,32 +74,35 @@ class SystemController extends Controller
             return redirect()->back()->with('success', "Package updated.");
         }
     }
-    //
-    public function packageDelete($id)
+    // delete package
+    public function packageDelete(Request $request, $id)
     {
         $user = Auth::user();
         $package = Package::find($id);
-        $delete = $package->delete();
+        // dd($package->status);
+        $package->status = $request->status;
+        $deactivate = $package->save();
         //
-        if ($delete) {
+        if ($deactivate) {
             // log activity
             $activity = new ActivityLog();
             $activity->date = now();
             $activity->app = 'RITCC';
-            $activity->type = 'Delete Package';
-            $activity->activity = $user->email . ' deleted a package .';
+            $activity->type = 'Deactivate Package';
+            $activity->activity = $user->email . ' deactivated package: ' . $package->Name;
             $activity->username = $user->email;
             $log = $activity->save();
         }
         if ($log) {
-            return redirect()->back()->with('success', "Package deleted.");
+            return redirect()->back()->with('success', "Package deactivated.");
         }
     }
+
     //
     public function holidaysIndex()
     {
         $user = Auth::user();
-        $holidays = PublicHoliday::all();
+        $holidays = PublicHoliday::get();
         return view('fmdq.settings.public-holidays', compact('user', 'holidays'));
     }
     //

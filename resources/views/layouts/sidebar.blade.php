@@ -26,31 +26,32 @@
                             Management</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="{{ route('certificate.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span>
+                    <a href="{{ route('certificate.mgt.dashboard') }}"><i class="fa-solid fa-bullseye"></i> <span>
                             Certificate Management</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="{{ route('auction.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span> Auction
+                    <a href="{{ route('auction.mgt.dashboard') }}"><i class="fa-solid fa-bullseye"></i> <span> Auction
                             Management</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="{{ route('auction.mgt.auctions') }}"><i class="fa-solid fa-key"></i> <span> My
+                    <a href="{{ route('auction.mgt.auctions') }}"><i class="fa-solid fa-bullseye"></i> <span> My
                             Auction</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="{{ route('auction.mgt.history') }}"><i class="fa-solid fa-key"></i> <span> Auction
+                    <a href="{{ route('auction.mgt.history') }}"><i class="fa-solid fa-bullseye"></i> <span> Auction
                             History</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="#"><i class="fa-solid fa-key"></i> <span> Auction
+                    <a href="#"><i class="fa-solid fa-bullseye"></i> <span> Auction
                             Allocation</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="#"><i class="fa-solid fa-key"></i> <span> Trade
+                    <a href="#"><i class="fa-solid fa-bullseye"></i> <span> Trade
                             Management</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="{{ route('settlement') }}"><i class="fa-solid fa-key"></i> <span> Settlement</span></a>
+                    <a href="{{ route('settlement') }}"><i class="fa-solid fa-bullseye"></i> <span>
+                            Settlement</span></a>
                 </li>
                 <li class="mb-3">
                     <a href="{{ route('iqx.logs') }}"><i class="fa fa-bullseye"></i> <span> Activity Logs</span></a>
@@ -89,12 +90,6 @@
                 </li>
                 @endif
 
-                {{-- @if (auth()->user()->type === 'inputter' && auth()->user()->Package === '4')
-                <li class="mb-3">
-                    <a href="{{ route('settlement') }}"><i class="fa fa-bullseye"></i> <span> Settlement</span></a>
-                </li>
-                @endif --}}
-
                 @if (auth()->user()->type === 'authoriser' && auth()->user()->Package === '3')
                 <br>
                 <li class="mb-3">
@@ -112,59 +107,50 @@
                 </li>
                 @endif
 
-                @if (auth()->user()->type === 'authoriser' && auth()->user()->Package === '5')
+                {{-- @if (auth()->user()->type === 'authoriser' && auth()->user()->Package === '5')
                 <br>
                 <li class="mb-3">
                     <a href="{{ route('settlement') }}"><i class="fa fa-bullseye"></i> <span> Settlement</span></a>
                 </li>
-                @endif
+                @endif --}}
 
 
                 @if (auth()->user()->type === 'firs')
-                <br><br>
                 <li class="mb-3">
                     <a href="{{ route('firs.certificate.mgt.dashboard') }}"><i class="fa-solid fa-bullseye"></i> <span>
                             Certificate Management</span></a>
                 </li>
 
+                {{-- auctioneer --}}
                 @elseif (auth()->user()->type === 'auctioneer')
                 <li class="mb-3">
-                    <a href="{{ route('bank.dashboard') }}">
-                        <i class="fa-solid fa-key"></i>
-                        <span>Dashboard</span>
+                    <a href="{{ route('myAuctions') }}">
+                        <i class="fa-solid fa-bullseye"></i>
+                        <span>My Auctions</span>
                     </a>
                 </li>
-                <li class="mb-3">
+                {{-- <li class="mb-3">
                     <a href="{{ route('bank.mgt.auctions') }}">
-                        <i class="fa-solid fa-key"></i>
-                        <span>Auctions</span>
+                        <i class="fa-solid fa-bullseye"></i>
+                        <span>My Certificates</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="mb-3">
-                    <a href="{{ route('auction.mgt.allocation') }}"><i class="fa-solid fa-key"></i> <span> Auction
+                    <a href="{{ route('auction.mgt.allocation') }}"><i class="fa-solid fa-bullseye"></i> <span> Auction
                             Allocation</span></a>
                 </li>
                 <li class="mb-3">
-                    <a href="{{ route('auction.mgt.results') }}"><i class="fa-solid fa-key"></i> <span> Auction
+                    <a href="{{ route('auction.mgt.results') }}"><i class="fa-solid fa-bullseye"></i> <span> Auction
                             Results</span></a>
                 </li>
                 @endif
 
                 @if (auth()->user()->type === 'bidder' )
                 <li class="mb-3">
-                    <a href="{{ route('bank.dashboard') }}">
-                        <i class="fa-solid fa-key"></i>
-                        <span>Dashboard</span>
+                    <a href="{{ route('bidderDashboard') }}">
+                        <i class="fa-solid fa-bullseye"></i>
+                        <span>My Trades</span>
                     </a>
-                </li>
-                {{-- <li class="mb-3">
-                    <a href="{{ route('trade.mgt.dashboard') }}"><i class="fa-solid fa-key"></i> <span>Trade</span></a>
-
-                </li> --}}
-                <li class="mb-3">
-                    <a href="{{ route('trade.mgt.dashboard', 'result') }}"><i class="fa-solid fa-key"></i>
-                        <span>Allocated Trade</span></a>
-
                 </li>
                 @endif
 

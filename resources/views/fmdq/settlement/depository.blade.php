@@ -5,7 +5,7 @@
 <div class="page-wrapper">
     <div class="content container-fluid">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-lg-12">
                 <div class="card-table">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -31,12 +31,13 @@
                                     @foreach ($transactions as $auction)
                                     <tr>
                                         <td>{{ $i++; }}</td>
-                                        <td>{{ $auction->bidder }}</td>
-                                        <td>{{ $auction->nominalAmount }}</td>
-                                        <td>{{ $auction->discountRate }}</td>
+                                        <td>{{ $auction->bidder_obj->firstName .' '.$auction->bidder_obj->lastName }}
+                                        </td>
+                                        <td>{{ number_format($auction->nominalAmount, 2) }}</td>
+                                        <td>{{ number_format($auction->discountRate, 2) }}</td>
                                         <td>{{ $auction->bidder_obj ? $auction->bidder_obj->rtgsNumber : 'e' }}</td>
                                         <td>{{ $auction->bidder_obj ? $auction->bidder_obj->fmdqNumber : 'e' }}</td>
-                                        <td>{{ $auction->settlementAccount ."" }} </td>
+                                        <td>{{ $auction->settlementAccount}} </td>
                                         <td>
                                             @if($auction->settlementFlag == 1)
                                             <span class="badge bg-1">Settled</span>
@@ -50,7 +51,7 @@
                                             @endif
                                             @endif
                                         </td>
-                                        <td>{{ $auction->amountOffered ."" }} </td>
+                                        <td>{{ number_format($auction->amountOffered, 2) ."" }} </td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"

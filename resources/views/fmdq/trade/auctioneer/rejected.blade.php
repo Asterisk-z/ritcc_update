@@ -1,24 +1,17 @@
 @extends('layouts.app')
-@section('title','RITCC Depositoory Settlement')
+@section('title','RITCC Auctioneer Dashboard')
 
 @section('content')
 <div class="page-wrapper">
     <div class="content container-fluid">
         {{-- cards --}}
-        <div class="page-header">
-            @if (auth()->user()->Package === '5')
-            <div class="content-page-header">
-                <a href="{{ route('settlement.approve') }}" class="btn btn-primary mt-1">Approve Settlements</a>
-            </div>
-            @endif
-        </div>
-
-        {{-- --}}
+        @include('fmdq.trade.auctioneer.cards')
+        {{-- tables --}}
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>List of Unsettled Bids</h4>
+                        <h4 class="card-title">{{ $page }}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -26,12 +19,11 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
-                                        {{-- <th>Description</th> --}}
-                                        <th>Code</th>
-                                        <th>Auctioneer</th>
+                                        <th>Security Code</th>
                                         <th>ISIN Number</th>
-                                        <th>Date Created</th>
+                                        <th>Offer Amount (₦‘mm)</th>
                                         <th>Status</th>
+                                        <th>Date Created</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -41,19 +33,20 @@
                                     @endphp
                                     @foreach ($auctions as $auction)
                                     <tr>
-                                        {{-- @dd($auction->security) --}}
                                         <td>{{ $i++; }}</td>
-                                        {{-- <td>{{ $auction->security->description }}</td> --}}
                                         <td>{{ $auction->securityCode }}</td>
-                                        <td>{{ $auction->auctioneer->firstName .' '.$auction->auctioneer->lastName}}
-                                        </td>
                                         <td>{{ $auction->isinNumber }}</td>
-                                        <td>{{ date('F d, Y',strtotime($auction->createdDate))}}</td>
+                                        <td>{{ number_format($auction->offerAmount,2) }}</td>
                                         <td>
-                                            <span class="badge bg-1">Completed</span>
-                                            {{-- <span class="badge bg-2">Completed</span>
-                                            <span class="badge bg-3">Not Started</span> --}}
+                                            @if ($auction->approveFlag == 1)
+                                            <span class="badge bg-1">{{ 'Approved' }}</span>
+                                            @elseif ($auction->rejectionFlag == 1)
+                                            <span class="badge bg-2">{{ 'Rejected' }}</span>
+                                            @else
+                                            <span class="badge bg-3">{{ 'Pending' }}</span>
+                                            @endif
                                         </td>
+                                        <td>{{ date('F d, Y',strtotime($auction->createdDate))}}</td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
@@ -65,23 +58,17 @@
                                                                 data-bs-target="#view{{ $auction->id }}" href=""><i
                                                                     class="far fa-edit me-2"></i>View</a>
                                                         </li>
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="{{route('settlement.bidder', $auction->id)}}"><i
-                                                                    class="far fa-eye me-2"></i>Bids</a>
-                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </td>
-                                        {{-- --}}
+                                        {{-- view modal --}}
                                         <div id="view{{ $auction->id }}" class="modal fade" tabindex="-1" role="dialog"
                                             aria-labelledby="standard-modalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="standard-modalLabel">View
-                                                        </h4>
+                                                        <h4 class="modal-title" id="standard-modalLabel">View</h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
@@ -91,42 +78,27 @@
                                                             <h6>Security Code : <strong>{{ $auction->securityCode
                                                                     }}</strong></h6>
                                                             <br>
-                                                            <h6>Offer Amount : <strong>{{ $auction->offerAmount
+                                                            <h6>Offer Amount : <strong>{{ $auction->institutionCode
                                                                     }}</strong></h6>
                                                             <br>
-                                                            <h6>Auctioneer Email : <strong>{{ $auction->auctioneerEmail
+                                                            <h6>Auctioneer Email : <strong>{{
+                                                                    $auction->settlementAccount
                                                                     }}</strong></h6>
                                                             <br>
-                                                            <h6>Security ISIN NUmber : <strong>{{ $auction->isinNumber
+                                                            <h6>Security ISIN NUmber : <strong>{{
+                                                                    $auction->nominalAmount
                                                                     }}</strong></h6>
                                                             <br>
-                                                            <h6>Ofer Date : <strong>{{ $auction->offerDate }}</strong>
+                                                            <h6>Ofer Date : <strong>{{
+                                                                    number_format($auction->discountRate,
+                                                                    2)
+                                                                    }}</strong>
                                                             </h6>
                                                             <br>
                                                             <h6>Auction Start Time : <strong>{{ date('F d, Y
-                                                                    h:m:s',strtotime($auction->auctionStartTime))
-                                                                    }}</strong></h6>
-                                                            <br>
-                                                            <h6>Bid Close Time : <strong>{{ date('F d, Y
-                                                                    h:m:s',strtotime($auction->bidCloseTime))
-                                                                    }}</strong></h6>
-                                                            <br>
-                                                            <h6>Bid Result Time : <strong>{{ date('F d, Y
-                                                                    h:m:s',strtotime($auction->bidResultTime))
-                                                                    }}</strong></h6>
-                                                            <br>
-                                                            <h6>Minimum Rate : <strong>{{ $auction->minimumRate
-                                                                    }}</strong></h6>
-                                                            <br>
-                                                            <h6>Maximum Rate : <strong>{{ $auction->maximumRate
-                                                                    }}</strong></h6>
-                                                            <br>
-                                                            <h6>Inputter: <strong>{{ $auction->createdBy }}</strong>
+                                                                    h:m:s',strtotime($auction->timestamp)) }}</strong>
                                                             </h6>
                                                             <br>
-                                                            <h6>Created Date: <strong>{{ date('F d, Y
-                                                                    h:m:s',strtotime($auction->createdDate))}}</strong>
-                                                            </h6>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -147,4 +119,5 @@
         </div>
     </div>
 </div>
+
 @endsection

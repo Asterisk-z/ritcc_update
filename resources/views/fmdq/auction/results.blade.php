@@ -4,14 +4,12 @@
 @section('content')
 <div class="page-wrapper">
     <div class="content container-fluid">
-        {{-- <div class="page-header">
-            <div class="content-page-header">
-
-            </div>
-        </div> --}}
         <div class="row">
             <div class="col-sm-12">
-                <div class="card-table">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Auction Results</h4>
+                    </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="datatable table table-center table-stripped table-bordered" id="example1">
@@ -34,17 +32,20 @@
                                     <tr>
                                         <td>{{ $i++; }}</td>
                                         <td>{{ $item->id }}</td>
-                                        <td>{{ $item->offerAmount }}</td>
-                                        <td>{{ number_format($item->total_bid_amount) }}</td>
+                                        <td>{{ number_format($item->offerAmount,2) }}</td>
+                                        <td>{{ number_format($item->total_bid_amount,2) }}</td>
                                         <td>{{ $item->isinNumber }}</td>
                                         <td>{{ date('F d, Y',strtotime($item->bidCloseTime))}}</td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
-                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
+                                                <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
+                                                    aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <ul>
                                                         <li>
-                                                            <a class="dropdown-item" href="{{route('auction.mgt.results', $item->id)}}"><i class="far fa-edit me-2"></i>Result</a>
+                                                            <a class="dropdown-item"
+                                                                href="{{route('auction.mgt.results', $item->id)}}"><i
+                                                                    class="far fa-eye me-2"></i>View Result</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -61,12 +62,4 @@
         </div>
     </div>
 </div>
-
-@endsection
-
-
-@section('script')
-<script>
-
-</script>
 @endsection

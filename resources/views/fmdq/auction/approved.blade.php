@@ -18,14 +18,17 @@
                 <div class="card-table">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="datatable table table-center table-stripped table-bordered" id="example2">
+                            <table class="datatable table table-center table-stripped table-bordered" id="example1">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>#</th>
-                                        <th>Code</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Date Created</th>
+                                        <th>Security Code</th>
+                                        <th>Auctioneer</th>
+                                        <th>ISIN Number</th>
+                                        <th>Offer Amount (₦‘mm)</th>
+                                        <th>Auction Start Time</th>
+                                        <th>Bid Close Time</th>
+                                        {{-- <th>Date Created</th> --}}
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -34,14 +37,27 @@
                                     @php
                                     $i = 1;
                                     @endphp
-                                    @forelse ($auctions as $auction)
+                                    @foreach ($auctions as $auction)
                                     <tr>
                                         <td>{{ $i++; }}</td>
                                         <td>{{ $auction->securityCode }}</td>
-                                        <td>{{ $auction->auctioneerEmail }}</td>
+                                        <td>{{ $auction->auctioneer->firstName.' '.$auction->auctioneer->lastName }}
+                                        </td>
                                         <td>{{ $auction->isinNumber }}</td>
-                                        <td>{{ date('F d, Y',strtotime($auction->createdDate))}}</td>
+                                        <td>{{ number_format($auction->offerAmount,2) }}</td>
+                                        {{-- @dd($auction->auctionStartTime) --}}
+                                        <td>{{ date('F d, Y h:i',strtotime($auction->auctionStartTime))}}</td>
+                                        <td>{{ date('F d, Y h:i',strtotime($auction->bidCloseTime))}}</td>
+                                        {{-- <td>{{ date('F d, Y',strtotime($auction->createdDate))}}</td> --}}
+
+                                        @if ($auction->approveFlag ==='1')
                                         <td><span class="badge bg-1">Approved</span></td>
+                                        @elseif($auction->rejectionFlag ==='1')
+                                        <td><span class="badge bg-3">Rejected</span></td>
+                                        @else
+                                        <td><span class="badge bg-2">Pending</span></td>
+                                        @endif
+
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
@@ -57,72 +73,9 @@
                                                 </div>
                                             </div>
                                         </td>
-
-                                        <div id="view{{ $auction->id }}" class="modal fade" tabindex="-1" role="dialog"
-                                            aria-labelledby="standard-modalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title" id="standard-modalLabel">View
-                                                        </h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-
-                                                    <div class="modal-body">
-                                                        <div class="text-center">
-                                                            <h6>Security Code : <strong>{{ $auction->securityCode
-                                                                    }}</strong></h6>
-                                                            <br>
-                                                            <h6>Offer Amount : <strong>{{ $auction->offerAmount
-                                                                    }}</strong></h6>
-                                                            <br>
-                                                            <h6>Auctioneer Email : <strong>{{ $auction->auctioneerEmail
-                                                                    }}</strong></h6>
-                                                            <br>
-                                                            <h6>Security ISIN NUmber : <strong>{{ $auction->isinNumber
-                                                                    }}</strong></h6>
-                                                            <br>
-                                                            <h6>Ofer Date : <strong>{{ $auction->offerDate }}</strong>
-                                                            </h6>
-                                                            <br>
-                                                            <h6>Auction Start Time : <strong>{{ date('F d, Y
-                                                                    h:m:s',strtotime($auction->auctionStartTime))
-                                                                    }}</strong></h6>
-                                                            <br>
-                                                            <h6>Bid Close Time : <strong>{{ date('F d, Y
-                                                                    h:m:s',strtotime($auction->bidCloseTime))
-                                                                    }}</strong></h6>
-                                                            <br>
-                                                            <h6>Bid Result Time : <strong>{{ date('F d, Y
-                                                                    h:m:s',strtotime($auction->bidResultTime))
-                                                                    }}</strong></h6>
-                                                            <br>
-                                                            <h6>Minimum Rate : <strong>{{ $auction->minimumRate
-                                                                    }}</strong></h6>
-                                                            <br>
-                                                            <h6>Maximum Rate : <strong>{{ $auction->maximumRate
-                                                                    }}</strong></h6>
-                                                            <br>
-                                                            <h6>Inputter: <strong>{{ $auction->createdBy }}</strong>
-                                                            </h6>
-                                                            <br>
-                                                            <h6>Created Date: <strong>{{ date('F d, Y
-                                                                    h:m:s',strtotime($auction->createdDate))}}</strong>
-                                                            </h6>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary btn-lg"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @include('fmdq.auction.modal')
                                     </tr>
-                                    @empty
-                                    {{ 'No information available yet' }}
-                                    @endforelse
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -132,12 +85,4 @@
         </div>
     </div>
 </div>
-
-@endsection
-
-
-@section('script')
-<script>
-
-</script>
 @endsection

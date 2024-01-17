@@ -132,17 +132,29 @@ class LoginController extends Controller
         if (auth()->user()->type === 'super') {
             return redirect()->route('iqx.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
-        // inputter
+        // Depository inputter
+        else if (auth()->user()->Package === '4') {
+            return redirect()->route('settlement')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
+        }
+        // Depository authoriser
+        else if (auth()->user()->Package === '5') {
+            return redirect()->route('settlement')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
+        }
+        // Exchange Inputter
         else if (auth()->user()->type === 'inputter') {
             return redirect()->route('inputter.profile.index')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
-        // authoriser
+        // Exchange Authoriser
         else if (auth()->user()->type === 'authoriser') {
             return redirect()->route('authoriser.profile.index')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
         // auctioneer
-        elseif (auth()->user()->type == 'auctioneer' || auth()->user()->type == 'bidder') {
-            return redirect()->route('bank.dashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
+        elseif (auth()->user()->type == 'auctioneer') {
+            return redirect()->route('myAuctions')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
+        }
+        // bidder
+        elseif (auth()->user()->type == 'bidder') {
+            return redirect()->route('bidderDashboard')->with('success', 'Welcome to RITCC, ' . auth()->user()->firstName . '.');
         }
         // firs
         elseif (auth()->user()->type == 'firs') {

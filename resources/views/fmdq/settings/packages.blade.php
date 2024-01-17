@@ -1,18 +1,18 @@
 @extends('layouts.app')
-@section('title','RITCC System Settings | Packages')
+@section('title','RITCC Portal Configuration | Packages')
 
 @section('content')
 <div class="page-wrapper">
     <div class="content container-fluid">
         {{-- tables --}}
         <div class="row">
-            <div class="col-sm-12">
-                <div class="card-table">
+            <div class="col-lg-12">
+                <div class="card">
                     <div class="card-header">
-                        <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal"
+                        {{-- <button type="button" class="btn btn-primary mt-1" data-bs-toggle="modal"
                             data-bs-target="#standard-modal"><i class="fa fa-plus-circle me-2"
                                 aria-hidden="true"></i>Add Package
-                        </button>
+                        </button> --}}
                         {{-- modal --}}
                         <div id="standard-modal" class="modal fade" tabindex="-1" role="dialog"
                             aria-labelledby="standard-modalLabel" aria-hidden="true">
@@ -58,6 +58,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -69,6 +70,7 @@
                                     <tr>
                                         <td>{{ $i++; }}</td>
                                         <td>{{ $package->Name }}</td>
+                                        <td>{{ Str::ucfirst($package->status) }}</td>
                                         <td class="d-flex align-items-center">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class=" btn-action-icon " data-bs-toggle="dropdown"
@@ -82,24 +84,24 @@
                                                                 data-bs-target="#edit{{ $package->ID }}" href=""><i
                                                                     class="fa fa-edit me-2"></i>Edit</a>
                                                         </li>
-                                                        <li>
+                                                        {{-- <li>
                                                             <a class="dropdown-item" class="dropdown-item"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#delete{{ $package->ID }}" href=""><i
                                                                     class="far fa-trash-alt me-2"></i>Delete</a>
-                                                        </li>
+                                                        </li> --}}
                                                         @endif
                                                     </ul>
                                                 </div>
                                             </div>
                                         </td>
-                                        {{-- --}}
+                                        {{-- edit --}}
                                         <div class="modal fade" id="edit{{ $package->ID }}" tabindex="-1" role="dialog"
                                             aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="myCenterModalLabel">Center modal
+                                                        <h4 class="modal-title" id="myCenterModalLabel">Edit
                                                         </h4>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
@@ -125,6 +127,39 @@
                                                         <div class="modal-footer">
                                                             <button type="submit"
                                                                 class="btn btn-primary">Update</button>
+                                                            &nbsp;&nbsp;&nbsp;
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- delete --}}
+                                        <div class="modal fade" id="delete{{ $package->ID }}" tabindex="-1"
+                                            role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="myCenterModalLabel">Deactivate
+                                                        </h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <form action="{{ route('deletePackage',$package->ID) }}"
+                                                        method="POST" class="needs-validation confirmation" novalidate>
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <div class="form-row row">
+                                                                {{-- code --}}
+                                                                <input type="hidden" name="status" value="inactive">
+                                                                <h4>Are you sure you want to deactivate <strong>{{
+                                                                        $package->Name }}</strong>?</>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit"
+                                                                class="btn btn-primary">Deactivate</button>
                                                             &nbsp;&nbsp;&nbsp;
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close</button>
