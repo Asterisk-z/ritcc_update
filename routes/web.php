@@ -120,14 +120,17 @@ Route::middleware(['auth'])->group(function () {
 
     // inputter
     Route::middleware(['isInputter'])->group(function () {
-        // Route::group(['prefix' => 'inputter'], function () {};
-        // profile
-        Route::get('/inputter/profile-management', [ProfileController::class, 'index'])->name('inputter.profile.index');
-        Route::get('/inputter/profile-management/pending', [ProfileController::class, 'pending'])->name('inputter.profile.pending');
-        Route::get('/inputter/profile-management/rejected', [ProfileController::class, 'rejected'])->name('inputter.profile.rejected');
-        Route::get('/inputter/profile-management/approved', [ProfileController::class, 'approved'])->name('inputter.profile.approved');
-        Route::post('/inputter/profile/create', [ProfileController::class, 'create'])->name('inputter.profile.create');
-        Route::post('/inputter/profile/deactivate/{id}', [ProfileController::class, 'deactivateProfile'])->name('inputter.profile.deactivateProfile');
+        Route::group(['prefix' => 'inputter'], function () {
+            // profile
+            Route::get('profile-management', [ProfileController::class, 'index'])->name('inputter.profile.index');
+            Route::get('profile-management/pending', [ProfileController::class, 'pending'])->name('inputter.profile.pending');
+            Route::get('profile-management/rejected', [ProfileController::class, 'rejected'])->name('inputter.profile.rejected');
+            Route::get('profile-management/approved', [ProfileController::class, 'approved'])->name('inputter.profile.approved');
+            Route::post('profile/create', [ProfileController::class, 'create'])->name('inputter.profile.create');
+            Route::post('profile/update/{id}', [ProfileController::class, 'update'])->name('inputterProfileUpdate');
+            Route::post('profile/deactivate/{id}', [ProfileController::class, 'deactivateProfile'])->name('inputter.profile.deactivateProfile');
+        });
+
         // institution
         Route::get('/inputter/institution-management', [InstitutionController::class, 'index'])->name('inputter.institution.index');
         Route::get('/inputter/institution-management/pending', [InstitutionController::class, 'pending'])->name('inputter.institution.pending');
@@ -181,16 +184,20 @@ Route::middleware(['auth'])->group(function () {
 
     // authoriser
     Route::middleware(['isAuthoriser'])->group(function () {
-        // Route::group(['prefix' => 'bank'], function () {};
-        // profile
-        Route::get('/authoriser/profile-management', [ProfileController::class, 'index'])->name('authoriser.profile.index');
-        Route::get('/authoriser/profile-management/pending', [ProfileController::class, 'pending'])->name('authoriser.profile.pending');
-        Route::get('/authoriser/profile-management/rejected', [ProfileController::class, 'rejected'])->name('authoriser.profile.rejected');
-        Route::get('/authoriser/profile-management/approved', [ProfileController::class, 'approved'])->name('authoriser.profile.approved');
-        Route::post('/authoriser/profile/create/approve/{id}', [ProfileController::class, 'approveCreate'])->name('authoriser.profile.approveCreate');
-        Route::post('/authoriser/profile/create/reject/{id}', [ProfileController::class, 'rejectCreate'])->name('authoriser.profile.rejectCreate');
-        Route::post('/authoriser/profile/delete/approve/{id}', [ProfileController::class, 'approveDelete'])->name('authoriser.profile.approveDelete');
-        Route::post('/authoriser/profile/delete/reject/{id}', [ProfileController::class, 'rejectDelete'])->name('authoriser.profile.rejectDelete');
+        Route::group(['prefix' => 'authoriser'], function () {
+            // profile
+            Route::get('profile-management', [ProfileController::class, 'index'])->name('authoriser.profile.index');
+            Route::get('profile-management/pending', [ProfileController::class, 'pending'])->name('authoriser.profile.pending');
+            Route::get('profile-management/rejected', [ProfileController::class, 'rejected'])->name('authoriser.profile.rejected');
+            Route::get('profile-management/approved', [ProfileController::class, 'approved'])->name('authoriser.profile.approved');
+            Route::post('profile/create/approve/{id}', [ProfileController::class, 'approveCreate'])->name('authoriser.profile.approveCreate');
+            Route::post('profile/create/reject/{id}', [ProfileController::class, 'rejectCreate'])->name('authoriser.profile.rejectCreate');
+            Route::post('profile/update/approve/{id}', [ProfileController::class, 'approveUpdate'])->name('authoriserProfileApproveUpdate');
+            Route::post('profile/update/reject/{id}', [ProfileController::class, 'rejectUpdate'])->name('authoriserProfileRejectUpdate');
+            Route::post('profile/delete/approve/{id}', [ProfileController::class, 'approveDeactivate'])->name('authoriserProfileApproveDelete');
+            Route::post('profile/delete/reject/{id}', [ProfileController::class, 'rejectDeactivate'])->name('authoriserProfileRejectDelete');
+        });
+
 
         // Institution
         Route::get('/authoriser/institution-management', [InstitutionController::class, 'index'])->name('authoriser.institution.index');

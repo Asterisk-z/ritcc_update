@@ -34,8 +34,8 @@
                 if (form.checkValidity()) {
                     // Show SweetAlert confirmation
                     Swal.fire({
-                        title: 'Are you sure?',
-                        text: 'Are you sure you want to submit?',
+                        title: 'Are you sure you wamt to submit?',
+                        // text: 'Are you sure you want to submit?',
                         icon: 'question',
                         showCancelButton: true,
                         confirmButtonColor: '#1D326C',

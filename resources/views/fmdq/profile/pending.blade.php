@@ -38,6 +38,10 @@
                                         <td>{{ date('F d, Y',strtotime($profile->inputDate))}}</td>
                                         @if ($profile->status ==='0')
                                         <td><span class="badge bg-3">Pending Approval</span></td>
+                                        @elseif($profile->status ==='1' && $profile->updateFlag === '0')
+                                        <td><span class="badge bg-3">Pending Update</span></td>
+                                        @elseif($profile->status ==='1' && $profile->deleteFlag === '0')
+                                        <td><span class="badge bg-3">Pending Delete</span></td>
                                         @elseif($profile->status ==='1')
                                         <td><span class="badge bg-1">Approved</span></td>
                                         @elseif($profile->status ==='2')
@@ -48,7 +52,6 @@
                                         <td><span class="badge bg-3">Pending Delete</span></td>
                                         @endif
                                         @include('fmdq.profile.actions')
-
                                     </tr>
                                     @endforeach
                                 </tbody>

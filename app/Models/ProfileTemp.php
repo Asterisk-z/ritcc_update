@@ -11,4 +11,17 @@ class ProfileTemp extends Model
     protected $table = 'tblProfileTemp';
     public $guarded = [];
     public $timestamps = false;
+    public $with = ['packages', 'institutions'];
+
+    // Define the relationship to Package
+    public function packages()
+    {
+        return $this->belongsTo(Package::class, 'package', 'ID');
+    }
+
+    // Define the relationship to Institution
+    public function institutions()
+    {
+        return $this->belongsTo(Institution::class, 'institution', 'ID');
+    }
 }

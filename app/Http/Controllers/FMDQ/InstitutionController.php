@@ -268,7 +268,7 @@ class InstitutionController extends Controller
     {
         $user = Auth::user();
         //
-        $institution = Institution::findOrFail($id);
+        $institution = Institution::find($id);
         $temp = InstitutionTemp::where('institutionRef', $id)->first();
         $approveUpdate = Institution::where('ID', $id)->update(['code' => $temp->code, 'institutionName' => $temp->name, 'address' => $temp->address, 'institutionEmail' => $temp->email, 'chiefDealerEmail' => $temp->chiefDealerEmail, 'status' => 1, 'modifiedDate' => now(), 'modifiedBy' => $user->email]);
 

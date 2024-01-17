@@ -20,6 +20,16 @@ class MailContents
         </ul>";
     }
 
+    public static function updateProfileSubject(): string
+    {
+        return "Profile Update Request";
+    }
+
+    public static function updateProfileMessage(): string
+    {
+        return "<p>Profile has been updated. Kindly approve.</p>";
+    }
+
     public static function deactivateProfileSubject(): string
     {
         return "Profile Deactivated";
@@ -27,14 +37,7 @@ class MailContents
 
     public static function deactivateProfileMessage($profileName, $institutionName, $packageName, $reason): string
     {
-        return "<p>A profile has been deactivated.</p>
-           <ul>
-            <li><strong>Name:</strong> {$profileName}</li>
-            <li><strong>Institution:</strong> {$institutionName}</li>
-            <li><strong>Role:</strong> {$packageName}</li>
-            <li><strong>Reason:</strong> {$reason}</li>
-        </ul>
-        ";
+        return "<p>A profile has been deactivated. Kindly approve</p>";
     }
 
     public static function approveProfileCreateSubject(): string
@@ -52,6 +55,25 @@ class MailContents
         ";
     }
 
+    public static function approveProfileUpdateSubject(): string
+    {
+        return "Profile Updated";
+    }
+
+    public static function approveProfileUpdateMessage(): string
+    {
+        return "<p>Your request to update profile has been approved</p>";
+    }
+
+    public static function rejectProfileUpdateSubject(): string
+    {
+        return "Profile Update Rejected";
+    }
+
+    public static function rejectProfileUpdateMessage($reason): string
+    {
+        return "<p>This profile update has been rejected.</p>";
+    }
     public static function rejectProfileCreateSubject(): string
     {
         return "Profile Rejected";
@@ -68,6 +90,26 @@ class MailContents
         </ul>
         ";
     }
+    public static function approveProfileDeleteSubject(): string
+    {
+        return "Profile Deactivation Approved";
+    }
+
+    public static function approveProfileDeleteMessage(): string
+    {
+        return "<p>The request to reject the profile has been approved</p>";
+    }
+    public static function rejectProfileDeleteSubject(): string
+    {
+        return "Profile Deactivation Rejected";
+    }
+
+    public static function rejectProfileDeleteMessage($reason): string
+    {
+        return "<p>The request to reject the profile has been deactivated.
+        <ul><li>Reason: {$reason}</li></ul></p>";
+    }
+
 
     public static function createCertificateSubject(): string
     {
